@@ -5,4 +5,7 @@ wget -O travisdata.csv.gz https://travistorrent.testroots.org/dumps/travistorren
 7z x .\data.csv.gz
 
 ## Requirements
-python pandas
+python
+	pandas
+	numpy
+	ipdb
