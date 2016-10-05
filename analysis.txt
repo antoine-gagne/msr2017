@@ -1,0 +1,15 @@
+TravisTorrent info
+
+1359 projects from Aug 2015
+> 10 watchers
+> 50 travis builds
+Ruby or Java
+
+
+Proposals:
+
+1. Downloader les comments sur les pull requests (accès via API GH), Utiliser Bluemix Alchemy API pour analyser le contenu des comment threads.
+
+2. Dead-end branches, time invested vs time lost vs time wasted. Nécessite d'aller voir si les pull requests ont été acceptés ou non (ca semble pas être disponible dans le travistorrent)
+
+3. A voir.
