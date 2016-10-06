@@ -1,9 +1,7 @@
-TravisTorrent info
-
-1359 projects from Aug 2015
-> 10 watchers
-> 50 travis builds
-Ruby or Java
+Current process:
+1/ Read the TravisTorrentdata
+2/ Filter to keep pull requests with more than 5 comments (in addition to the original pull request comment)
+3/ Call Github API to fetch the initial comment and follow up comments. If comments cannot be found (some projects were deleted since the project was released), store empty string. Save that to intermediate CSV file (pullreqdata.csv, use `pandas.read_csv("pullreqdata.csv")` to open).
 
 
 Proposals:
