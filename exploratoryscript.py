@@ -1,9 +1,12 @@
-# Look around the data set
 import pandas, numpy
 import matplotlib.pyplot as plt
 import ipdb
 
-# Opens the csv and break using ipdb so that it can be explored
+"""
+This file contains examples (in comments below) of how to interact with the various metrics using pandas
+All the script does is read the whole data frame (takes a minute or two) then set a break point so that you are able to interact with the data frame.
+"""
+
 
 filename = "travistorrent-5-3-2016.csv"
 

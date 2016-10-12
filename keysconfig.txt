@@ -1,3 +1,7 @@
 [gh_client]
-username : XXX
-oauth_token : XXX 
+username : XXXXXXXX
+oauth_token : XXXXXXXXXXXXXXXXXXXXX 
+
+[bluemix_client]
+username : XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXX
+password : XXXXXXXXXX
