@@ -1,5 +1,4 @@
-# This script is used to extract comments on pull requests from Github.
-# It gets everything and writes it to the specified file
+# This script is used to filter the travis dataset in order to get the data we need
 
 import ipdb
 import ConfigParser
@@ -25,6 +24,8 @@ if __name__ == "__main__":
 	"git_num_committers",
 	"gh_sloc",
 	"git_commit", 
+	"git_num_commits",
+	"git_commits",
 	"gh_by_core_team_member",
 	"gh_is_pr", 
 	"gh_pull_req_num", 
