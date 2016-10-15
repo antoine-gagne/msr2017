@@ -1,5 +1,6 @@
-# This script is used to extract comments on pull requests from Github.
-# It gets everything and writes it to the specified file
+# This script is used to fetch comments on several projects from Github.
+# It gets all 3 types of comments (commits, issues and pull requests) and writes 
+# the raw JSOn data to a file
 
 import ipdb
 import ConfigParser
@@ -14,7 +15,7 @@ configFile = "./keysconfig.txt"
 travisData = "travistorrent_30_9_2016.csv"
 
 # Output
-outputfile = "./data/comments.csv"
+outputfile = "./data/comments.json"
 
 def get_from_config(section, config_tags):
 	# Reads the configFile file and returns the config tags located in specified section.
@@ -55,24 +56,24 @@ def load_travis_data():
 
 
 def find_build_job(data, commitId):
+	# Finds the corresponding build job in the Travis dataset associated with the specified commit id.
 	
+	# We first check in the "git_commit" column
 	buildJob = data[data.git_commit == commitId]
 
 	if buildJob.empty:
+		# If not found, it may be in the "git_commits" (with an 's') column
 	 	sub = data.git_commits
-		#ipdb.set_trace()	 	
 	 	for label, commitStr in sub.iteritems():
 			commits = commitStr.split('#')
-			b = next((c for c in commits if c==commitId), None)
-			if b != None:
-				#ipdb.set_trace()
+			job = next((c for c in commits if c==commitId), None)
+			if job != None:
 				buildJob = data.loc[label]				
 				break
 	else:
 		buildJob=buildJob.iloc[0]
 
 	return buildJob
-
 
 
 if __name__ == "__main__":
@@ -87,27 +88,7 @@ if __name__ == "__main__":
 	projectNames = td["gh_project_name"]
 	projectNames = projectNames.drop_duplicates()
 
-	# garg = find_build_job(td, "20403b8040e70ba23de28446efd22fb5a82a481b")
-	# garg = find_build_job(td, "6f88fd4fb3ca219337e75e16f22dcd88ad7ee7d1")
-
-	#dfColumns = list(td.columns.values)
-	dfColumns = list()
-	headers = [
-		"job_commit",
-		"comment_commit",
-		"gh_comment_id",
-		"gh_comment_type",
-		"gh_created_at",
-		"gh_updated_at",
-		"gh_user_id",
-		"gh_user_login",
-		"gh_body",
-		"gh_reactions"
-	]
-	dfColumns.extend(headers)
- 	outData = pandas.DataFrame(columns=dfColumns)
-
-	
+	# We first get the api requests limit
 	response = ghc.check_rate_limit()
 	limit=0
 	remaining=0
@@ -125,15 +106,15 @@ if __name__ == "__main__":
   	index=0
   	nbRequests = 0
   	for label, prj in projectNames.iteritems():
-  		print "Progress : %s/%s : comments for %s"%(index,len(projectNames),prj)
+  		print "Progress : %s/%s : fetching comments for %s"%(index,len(projectNames),prj)
 
   		prjData = td[td.gh_project_name == prj]
 
   		prjJson = {prj : {"repo" : [], "issue" : [], "pull_r" : []}}
 
   		# We retrieve all comments for the project.
-  		# TODO : fix encoding? Currently unicode since there are emojis...
   		try:
+  			# TODO : fix encoding? Currently unicode since there are emojis...
 			response = ghc.get_repo_comments(prj)
 			nbRequests = nbRequests+1
 			if response != None and response.status_code == 200:
@@ -152,6 +133,7 @@ if __name__ == "__main__":
 		except:
 			ipdb.set_trace()
 
+		# We wait the specified amount of time if the api request limit is reached
 		if nbRequests >= limit:
 			waitTime = resetTime - time.time() + 10
 			print "GitHub api request limit reached. The limit will be reset in %s seconds"%(waitTime)
@@ -163,8 +145,9 @@ if __name__ == "__main__":
 		jsonData.append(prjJson)
 		index = index+1
 
+	# Dump JSON data in a file	
 	try:
-		with open('./data/comments.json', 'w') as outfile:
+		with open(outputfile, 'w') as outfile:
 	    		json.dump(jsonData, outfile)
 	except:
 		ipdb.set_trace()
