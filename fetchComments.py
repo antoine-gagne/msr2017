@@ -8,6 +8,7 @@ import ghhelper
 import json
 import pandas
 import time
+import sys
 from pprint import pprint
 
 #initial files
@@ -76,6 +77,14 @@ def find_build_job(data, commitId):
 	return buildJob
 
 
+def dump_json(data, filename):
+	try:
+		with open(filename, 'w') as outfile:
+	    		json.dump(jsonData, outfile)
+	except:
+		ipdb.set_trace()
+
+
 if __name__ == "__main__":
 
 	# Init github client
@@ -105,6 +114,7 @@ if __name__ == "__main__":
   	jsonData = []
   	index=0
   	nbRequests = 0
+  	nbJsonFiles = 0
   	for label, prj in projectNames.iteritems():
   		print "Progress : %s/%s : fetching comments for %s"%(index,len(projectNames),prj)
 
@@ -143,12 +153,16 @@ if __name__ == "__main__":
 				print "%s seconds remaining..."%(waitTime)
 				
 		jsonData.append(prjJson)
+
+		size = sys.getsizeof(jsonData)
+		# Dump JSON data in a file. We creates ~10MB files
+		if size > 10*1024*1024:
+			dump_json(jsonData, ".data/comments%s.json"%nbJsonFiles)
+			nbJsonFiles = nbJsonFiles+1
+			jsonData = []
+
 		index = index+1
 
-	# Dump JSON data in a file	
-	try:
-		with open(outputfile, 'w') as outfile:
-	    		json.dump(jsonData, outfile)
-	except:
-		ipdb.set_trace()
+	# Last dump
+	dump_json(jsonData, "comments%s.json"%nbJsonFiles)
 	
