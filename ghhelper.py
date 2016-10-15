@@ -52,19 +52,19 @@ class GithubClient:
 		return response
 
 	def get_repo_comments(self, user_repo):
-		headers={'User-Agent': user_agent, 'Accept': 'application/vnd.github.v3.raw+json'}
+		headers={'User-Agent': self.user_agent, 'Accept': 'application/vnd.github.v3.raw+json'}
 		query = "%s/repos/%s/comments"%(self.api_base,user_repo)
 		response = self.make_request(query, headers)
 		return response
 
 	def get_pull_request_comments(self, user_repo):
-		headers={'User-Agent': user_agent, 'Accept': 'application/vnd.github.v3.raw+json'}
+		headers={'User-Agent': self.user_agent, 'Accept': 'application/vnd.github.v3.raw+json'}
 		query = "%s/repos/%s/pulls/comments"%(self.api_base,user_repo)
 		response = self.make_request(query, headers)
 		return response
 
 	def get_issue_comments(self, user_repo):
-		headers={'User-Agent': user_agent, 'Accept': 'application/vnd.github.v3.raw+json'}
+		headers={'User-Agent': self.user_agent, 'Accept': 'application/vnd.github.v3.raw+json'}
 		query = "%s/repos/%s/issues/comments"%(self.api_base,user_repo)
 		response = self.make_request(query, headers)
 		return response
@@ -75,7 +75,7 @@ class GithubClient:
 		return response
 
 	def check_rate_limit(self):
-		headers={'User-Agent': user_agent}
+		headers={'User-Agent': self.user_agent}
 		query = "%s/rate_limit?"%(self.api_base)
 		response = self.make_request(query, headers)
 		return response
