@@ -15,6 +15,7 @@ class GithubClient:
 	api_base = "https://api.github.com"
 	user_agent = 'LOG6307-team-project'
 	verbose = False # For debugging
+	nbRequestsMade = 0;
 
 	def __init__(self, credentials=None, verbose=False, ignoring_errors=False):
 		if not credentials:
@@ -38,17 +39,20 @@ class GithubClient:
 			else:
 				print "Status code : %s\tContent : %s"%(response.status_code, response.text)
 		sleep(0.1)
+		self.nbRequestsMade = self.nbRequestsMade+1
 		return response
 
 	# Specific resources begin here
 	def get_pull_request_for_repo(self, user_repo):
+		headers={'User-Agent': self.user_agent, 'Accept': 'application/vnd.github.v3.raw+json'}
 		query = '%s/repos/%s/pulls'%(self.api_base, user_repo)
-		response = self.make_request(query)
+		response = self.make_request(query, headers)
 		return response
 
 	def get_single_pull_request(self, user_repo, pull_id):
+		headers={'User-Agent': self.user_agent, 'Accept': 'application/vnd.github.v3.raw+json'}
 		query = '%s/repos/%s/pulls/%s'%(self.api_base, user_repo, int(pull_id))
-		response = self.make_request(query)
+		response = self.make_request(query, headers)
 		return response
 
 	def get_repo_comments(self, user_repo):
