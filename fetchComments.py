@@ -58,16 +58,17 @@ def find_build_job(data, commitId):
 	buildJob = data[data.git_commit == commitId]
 
 	if buildJob.empty:
-		buildJob = None
 	 	sub = data.git_commits
-	 	for i in range(len(sub)):
-			commits = sub[i].split('#')
+		#ipdb.set_trace()	 	
+	 	for label, commitStr in sub.iteritems():
+			commits = commitStr.split('#')
 			b = next((c for c in commits if c==commitId), None)
 			if b != None:
-				buildJob = data.loc[i]				
+				#ipdb.set_trace()
+				buildJob = data.loc[label]				
 				break
 	else:
-		buildJob = buildJob.iloc[0]		
+		buildJob=buildJob.iloc[0]
 
 	return buildJob
 
@@ -77,21 +78,22 @@ if __name__ == "__main__":
 
 	# Init github client
 	creds = get_from_config("gh_client",["username","oauth_token"])
-	ghc = ghhelper.GithubClient(credentials=creds, verbose=True)
+	ghc = ghhelper.GithubClient(credentials=creds, verbose=False)
+
+	print "Loading Travis data..."
 	td = load_travis_data()
 
 	projectNames = td["gh_project_name"]
 	projectNames = projectNames.drop_duplicates()
 
-	#garg = find_build_job(td, "20403b8040e70ba23de28446efd22fb5a82a481b")
-	#garg = find_build_job(td, "6f88fd4fb3ca219337e75e16f22dcd88ad7ee7d1")
+	garg = find_build_job(td, "20403b8040e70ba23de28446efd22fb5a82a481b")
+	garg = find_build_job(td, "6f88fd4fb3ca219337e75e16f22dcd88ad7ee7d1")
 
-	dfColumns = list(td.columns.values)
+	#dfColumns = list(td.columns.values)
+	dfColumns = list()
 	headers = [
-		# "git_commit",
-		# "gh_real_num_commit_comments", 
-		# "gh_real_num_pr_comments", 
-		# "gh_real_num_issue_comments",
+		"job_commit",
+		"comment_commit",
 		"gh_comment_id",
 		"gh_comment_type",
 		"gh_created_at",
@@ -99,32 +101,42 @@ if __name__ == "__main__":
 		"gh_user_id",
 		"gh_user_login",
 		"gh_body",
-		"gh_body_text",
-		"gh_body_html"
+		"gh_reactions"
 	]
 	dfColumns.extend(headers)
+	# headers = [
+	# 	"gh_body"
+	# ]
+	# dfColumns.append(headers)
  	outData = pandas.DataFrame(columns=dfColumns)
 
-	ipdb.set_trace()
+	#ipdb.set_trace()
 
   	# We need to find the comments for each commit id
-  	for index, prj in projectNames.iteritems():
-  		print "Progress : %s/%s"%(index,len(projectNames))
+  	print "Fetching comments..."
+  	index=0
+  	for label, prj in projectNames.iteritems():
+  		print "Progress : %s/%s : comments for %s"%(index,len(projectNames),prj)
 
   		prjData = td[td.gh_project_name == prj]
 
   		# We retrieve all comments for the project.
-		repoComments = ghc.get_repo_comments(prj).json()
+  		# TODO : fix encoding? Currently unicode since there are emojis...
+		response = ghc.get_repo_comments(prj)
+		repoComments = list()
+		if response != None  & response.status_code == 200:
+			repoComments = response.json()		
 
-		ipdb.set_trace()
+		#ipdb.set_trace()
 
-		if len(repoComments)!=0:
-			for commentData in repoComments:
-				ipdb.set_trace()
-				commitId = commentData["commit_id"]
-				job = find_build_job(prjData, commitId)
-				if job != None:
+		for commentData in repoComments:
+			commitId = commentData["commit_id"]
+			job = find_build_job(prjData, commitId)
+			if not job.empty:
+				try:
 					data = [
+						job.git_commit,
+						commitId,
 						commentData["id"],
 						"repo",
 						commentData["created_at"],
@@ -132,20 +144,26 @@ if __name__ == "__main__":
 						commentData["user"]["id"],
 						commentData["user"]["login"],
 						commentData["body"],
-						commentData["body_text"],
-						commentData["body_html"]
+						""
 					]				
-					outData.add(td[index].combine(data))
+					outData.loc[len(outData)] = data;
+				except:
+					ipdb.set_trace()
 
 		# pullRequestComments = ghc.get_pull_request_comments(prj).json()
-		# issueComments = ghc.get_issue_comments(prj).json()
 		# for i in range(len(pullRequestComments)):
 		# 	commentData = pullRequestComments[i].json()
 
 
+		# issueComments = ghc.get_issue_comments(prj).json()
 		# for i in range(len(issueComments)):
 		# 	commentData = issueComments[i].json()
-				
+		index = index+1
 
+	ipdb.set_trace()
 
+	# try:
+	# 	data.to_csv(outputfile)
+	# except:
+	# 	ipdb.set_trace()
 	
