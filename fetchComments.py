@@ -6,6 +6,7 @@ import ConfigParser
 import ghhelper
 import json
 import pandas
+import time
 from pprint import pprint
 
 #initial files
@@ -78,7 +79,7 @@ if __name__ == "__main__":
 
 	# Init github client
 	creds = get_from_config("gh_client",["username","oauth_token"])
-	ghc = ghhelper.GithubClient(credentials=creds, verbose=False)
+	ghc = ghhelper.GithubClient(credentials=creds, ignoring_errors=True)
 
 	print "Loading Travis data..."
 	td = load_travis_data()
@@ -86,8 +87,8 @@ if __name__ == "__main__":
 	projectNames = td["gh_project_name"]
 	projectNames = projectNames.drop_duplicates()
 
-	garg = find_build_job(td, "20403b8040e70ba23de28446efd22fb5a82a481b")
-	garg = find_build_job(td, "6f88fd4fb3ca219337e75e16f22dcd88ad7ee7d1")
+	# garg = find_build_job(td, "20403b8040e70ba23de28446efd22fb5a82a481b")
+	# garg = find_build_job(td, "6f88fd4fb3ca219337e75e16f22dcd88ad7ee7d1")
 
 	#dfColumns = list(td.columns.values)
 	dfColumns = list()
@@ -104,66 +105,67 @@ if __name__ == "__main__":
 		"gh_reactions"
 	]
 	dfColumns.extend(headers)
-	# headers = [
-	# 	"gh_body"
-	# ]
-	# dfColumns.append(headers)
  	outData = pandas.DataFrame(columns=dfColumns)
 
+	
+	response = ghc.check_rate_limit()
+	limit=0
+	remaining=0
+	resetTime=0
 	#ipdb.set_trace()
+	if response != None and response.status_code == 200:
+		limit = response.json()["rate"]["limit"]
+		remaining = response.json()["rate"]["remaining"]
+		resetTime = response.json()["rate"]["reset"]
+		print "GitHub api request limit info:\nlimit : %s\nremaining : %s\nreset : %s\n"%(limit, remaining, resetTime)
 
-  	# We need to find the comments for each commit id
+  	# We fetch the raw json comment data
   	print "Fetching comments..."
+  	jsonData = []
   	index=0
+  	nbRequests = 0
   	for label, prj in projectNames.iteritems():
   		print "Progress : %s/%s : comments for %s"%(index,len(projectNames),prj)
 
   		prjData = td[td.gh_project_name == prj]
 
+  		prjJson = {prj : {"repo" : [], "issue" : [], "pull_r" : []}}
+
   		# We retrieve all comments for the project.
   		# TODO : fix encoding? Currently unicode since there are emojis...
-		response = ghc.get_repo_comments(prj)
-		repoComments = list()
-		if response != None  & response.status_code == 200:
-			repoComments = response.json()		
+  		try:
+			response = ghc.get_repo_comments(prj)
+			nbRequests = nbRequests+1
+			if response != None and response.status_code == 200:
+				prjJson[prj]["repo"] = response.json()		
 
-		#ipdb.set_trace()
+			response = ghc.get_pull_request_comments(prj)
+			nbRequests = nbRequests+1
+			if response != None and response.status_code == 200:
+				prjJson[prj]["pull_r"] = response.json()
 
-		for commentData in repoComments:
-			commitId = commentData["commit_id"]
-			job = find_build_job(prjData, commitId)
-			if not job.empty:
-				try:
-					data = [
-						job.git_commit,
-						commitId,
-						commentData["id"],
-						"repo",
-						commentData["created_at"],
-						commentData["updated_at"],
-						commentData["user"]["id"],
-						commentData["user"]["login"],
-						commentData["body"],
-						""
-					]				
-					outData.loc[len(outData)] = data;
-				except:
-					ipdb.set_trace()
+			response = ghc.get_issue_comments(prj)
+			nbRequests = nbRequests+1
+			if response != None and response.status_code == 200:
+				prjJson[prj]["issue"] = response.json()
 
-		# pullRequestComments = ghc.get_pull_request_comments(prj).json()
-		# for i in range(len(pullRequestComments)):
-		# 	commentData = pullRequestComments[i].json()
+		except:
+			ipdb.set_trace()
 
-
-		# issueComments = ghc.get_issue_comments(prj).json()
-		# for i in range(len(issueComments)):
-		# 	commentData = issueComments[i].json()
+		if nbRequests >= limit:
+			waitTime = resetTime - time.time() + 10
+			print "GitHub api request limit reached. The limit will be reset in %s seconds"%(waitTime)
+			while waitTime > 0:
+				sleep(10*60)
+				waitTime = waitTime - 10*60
+				print "%s seconds remaining..."%(waitTime)
+				
+		jsonData.append(prjJson)
 		index = index+1
 
-	ipdb.set_trace()
-
-	# try:
-	# 	data.to_csv(outputfile)
-	# except:
-	# 	ipdb.set_trace()
+	try:
+		with open('./data/comments.json', 'w') as outfile:
+	    		json.dump(jsonData, outfile)
+	except:
+		ipdb.set_trace()
 	
