@@ -14,6 +14,7 @@ class GithubClient:
 	ignoring_errors = False
 	api_base = "https://api.github.com"
 	user_agent = 'LOG6307-team-project'
+	default_headers = {'User-Agent': self.user_agent, 'Accept': 'application/vnd.github.v3.raw+json'}
 	verbose = False # For debugging
 	nbRequestsMade = 0;
 
@@ -24,7 +25,9 @@ class GithubClient:
 		self.verbose = verbose
 		self.ignoring_errors = ignoring_errors
 
-	def make_request(self, resource_uri, headers=""):
+	# TODO : Support page navigation!
+	# https://developer.github.com/guides/traversing-with-pagination/
+	def make_request(self, resource_uri, headers=self.default_headers):
 		# Sign and make request
 		if self.verbose:
 			print "Fetching %s" % resource_uri
@@ -44,33 +47,28 @@ class GithubClient:
 
 	# Specific resources begin here
 	def get_pull_request_for_repo(self, user_repo):
-		headers={'User-Agent': self.user_agent, 'Accept': 'application/vnd.github.v3.raw+json'}
 		query = '%s/repos/%s/pulls'%(self.api_base, user_repo)
-		response = self.make_request(query, headers)
+		response = self.make_request(query)
 		return response
 
 	def get_single_pull_request(self, user_repo, pull_id):
-		headers={'User-Agent': self.user_agent, 'Accept': 'application/vnd.github.v3.raw+json'}
 		query = '%s/repos/%s/pulls/%s'%(self.api_base, user_repo, int(pull_id))
-		response = self.make_request(query, headers)
+		response = self.make_request(query)
 		return response
 
 	def get_repo_comments(self, user_repo):
-		headers={'User-Agent': self.user_agent, 'Accept': 'application/vnd.github.v3.raw+json'}
-		query = "%s/repos/%s/comments"%(self.api_base,user_repo)
-		response = self.make_request(query, headers)
+		query = "%s/repos/%s/comments?per_page=100"%(self.api_base,user_repo)
+		response = self.make_request(query)
 		return response
 
 	def get_pull_request_comments(self, user_repo):
-		headers={'User-Agent': self.user_agent, 'Accept': 'application/vnd.github.v3.raw+json'}
-		query = "%s/repos/%s/pulls/comments"%(self.api_base,user_repo)
-		response = self.make_request(query, headers)
+		query = "%s/repos/%s/pulls/comments?per_page=100"%(self.api_base,user_repo)
+		response = self.make_request(query)
 		return response
 
 	def get_issue_comments(self, user_repo):
-		headers={'User-Agent': self.user_agent, 'Accept': 'application/vnd.github.v3.raw+json'}
-		query = "%s/repos/%s/issues/comments"%(self.api_base,user_repo)
-		response = self.make_request(query, headers)
+		query = "%s/repos/%s/issues/comments?per_page=100"%(self.api_base,user_repo)
+		response = self.make_request(query)
 		return response
 
 	def get_single_commit(self, user_repo, commit_sha):
