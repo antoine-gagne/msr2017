@@ -13,8 +13,7 @@ class GithubClient:
 	credentials = {}
 	ignoring_errors = False
 	api_base = "https://api.github.com"
-	user_agent = 'LOG6307-team-project'
-	default_headers = {'User-Agent': self.user_agent, 'Accept': 'application/vnd.github.v3.raw+json'}
+	default_headers = {'User-Agent': "LOG6307-team-project", 'Accept': 'application/vnd.github.v3.raw+json'}
 	verbose = False # For debugging
 	nbRequestsMade = 0;
 
@@ -25,7 +24,11 @@ class GithubClient:
 		self.verbose = verbose
 		self.ignoring_errors = ignoring_errors
 
-	def make_request(self, resource_uri, headers=self.default_headers):
+	def make_request(self, resource_uri, headers=''):
+
+		if not headers:
+			headers = self.default_headers		
+
 		# Sign and make request
 		if self.verbose:
 			print "Fetching %s" % resource_uri
