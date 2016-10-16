@@ -14,7 +14,10 @@ from pprint import pprint
 
 #initial files
 configFile = "./keysconfig.txt"
-travisData = "travistorrent_30_9_2016.csv"
+#travisData = "travistorrent_30_9_2016.csv"
+
+#DEBUG
+travisData = "albacore.csv"
 
 # Output
 outputfile = "./data/comments.csv"
@@ -57,10 +60,12 @@ def load_travis_data():
 			]
 
 	df = pandas.read_csv(travisData)
-	return df[travisFields]
+	data = df[travisFields]
+	travisFields.remove('row')
+	return data.drop_duplicates(subset=travisFields)
 
 def build_comment_data(cData, job, commitId, cType, reactions=""):
-	ipdb.set_trace()
+	#ipdb.set_trace()
 	data = [
 		job.row,
 		job.git_commit,
@@ -94,6 +99,7 @@ if __name__ == "__main__":
 	#dfColumns = list(td.columns.values)
 	dfColumns = list()
 	headers = [
+		"row",
 		"job_commit",
 		"comment_commit",
 		"gh_pull_req_num",
@@ -107,10 +113,7 @@ if __name__ == "__main__":
 		"gh_reactions"
 	]
 	dfColumns.extend(headers)
-	# headers = [
-	# 	"gh_body"
-	# ]
-	# dfColumns.append(headers)
+
  	outData = pandas.DataFrame(columns=dfColumns)
 
 	# We first get the api requests limit
@@ -126,13 +129,14 @@ if __name__ == "__main__":
 
   	#DEBUG
   	#======
-  	projectNames = td[td["gh_project_name"] == "Albacore/albacore"]
-  	projectNames = projectNames["gh_project_name"]
+  	albacore = td[td["gh_project_name"] == "Albacore/albacore"]
+	#albacore.to_csv("albacore.csv")
+	#ipdb.set_trace()
+  	projectNames = albacore["gh_project_name"]
   	projectNames = projectNames.drop_duplicates()
   	#ipdb.set_trace()
 	#======
 
-  	# We fetch the raw json comment data
   	print "Fetching comments..."
   	index=0
   	for label, prj in projectNames.iteritems():
@@ -141,54 +145,74 @@ if __name__ == "__main__":
   		prjData = td[td.gh_project_name == prj]
   		
   		# We first get all repo comments
-		repoComments = util.fetch_comments(CommentType.REPO, prj)
-		for commentData in repoComments:
-			commitId = commentData["commit_id"]
+  		nbMatched=0
+		repoComments = util.fetch_comments(util.repoStr, prj)
+		print "\t%s repo comments found"%(len(repoComments)),
+		if repoComments:
+			for commentData in repoComments:
+				commitId = commentData["commit_id"]
 
-			# We try to find an associated commit id in the Travis dataset
-			job = util.find_build_job_by_commit(prjData, commitId)
-			if not job.empty:
-				outData.loc[len(outData)] = build_comment_data(commentData, job, util.repoStr);
+				# We try to find an associated commit id in the Travis dataset
+				jobs = util.find_build_jobs_by_commit(prjData, commitId)
+				if not jobs.empty:
+					for label, job in jobs.iterrows():
+						outData.loc[len(outData)] = build_comment_data(commentData, job, commitId,util.repoStr);
+					nbMatched=nbMatched+1
+			print "\t%s matched"%(nbMatched),
+		print ""
 
 		# We then get all pull request comments
-		pullRequestComments = util.fetch_comments(CommentType.PULL_REQUEST, prj)
-		for prComment in pullRequestComments:
+		nbMatched=0
+		pullRequestComments = util.fetch_comments(util.prStr, prj)
+		print "\t%s pull request comments found"%(len(pullRequestComments)),
+		if pullRequestComments:
+			for prComment in pullRequestComments:
 
-			#There are two fields associated with commit 
-			commitId = prComment["commit_id"]
-			originalCommitId = prComment["original_commit_id"]
+				#There are two fields associated with commit 
+				commitId = prComment["commit_id"]
+				originalCommitId = prComment["original_commit_id"]
 
-			# We try to find an associated commit id in the Travis dataset for both
-			job = util.find_build_job_by_commit(prjData, commitId)
-			if job.empty:
-				job = util.find_build_job_by_commit(prjData, originalCommitId)
+				# We try to find an associated commit id in the Travis dataset for both
+				jobs = util.find_build_jobs_by_commit(prjData, commitId)
+				if jobs.empty:
+					jobs = util.find_build_jobs_by_commit(prjData, originalCommitId)
 
-			if not job.empty:
-				outData.loc[len(outData)] = build_comment_data(prComment, job, commitId, util.prStr);				
+				if not jobs.empty:
+					for label, job in jobs.iterrows():
+						outData.loc[len(outData)] = build_comment_data(prComment, job, commitId, util.prStr);				
+					nbMatched=nbMatched+1
+			print "\t%s matched"%(nbMatched),
+		print ""	
 
 		# Finally, we retrieve issue comments
 		# The process is a little more complicated because there isn't any info about commits in them.
 		# Also, I make the assumption that on GitHub, the issue number corresponds to the pull 
-		# request number, if the association exists. This seems to hold true this is not confirmed.
-		issueComments = fetch_comments(CommentType.ISSUE, prj)
-		for issueComment in issueComments:
+		# request number, if the association exists. This seems to hold true but this is not confirmed.
+		nbMatched=0
+		issueComments = util.fetch_comments(util.issueStr, prj)
+		print "\t%s issue comments found"%(len(issueComments)),
+		if issueComments:
+			for issueComment in issueComments:
 
-			# We can find the pull request number in the url...
-			urlParts = issueComment["issue_url"].split("/")
-			prNum = int(urlParts[len(urlParts)-1])
+				# We can find the pull request number in the url...
+				urlParts = issueComment["issue_url"].split("/")
+				prNum = int(urlParts[len(urlParts)-1])
 
-			# We retrieve the associated pull request, if it exists.
-			pullRequest = util.fetch_pull_request(prNum)
-			if pullRequest.empty:
-				continue
+				# We retrieve the associated pull request, if it exists.
+				pullRequest = util.fetch_pull_request(prNum)
+				if not pullRequest:
+					continue
 
-			commitId = pullRequest["merge_commit_sha"]
+				commitId = pullRequest["merge_commit_sha"]
 
-			# We try to find an associated commit id in the Travis dataset for both
-			job = util.find_build_job_by_commit(prjData, commitId)
-			if not job.empty:
-				outData.loc[len(outData)] = build_comment_data(issueComment, job, commitId, util.issueStr);
-
+				# We try to find an associated commit id in the Travis dataset
+				jobs = util.find_build_jobs_by_commit(prjData, commitId)
+				if not jobs.empty:
+					for label, job in jobs.iterrows():
+						outData.loc[len(outData)] = build_comment_data(issueComment, job, commitId, util.issueStr);
+					nbMatched=nbMatched+1
+			print "\t%s matched"%(nbMatched),
+		print ""
 
 		# We wait the specified amount of time if the api request limit is reached
 		if ghc.nbRequestsMade >= limit:

@@ -13,44 +13,30 @@ class Util:
 	prStr='pull_r'
 	issueStr='issue'
 
-	gch = None
+	ghc = None
 
 	def __init__(self, github_client):
-		self.gch = github_client
+		self.ghc = github_client
 
-	def get_from_config(section, config_tags):
-		# Reads the configFile file and returns the config tags located in specified section.
-		config = ConfigParser.ConfigParser()
-		config.read(configFile)
-		if isinstance(config_tags,list):
-			config_data = {k: config.get(section, k) for k in config_tags}
-		else:
-			config_data = {config_tags: config.get(section, config_tags)}
-		return config_data
-
-	def find_build_job_by_commit(data, commitId):
-		# Finds the corresponding build job in the Travis dataset associated with the specified commit id.
+	def find_build_jobs_by_commit(self, data, commitId):
+		# Finds the corresponding build jobs in the Travis dataset associated with the specified commit id.
 		
 		# We first check in the "git_commit" column
-		buildJob = data[data.git_commit == commitId]
+		jobs = data[data.git_commit == commitId]
 
-		if buildJob.empty:
+		if jobs.empty:
 			# If not found, it may be in the "git_commits" (with an 's') column
+			jobs = pandas.DataFrame(columns=list(data.columns.values))
 		 	sub = data.git_commits
 		 	for label, commitStr in sub.iteritems():
 				commits = commitStr.split('#')
-				job = next((c for c in commits if c==commitId), None)
-				if job != None:
-					buildJob = data.loc[label]				
-					break
-		else:
-			if len(buildJob) > 1: 
-				ipdb.set_trace()
-			buildJob=buildJob.iloc[0]
+				for c in commits:
+					if c==commitId:
+						jobs.loc[len(jobs)] = data.loc[label]
+		
+		return jobs
 
-		return buildJob
-
-	def fetch_pull_request(prNum):
+	def fetch_pull_request(self, prNum):
 		pullRequest = []
 		response = self.ghc.get_single_pull_request(prNum)
 		if response != None and response.status_code == 200:
@@ -58,7 +44,7 @@ class Util:
 		return pullRequest
 
 
-	def fetch_comments(cType, prj):
+	def fetch_comments(self, cType, prj):
 		comments = []
 
 		if cType == self.repoStr:
