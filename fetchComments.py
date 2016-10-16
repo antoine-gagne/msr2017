@@ -10,6 +10,7 @@ import pandas
 import time
 import sys
 from pprint import pprint
+from enum import Enum
 
 #initial files
 configFile = "./keysconfig.txt"
@@ -17,6 +18,12 @@ travisData = "travistorrent_30_9_2016.csv"
 
 # Output
 outputfile = "./data/comments.csv"
+
+class CommentType(Enum):
+	REPO = 1
+	PULL_REQUEST = 2
+	ISSUE = 3
+
 
 def get_from_config(section, config_tags):
 	# Reads the configFile file and returns the config tags located in specified section.
@@ -30,7 +37,10 @@ def get_from_config(section, config_tags):
 
 def load_travis_data():
 	# Loads and filter the travis dataset.
+	# TODO : Investigate why there are duplicates... 
+	# This could indicates that they did not parsed their data correctly
 	travisFields = 	[
+			"row",
 			"tr_build_number", 
 			"tr_status", 
 			"tr_tests_ran",
@@ -55,8 +65,22 @@ def load_travis_data():
 	df = pandas.read_csv(travisData)
 	return df[travisFields]
 
-def build_comment_data(cData, job):
-	#WIP
+def build_comment_data(cData, job, commitId, cType, reactions=""):
+	ipdb.set_trace()
+	data = [
+		job.row,
+		job.git_commit,
+		commitId,
+		job.gh_pull_req_num,
+		cData["id"],
+		cType,
+		cData["created_at"],
+		cData["updated_at"],
+		cData["user"]["id"],
+		cData["user"]["login"],
+		cData["body"],
+		reactions]
+	return data;
 
 
 def find_build_job_by_commit(data, commitId):
@@ -75,10 +99,39 @@ def find_build_job_by_commit(data, commitId):
 				buildJob = data.loc[label]				
 				break
 	else:
+		if len(buildJob) > 1: 
+			ipdb.set_trace()
 		buildJob=buildJob.iloc[0]
 
 	return buildJob
 
+def fetch_pull_request(prNum):
+	pullRequest = []
+	response = ghc.get_single_pull_request(prNum)
+	if response != None and response.status_code == 200:
+		pullRequest = response.json()
+	return pullRequest
+
+
+def fetch_comments(cType, prj):
+	comments = []
+
+	if cType == CommentType.REPO:
+		response = ghc.get_repo_comments(prj)
+		if response != None and response.status_code == 200:
+			comments = response.json()
+
+	elif cType == CommentType.PULL_REQUEST:
+		response = ghc.get_pull_request_comments(prj)
+		if response != None and response.status_code == 200:
+			comments = response.json()
+
+	elif cType == CommentType.ISSUE:
+		response = ghc.get_issue_comments(prj)
+		if response != None and response.status_code == 200:
+			comments = response.json()
+
+	return comments
 
 if __name__ == "__main__":
 
@@ -126,13 +179,6 @@ if __name__ == "__main__":
 		resetTime = response.json()["rate"]["reset"]
 		print "GitHub api request limit info:\nlimit : %s\nremaining : %s\nreset : %s\n"%(limit, remaining, resetTime)
 
-	#ipdb.set_trace()
-
-  	# We fetch the raw json comment data
-  	print "Fetching comments..."
-  	index=0
-
-
   	#DEBUG
   	#======
   	projectNames = td[td["gh_project_name"] == "Albacore/albacore"]
@@ -141,137 +187,62 @@ if __name__ == "__main__":
   	#ipdb.set_trace()
 	#======
 
-
+  	# We fetch the raw json comment data
+  	print "Fetching comments..."
+  	index=0
   	for label, prj in projectNames.iteritems():
   		print "Progress : %s/%s : fetching comments for %s"%(index,len(projectNames),prj)
 
   		prjData = td[td.gh_project_name == prj]
   		
   		# We first get all repo comments
-		response = ghc.get_repo_comments(prj)
-		if response != None and response.status_code == 200:
-			repoComments = response.json()		
-			for commentData in repoComments:
-				commitId = commentData["commit_id"]
+		repoComments = fetch_comments(CommentType.REPO, prj)
+		for commentData in repoComments:
+			commitId = commentData["commit_id"]
 
-				# We try to find an associated commit id in the Travis dataset
-				job = find_build_job_by_commit(prjData, commitId)
-				if not job.empty:
-					data = [
-						job.git_commit,
-						commitId,
-						-1,
-						commentData["id"],
-						"repo",
-						commentData["created_at"],
-						commentData["updated_at"],
-						commentData["user"]["id"],
-						commentData["user"]["login"],
-						commentData["body"],
-						""
-					]
-					outData.loc[len(outData)] = data;
+			# We try to find an associated commit id in the Travis dataset
+			job = find_build_job_by_commit(prjData, commitId)
+			if not job.empty:
+				outData.loc[len(outData)] = build_comment_data(commentData, job, CommentType.REPO.name);
 
+		# We then get all pull request comments
+		pullRequestComments = fetch_comments(CommentType.PULL_REQUEST, prj)
+		for prComment in pullRequestComments:
 
+			#There are two fields associated with commit 
+			commitId = prComment["commit_id"]
+			originalCommitId = prComment["original_commit_id"]
 
-		# # For the other comments, we need to get all pull requests first			
-		# response = ghc.get_pull_request_for_repo(prj)
-		# if response == None or response.status_code != 200:
-		# 	continue
+			# We try to find an associated commit id in the Travis dataset for both
+			job = find_build_job_by_commit(prjData, commitId)
+			if job.empty:
+				job = find_build_job_by_commit(prjData, originalCommitId)
 
-		# pullRequests = response.json()
+			if not job.empty:
+				outData.loc[len(outData)] = build_comment_data(prComment, job, commitId, CommentType.PULL_REQUEST.name);				
 
-		# We now get all pull request comments
-		pullRequestComments = []
-		response = ghc.get_pull_request_comments(prj)
-		if response != None and response.status_code == 200:
-			pullRequestComments = response.json()
+		# Finally, we retrieve issue comments
+		# The process is a little more complicated because there isn't any info about commits in them.
+		# Also, I make the assumption that on GitHub, the issue number corresponds to the pull 
+		# request number, if the association exists. This seems to hold true this is not confirmed.
+		issueComments = fetch_comments(CommentType.ISSUE, prj)
+		for issueComment in issueComments:
 
-			prUrl = ""
-			pullRequest = []
-			for prComment in pullRequestComments:
-				commitId = prComment["commit_id"]
+			# We can find the pull request number in the url...
+			urlParts = issueComment["issue_url"].split("/")
+			prNum = int(urlParts[len(urlParts)-1])
 
-				# We retrieve the associated pull request
-				if prComment["pull_request_url"] != prUrl:
-					prUrl = prComment["pull_request_url"]
-					response = ghc.make_request(prUrl)
-					pullRequest = []
-					if response != None and response.status_code == 200:
-						pullRequest = response.json()
+			# We retrieve the associated pull request, if it exists.
+			pullRequest = fetch_pull_request(prUrl)
+			if pullRequest.empty:
+				continue
 
-				# We try to find an associated commit id in the Travis dataset
-				job = find_build_job_by_commit(prjData, commitId)
-				if not job.empty:
-					data = [
-						job.git_commit,
-						commitId,
-						-1,
-						prComment["id"],
-						"pull_r",
-						prComment["created_at"],
-						prComment["updated_at"],
-						prComment["user"]["id"],
-						prComment["user"]["login"],
-						prComment["body"],
-						""
-					]
-					outData.loc[len(outData)] = data;
+			commitId = pullRequest["merge_commit_sha"]
 
-		
-
-		# # Finally, we retrieve issue comments
-		# issueComments = []
-		# response = ghc.get_issue_comments(prj)
-		# if response != None and response.status_code == 200:
-		# 	issueComments = response.json()
-
-		# # We search in the Travis dataset a build job corresponding to the pull request number	
-		# for pullrData in pullRequests:
-			
-		# 	jobs = prjData[prjData["gh_pull_req_num"] == pullrData["number"]]
-
-		# 	ipdb.set_trace()
-			
-		# 	for job in jobs:
-				
-		# 		ipdb.set_trace()
-
-		# 		# We search the matching pull request number in the pull request comments
-		# 		for prComment in pullRequestComments:
-		# 			if prComment.pull_request_url == pullrData.url:
-		# 				data = [
-		# 					job.git_commit,
-		# 					prComment["commit_id"],
-		# 					job.gh_pull_req_num,
-		# 					prComment["id"],
-		# 					"pull_r",
-		# 					prComment["created_at"],
-		# 					prComment["updated_at"],
-		# 					prComment["user"]["id"],
-		# 					prComment["user"]["login"],
-		# 					prComment["body"],
-		# 					""
-		# 				]
-		# 				outData.loc[len(outData)] = data;
-
-		# 		# We do the same thing for issue comments
-		# 		for issueComment in issueComments:
-		# 			if issueComment.html_url.find(pullrData.number) !=-1:
-		# 				data = [
-		# 					job.git_commit,
-		# 					"",
-		# 					job.gh_pull_req_num,
-		# 					issueComment["id"],
-		# 					"issue",
-		# 					issueComment["created_at"],
-		# 					issueComment["updated_at"],
-		# 					issueComment["user"]["id"],
-		# 					issueComment["user"]["login"],
-		# 					issueComment["body"],
-		# 					""
-		# 				]
-		# 				outData.loc[len(outData)] = data;
+			# We try to find an associated commit id in the Travis dataset for both
+			job = find_build_job_by_commit(prjData, commitId)
+			if not job.empty:
+				outData.loc[len(outData)] = build_comment_data(issueComment, job, commitId, CommentType.ISSUE.name);
 
 
 		# We wait the specified amount of time if the api request limit is reached
@@ -285,7 +256,7 @@ if __name__ == "__main__":
 		index=index+1
 
 
-	# We write the data to a csv file
+	# We can finally write the data to a csv file
 	try:
 		outData.to_csv(outputfile)
 	except:

@@ -25,14 +25,18 @@ class GithubClient:
 		self.verbose = verbose
 		self.ignoring_errors = ignoring_errors
 
-	# TODO : Support page navigation!
-	# https://developer.github.com/guides/traversing-with-pagination/
 	def make_request(self, resource_uri, headers=self.default_headers):
 		# Sign and make request
 		if self.verbose:
 			print "Fetching %s" % resource_uri
 		auth=(self.credentials["username"], self.credentials["oauth_token"])
 		response = requests.get(resource_uri, auth=auth, headers=headers)
+
+		# TODO : Support page navigation
+		# https://developer.github.com/guides/traversing-with-pagination/
+		if "Link" in response.headers:
+			ipdb.set_trace()
+
 		if response.status_code == 404:
 			response = None
 		elif response.status_code != 200:
