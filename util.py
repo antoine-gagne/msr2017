@@ -36,12 +36,21 @@ class Util:
 		
 		return jobs
 
-	def fetch_pull_request(self, prNum):
+	def fetch_pull_request(self, prj, prNum):
 		pullRequest = []
-		response = self.ghc.get_single_pull_request(prNum)
+		response = self.ghc.get_pull_requests(prj, prNum)
 		if response != None and response.status_code == 200:
 			pullRequest = response.json()
 		return pullRequest
+
+	def fetch_pull_request_commits(self, prj, prNum):
+		commits = []
+
+		response = self.ghc.get_pull_request_commits(prj, prNum)
+		if response != None and response.status_code == 200:
+			commits = self.append_next_items(commits, response.json())
+		
+		return [c["sha"] for c in commits]
 
 
 	def get_next_link(self, response):
@@ -54,6 +63,18 @@ class Util:
 					next_link = link_rel[0].replace('<', '').replace('>', '')
 					break;
 		return next_link
+
+
+	def append_next_items(self, items, response):
+		# There is a max of 100 items that can be returned by GitHub's API
+		# The link for the next results are in the response's header
+		next = self.get_next_link(response)
+		while next:
+			response = self.ghc.make_request(next)		
+			if response != None and response.status_code == 200:
+				items = items + response.json()
+			next = self.get_next_link(response)
+		return items
 
 
 	def fetch_comments(self, cType, prj):
@@ -71,13 +92,4 @@ class Util:
 		if response != None and response.status_code == 200:
 			comments = response.json()
 
-			next = self.get_next_link(response)
-			while next:
-				ipdb.set_trace()
-				response = self.ghc.make_request(next)		
-				if response != None and response.status_code == 200:
-					comments = comments + response.json()
-
-				next = self.get_next_link(response)
-
-		return comments
+		return self.append_next_items(comments, response)

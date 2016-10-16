@@ -49,7 +49,7 @@ class GithubClient:
 
 	# Specific resources begin here
 	def get_pull_request_for_repo(self, user_repo):
-		query = '%s/repos/%s/pulls'%(self.api_base, user_repo)
+		query = '%s/repos/%s/pulls?state=all&per_page=100'%(self.api_base, user_repo)
 		response = self.make_request(query)
 		return response
 
@@ -65,6 +65,11 @@ class GithubClient:
 
 	def get_pull_request_comments(self, user_repo):
 		query = "%s/repos/%s/pulls/comments?per_page=100"%(self.api_base,user_repo)
+		response = self.make_request(query)
+		return response
+
+	def get_pull_request_commits(self, user_repo, pull_id):
+		query = "%s/repos/%s/pulls/%s/commits?per_page=100"%(self.api_base,user_repo, pull_id)
 		response = self.make_request(query)
 		return response
 

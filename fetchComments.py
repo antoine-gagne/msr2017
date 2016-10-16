@@ -149,14 +149,14 @@ if __name__ == "__main__":
 		repoComments = util.fetch_comments(util.repoStr, prj)
 		print "\t%s repo comments found"%(len(repoComments)),
 		if repoComments:
-			for commentData in repoComments:
-				commitId = commentData["commit_id"]
+			for repoComment in repoComments:
+				commitId = repoComment["commit_id"]
 
 				# We try to find an associated commit id in the Travis dataset
 				jobs = util.find_build_jobs_by_commit(prjData, commitId)
 				if not jobs.empty:
 					for label, job in jobs.iterrows():
-						outData.loc[len(outData)] = build_comment_data(commentData, job, commitId,util.repoStr);
+						outData.loc[len(outData)] = build_comment_data(repoComment, job, commitId,util.repoStr);
 					nbMatched=nbMatched+1
 			print "\t%s matched"%(nbMatched),
 		print ""
@@ -185,8 +185,7 @@ if __name__ == "__main__":
 		print ""	
 
 		# Finally, we retrieve issue comments
-		# The process is a little more complicated because there isn't any info about commits in them.
-		# Also, I make the assumption that on GitHub, the issue number corresponds to the pull 
+		# I make the assumption that on GitHub, the issue number corresponds to the pull 
 		# request number, if the association exists. This seems to hold true but this is not confirmed.
 		nbMatched=0
 		issueComments = util.fetch_comments(util.issueStr, prj)
@@ -198,19 +197,12 @@ if __name__ == "__main__":
 				urlParts = issueComment["issue_url"].split("/")
 				prNum = int(urlParts[len(urlParts)-1])
 
-				# We retrieve the associated pull request, if it exists.
-				pullRequest = util.fetch_pull_request(prNum)
-				if not pullRequest:
-					continue
-
-				commitId = pullRequest["merge_commit_sha"]
-
-				# We try to find an associated commit id in the Travis dataset
-				jobs = util.find_build_jobs_by_commit(prjData, commitId)
+				jobs = prjData[prjData.gh_pull_req_num == prNum]
 				if not jobs.empty:
 					for label, job in jobs.iterrows():
-						outData.loc[len(outData)] = build_comment_data(issueComment, job, commitId, util.issueStr);
+						outData.loc[len(outData)] = build_comment_data(issueComment, job, "", util.issueStr);
 					nbMatched=nbMatched+1
+						
 			print "\t%s matched"%(nbMatched),
 		print ""
 
@@ -225,11 +217,12 @@ if __name__ == "__main__":
 		index=index+1
 
 
+	print "Fetching completed!"
+	#ipdb.set_trace()
+
 	# We can finally write the data to a csv file
-	try:
-		outData.to_csv(outputfile)
-	except:
-		ipdb.set_trace()
+	outData.to_csv(outputfile, sep=';', encoding='utf-8', escapechar='\\')
+	
 
 
 	

@@ -1,0 +1,696 @@
+;row;job_commit;comment_commit;gh_pull_req_num;gh_comment_id;gh_comment_type;gh_created_at;gh_updated_at;gh_user_id;gh_user_login;gh_body;gh_reactions
+0;1340.0;80be5283c15bdc329c20396cdcd46e1c167fbd88;80be5283c15bdc329c20396cdcd46e1c167fbd88;;2470380.0;repo;2013-01-21T13:55:30Z;2013-01-21T13:55:30Z;217842.0;AnthonyMastrean;Nice, thanks for taking care of this. I just wasn't able to sit down and look into it.;
+1;1330.0;3db254801006540df3aca84a0e0cfd4af99e97d4;3db254801006540df3aca84a0e0cfd4af99e97d4;;2470383.0;repo;2013-01-21T13:56:00Z;2013-01-21T13:56:00Z;217842.0;AnthonyMastrean;Yeah, this has only been a pain in the ass. YAGNI, I guess?!;
+2;1331.0;3db254801006540df3aca84a0e0cfd4af99e97d4;3db254801006540df3aca84a0e0cfd4af99e97d4;;2470383.0;repo;2013-01-21T13:56:00Z;2013-01-21T13:56:00Z;217842.0;AnthonyMastrean;Yeah, this has only been a pain in the ass. YAGNI, I guess?!;
+3;1330.0;3db254801006540df3aca84a0e0cfd4af99e97d4;3db254801006540df3aca84a0e0cfd4af99e97d4;;2476068.0;repo;2013-01-22T10:15:33Z;2013-01-22T10:15:33Z;193115.0;haf;Yup;
+4;1331.0;3db254801006540df3aca84a0e0cfd4af99e97d4;3db254801006540df3aca84a0e0cfd4af99e97d4;;2476068.0;repo;2013-01-22T10:15:33Z;2013-01-22T10:15:33Z;193115.0;haf;Yup;
+5;1340.0;80be5283c15bdc329c20396cdcd46e1c167fbd88;80be5283c15bdc329c20396cdcd46e1c167fbd88;;2476089.0;repo;2013-01-22T10:18:19Z;2013-01-22T10:18:19Z;193115.0;haf;No problem;
+6;1340.0;80be5283c15bdc329c20396cdcd46e1c167fbd88;80be5283c15bdc329c20396cdcd46e1c167fbd88;;2476092.0;repo;2013-01-22T10:18:40Z;2013-01-22T10:18:40Z;193115.0;haf;Do we have something running at codebetter too?;
+7;1340.0;80be5283c15bdc329c20396cdcd46e1c167fbd88;80be5283c15bdc329c20396cdcd46e1c167fbd88;;2496257.0;repo;2013-01-24T20:56:25Z;2013-01-24T20:56:25Z;217842.0;AnthonyMastrean;Not that I know of. Soudned like @adamralph was running some Rake builds using Albacore at Codebetter (Issue #27). Maybe we could get on a Windows build agent at Codebetter and run some specs?;
+8;1340.0;80be5283c15bdc329c20396cdcd46e1c167fbd88;80be5283c15bdc329c20396cdcd46e1c167fbd88;;2496291.0;repo;2013-01-24T21:00:48Z;2013-01-24T21:00:48Z;677704.0;adamralph;"Yep, I have two rake+Albacore builds running at codebetter - they work just fine.
+http://teamcity.codebetter.com/viewType.html?buildTypeId=bt635 and http://teamcity.codebetter.com/viewType.html?buildTypeId=bt834";
+9;752.0;e38466dd0f20b5f95107c9b9b851b2486eda8609;e38466dd0f20b5f95107c9b9b851b2486eda8609;;3858107.0;repo;2013-08-14T11:52:47Z;2013-08-14T11:52:47Z;193115.0;haf;Can you do this for clean_slate as well?;
+10;753.0;e38466dd0f20b5f95107c9b9b851b2486eda8609;e38466dd0f20b5f95107c9b9b851b2486eda8609;;3858107.0;repo;2013-08-14T11:52:47Z;2013-08-14T11:52:47Z;193115.0;haf;Can you do this for clean_slate as well?;
+11;749.0;8c1659ec828d50b1e40fd20f59b5d71b97ee443f;d5efef397ca5d1f33379a52fc6ca08ab6dc3584b;;3889884.0;repo;2013-08-19T13:46:52Z;2013-08-19T13:46:52Z;217842.0;AnthonyMastrean;"This statement can be dramatically simplified. You should almost never provide `nil` as [a default value][1] or use `nil?` in a conditional like this.
+
+```ruby
+Albacore.log_level = Logger::DEBUG if ENV[""DEBUG""]
+```
+
+ [1]: http://www.ruby-doc.org/core-2.0/ENV.html#method-c-fetch";
+12;749.0;8c1659ec828d50b1e40fd20f59b5d71b97ee443f;d5efef397ca5d1f33379a52fc6ca08ab6dc3584b;;3889903.0;repo;2013-08-19T13:48:30Z;2013-08-19T13:48:30Z;217842.0;AnthonyMastrean;"There's some [ruby style guide warnings][1] about using these `STD*` constants. Not sure if it applies here, but good reading.
+
+ [1]: https://github.com/bbatsov/ruby-style-guide";
+13;749.0;8c1659ec828d50b1e40fd20f59b5d71b97ee443f;d5efef397ca5d1f33379a52fc6ca08ab6dc3584b;;3889915.0;repo;2013-08-19T13:50:00Z;2013-08-19T13:50:00Z;217842.0;AnthonyMastrean;"In Ruby, only `nil` and `false` evaluate to `false`. You can rewrite these statements to say ""raise an argument error unless the argument has a value""
+
+```ruby
+raise ArgumentError, ""blah blah blah"" unless output
+```";
+14;749.0;8c1659ec828d50b1e40fd20f59b5d71b97ee443f;d5efef397ca5d1f33379a52fc6ca08ab6dc3584b;;3889931.0;repo;2013-08-19T13:51:37Z;2013-08-19T13:51:37Z;217842.0;AnthonyMastrean;When I'm not operating on the `*args`, I've taken to just sending them down to the Rake library. Let them pass/fail down there.;
+15;749.0;8c1659ec828d50b1e40fd20f59b5d71b97ee443f;d5efef397ca5d1f33379a52fc6ca08ab6dc3584b;;3889939.0;repo;2013-08-19T13:53:05Z;2013-08-19T13:53:05Z;217842.0;AnthonyMastrean;"I think If you want to use this as a ""constructor"", you have to use the US English spelling `initialize`";
+16;749.0;8c1659ec828d50b1e40fd20f59b5d71b97ee443f;d5efef397ca5d1f33379a52fc6ca08ab6dc3584b;;3889974.0;repo;2013-08-19T13:56:33Z;2013-08-19T13:56:33Z;217842.0;AnthonyMastrean;I'm not sold on guarding against bad input. We can't avoid the user setting a property to `nil` or forgetting that some property should be an array assignment. I'm not sure this line is all bad, but it reminded me of the problem.;
+17;749.0;8c1659ec828d50b1e40fd20f59b5d71b97ee443f;d5efef397ca5d1f33379a52fc6ca08ab6dc3584b;;3890013.0;repo;2013-08-19T14:02:12Z;2013-08-19T14:02:12Z;217842.0;AnthonyMastrean;"I've got a ton of catching up to do in the clean slate, but it looks good. I'm playing with some ideas over in a personal repo. The issues list is really a list of experiments and things to research.
+
+ * [Tunny][1] (pronounced ""too-/nee/"", which is a nickname for a small kind of tuna)
+
+ [1]: https://github.com/anthonymastrean/tunny";
+18;749.0;8c1659ec828d50b1e40fd20f59b5d71b97ee443f;d5efef397ca5d1f33379a52fc6ca08ab6dc3584b;;3890073.0;repo;2013-08-19T14:08:52Z;2013-08-19T14:08:52Z;193115.0;haf;Yes, I am just playing around here. What do you think of the class as such?;
+19;749.0;8c1659ec828d50b1e40fd20f59b5d71b97ee443f;d5efef397ca5d1f33379a52fc6ca08ab6dc3584b;;3890084.0;repo;2013-08-19T14:10:20Z;2013-08-19T14:10:20Z;193115.0;haf;FIxed on `nuspec_refactoring`;
+20;812.0;6084a7e08ef25b10f7b338b89b90d2a3d7c0fd4f;6084a7e08ef25b10f7b338b89b90d2a3d7c0fd4f;;3910371.0;repo;2013-08-21T13:22:02Z;2013-08-21T13:22:02Z;217842.0;AnthonyMastrean;I'm with you, don't start by adding it, add it when the community reaaaaally asks for it. We're not an enterprise app that needs JVM garbage collection, threading, and speed.;
+21;834.0;c4124c8d0e66f3a2cdcfe81c4041a723f43054f5;ea1c517ccac128d01556998c5a7478b1113551d7;;4040023.0;repo;2013-09-08T09:13:50Z;2013-09-08T09:13:50Z;193115.0;haf;"Who is this ""unknown"" person, @AnthonyMastrean ?";
+22;835.0;c4124c8d0e66f3a2cdcfe81c4041a723f43054f5;ea1c517ccac128d01556998c5a7478b1113551d7;;4040023.0;repo;2013-09-08T09:13:50Z;2013-09-08T09:13:50Z;193115.0;haf;"Who is this ""unknown"" person, @AnthonyMastrean ?";
+23;834.0;c4124c8d0e66f3a2cdcfe81c4041a723f43054f5;ea1c517ccac128d01556998c5a7478b1113551d7;;4044980.0;repo;2013-09-09T13:21:43Z;2013-09-09T13:21:43Z;217842.0;AnthonyMastrean;Sorry, that's me, I was committing from a new machine and I setup my SSH keys, but not my username/email. Didn't notice until after the push. And I don't know how to fix it.;
+24;835.0;c4124c8d0e66f3a2cdcfe81c4041a723f43054f5;ea1c517ccac128d01556998c5a7478b1113551d7;;4044980.0;repo;2013-09-09T13:21:43Z;2013-09-09T13:21:43Z;217842.0;AnthonyMastrean;Sorry, that's me, I was committing from a new machine and I setup my SSH keys, but not my username/email. Didn't notice until after the push. And I don't know how to fix it.;
+25;910.0;8f30fbe00dbf453dfd0fc2f9f1fb63ef67aeb1e8;8f30fbe00dbf453dfd0fc2f9f1fb63ef67aeb1e8;;4580251.0;repo;2013-11-12T20:37:33Z;2013-11-12T20:37:33Z;193115.0;haf;You need parens.;
+26;911.0;8f30fbe00dbf453dfd0fc2f9f1fb63ef67aeb1e8;8f30fbe00dbf453dfd0fc2f9f1fb63ef67aeb1e8;;4580251.0;repo;2013-11-12T20:37:33Z;2013-11-12T20:37:33Z;193115.0;haf;You need parens.;
+27;910.0;8f30fbe00dbf453dfd0fc2f9f1fb63ef67aeb1e8;8f30fbe00dbf453dfd0fc2f9f1fb63ef67aeb1e8;;4581407.0;repo;2013-11-12T22:28:05Z;2013-11-12T22:28:05Z;217842.0;AnthonyMastrean;"Yeah, I always mess that up, I'm beginning to think that Ruby's sometimes-unnecessary-parens are a bad thing and I should just always use them ;)";
+28;911.0;8f30fbe00dbf453dfd0fc2f9f1fb63ef67aeb1e8;8f30fbe00dbf453dfd0fc2f9f1fb63ef67aeb1e8;;4581407.0;repo;2013-11-12T22:28:05Z;2013-11-12T22:28:05Z;217842.0;AnthonyMastrean;"Yeah, I always mess that up, I'm beginning to think that Ruby's sometimes-unnecessary-parens are a bad thing and I should just always use them ;)";
+29;916.0;f777f5989cf1293aeeba5def6264449ec3207e50;f777f5989cf1293aeeba5def6264449ec3207e50;;4600936.0;repo;2013-11-14T15:13:13Z;2013-11-14T15:13:13Z;193115.0;haf;Of course I misspell the commit message.;
+30;1207.0;828a556328c86a819211b002877f625610fbfc0d;df42c4314e1ff75476d5d7aa25011a2ec9b396f9;17.0;1608429.0;pull_r;2012-09-14T15:09:27Z;2012-09-14T17:26:17Z;217842.0;AnthonyMastrean;Can you fix this typo?;
+31;1207.0;828a556328c86a819211b002877f625610fbfc0d;df42c4314e1ff75476d5d7aa25011a2ec9b396f9;17.0;1608957.0;pull_r;2012-09-14T15:58:23Z;2012-09-14T17:26:17Z;193115.0;haf;Not in F#.;
+32;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;03e3f4778a051ff2a818f24207f42e167803ddea;30.0;2591663.0;pull_r;2013-01-09T15:54:54Z;2013-01-10T10:58:18Z;217842.0;AnthonyMastrean;"Can you name it just `informational_version`? We've left out the ""assembly"" prefix, being that it's clearly in an assembly related task.";
+33;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;03e3f4778a051ff2a818f24207f42e167803ddea;30.0;2591663.0;pull_r;2013-01-09T15:54:54Z;2013-01-10T10:58:18Z;217842.0;AnthonyMastrean;"Can you name it just `informational_version`? We've left out the ""assembly"" prefix, being that it's clearly in an assembly related task.";
+34;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;03e3f4778a051ff2a818f24207f42e167803ddea;30.0;2591728.0;pull_r;2013-01-09T15:58:19Z;2013-01-10T10:58:18Z;527013.0;grumpydev;Sure;
+35;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;03e3f4778a051ff2a818f24207f42e167803ddea;30.0;2591728.0;pull_r;2013-01-09T15:58:19Z;2013-01-10T10:58:18Z;527013.0;grumpydev;Sure;
+36;1364.0;792c22235f2cdc44ceef8c5190e33f7270ffa56f;86501ca78af04c62be4d39c2e3efbf7f90cf342a;34.0;2770834.0;pull_r;2013-01-25T07:19:19Z;2013-01-25T12:52:40Z;193115.0;haf;@keep_to is never initialized;
+37;1364.0;792c22235f2cdc44ceef8c5190e33f7270ffa56f;86501ca78af04c62be4d39c2e3efbf7f90cf342a;34.0;2770837.0;pull_r;2013-01-25T07:19:36Z;2013-01-25T12:52:40Z;193115.0;haf;was previously symbol not found;
+38;1364.0;792c22235f2cdc44ceef8c5190e33f7270ffa56f;86501ca78af04c62be4d39c2e3efbf7f90cf342a;34.0;2770848.0;pull_r;2013-01-25T07:21:23Z;2013-01-25T12:52:40Z;193115.0;haf;false by default because it's not defined - @AnthonyMastrean - what do you think of this coding pattern? I think we could at least have a `attr_accessor :keep_to`, remove the method, add rdoc on top of the `attr_accessor` and default it to false (instead of undefined);
+39;1364.0;792c22235f2cdc44ceef8c5190e33f7270ffa56f;86501ca78af04c62be4d39c2e3efbf7f90cf342a;34.0;2771204.0;pull_r;2013-01-25T08:30:03Z;2013-01-25T12:52:40Z;360645.0;Maxim-Filimonov;"I thought @AnthonyMastrean wanted to avoid setting Boolean flags. We can initialize it to false by default to make it more explicit in implementation.
+
+On 25/01/2013, at 6:21 PM, Henrik Feldt <notifications@github.com> wrote:
+
+> In lib/albacore/output.rb:
+> 
+> > @@ -31,9 +31,9 @@ def erb(f, ft, locals)
+> >      File.open(""#{@dir_to}/#{ft}"", 'w') {|f| f.write erb.result(ErbBinding.new(locals).get_binding)}
+> >    end
+> >    
+> > -  def self.output_to(dir_to, dir_from)
+> > -    FileUtils.rmtree dir_to
+> > -    FileUtils.mkdir_p dir_to
+> > +  def self.output_to(dir_to, dir_from, keep_to)
+> > +    FileUtils.rmtree dir_to unless keep_to
+> false by default because it's not defined - @AnthonyMastrean - what do you think of this coding pattern? I think we could at least have a attr_accessor :keep_to, remove the method, add rdoc on top of the attr_accessor and default it to false (instead of undefined)
+> 
+> —
+> Reply to this email directly or view it on GitHub.
+> ";
+40;1364.0;792c22235f2cdc44ceef8c5190e33f7270ffa56f;86501ca78af04c62be4d39c2e3efbf7f90cf342a;34.0;2772153.0;pull_r;2013-01-25T10:15:13Z;2013-01-25T12:52:41Z;193115.0;haf;"But it *is* a boolean flag ;) so let's initialize it. I think this is a good PR otherwise. ";
+41;1364.0;792c22235f2cdc44ceef8c5190e33f7270ffa56f;86501ca78af04c62be4d39c2e3efbf7f90cf342a;34.0;2773160.0;pull_r;2013-01-25T11:47:50Z;2013-01-25T12:52:41Z;360645.0;Maxim-Filimonov;"Agree. I meant it doesn't look like Boolean flag to user because they just call keep_to instead of setting a value to true/false. Ill add initialization code in about an hour.
+
+On 25/01/2013, at 9:15 PM, Henrik Feldt <notifications@github.com> wrote:
+
+> In lib/albacore/output.rb:
+> 
+> > @@ -31,9 +31,9 @@ def erb(f, ft, locals)
+> >      File.open(""#{@dir_to}/#{ft}"", 'w') {|f| f.write erb.result(ErbBinding.new(locals).get_binding)}
+> >    end
+> >    
+> > -  def self.output_to(dir_to, dir_from)
+> > -    FileUtils.rmtree dir_to
+> > -    FileUtils.mkdir_p dir_to
+> > +  def self.output_to(dir_to, dir_from, keep_to)
+> > +    FileUtils.rmtree dir_to unless keep_to
+> But it is a boolean flag ;) so let's initialize it. I think this is a good PR otherwise.
+> 
+> —
+> Reply to this email directly or view it on GitHub.
+> ";
+42;1480.0;40132c992219f81b6d57468a7cb5300efb4792d9;48943822b1a3990855e8c45252fc1e72256cbb64;37.0;3250732.0;pull_r;2013-03-05T20:48:59Z;2013-03-06T21:23:18Z;217842.0;AnthonyMastrean;"You don't need to test the `command` value. It's `nil` by default, can only be a value or `nil`, and `@command` is `nil` by default. So there's no harm in always setting it, right?
+
+    @command = command";
+43;1481.0;40132c992219f81b6d57468a7cb5300efb4792d9;48943822b1a3990855e8c45252fc1e72256cbb64;37.0;3250732.0;pull_r;2013-03-05T20:48:59Z;2013-03-06T21:23:18Z;217842.0;AnthonyMastrean;"You don't need to test the `command` value. It's `nil` by default, can only be a value or `nil`, and `@command` is `nil` by default. So there's no harm in always setting it, right?
+
+    @command = command";
+44;1480.0;40132c992219f81b6d57468a7cb5300efb4792d9;48943822b1a3990855e8c45252fc1e72256cbb64;37.0;3250787.0;pull_r;2013-03-05T20:52:32Z;2013-03-06T21:23:18Z;217842.0;AnthonyMastrean;"`nil` and `false` are the only values that resolve to `false` in Ruby. So you can write a more concise postfix statement like this
+
+    params << "" /tag=#{@tag}"" if @tag
+
+The existing codebase uses the more verbose/confusing syntax, but we're trying to change it one bit at a time :) It would be ok to change all of the `unless` statements in this block.";
+45;1481.0;40132c992219f81b6d57468a7cb5300efb4792d9;48943822b1a3990855e8c45252fc1e72256cbb64;37.0;3250787.0;pull_r;2013-03-05T20:52:32Z;2013-03-06T21:23:18Z;217842.0;AnthonyMastrean;"`nil` and `false` are the only values that resolve to `false` in Ruby. So you can write a more concise postfix statement like this
+
+    params << "" /tag=#{@tag}"" if @tag
+
+The existing codebase uses the more verbose/confusing syntax, but we're trying to change it one bit at a time :) It would be ok to change all of the `unless` statements in this block.";
+46;1488.0;a6d5e2b8a70df77bf75365e66b571f51f6c20597;48943822b1a3990855e8c45252fc1e72256cbb64;37.0;3269435.0;pull_r;2013-03-06T21:03:05Z;2013-03-06T21:23:18Z;217842.0;AnthonyMastrean;"I'm sorry, I wasn't clear. You should write the statement like
+
+    params << "" /ns=#{@namespace}"" if @namespace
+
+`unless <nil?>` is equivalent to `if <value>`";
+47;1489.0;a6d5e2b8a70df77bf75365e66b571f51f6c20597;48943822b1a3990855e8c45252fc1e72256cbb64;37.0;3269435.0;pull_r;2013-03-06T21:03:05Z;2013-03-06T21:23:18Z;217842.0;AnthonyMastrean;"I'm sorry, I wasn't clear. You should write the statement like
+
+    params << "" /ns=#{@namespace}"" if @namespace
+
+`unless <nil?>` is equivalent to `if <value>`";
+48;838.0;33b74c163c7ff2045d5ba47f1b1465f0eb890299;acddafd1e7ed208cb540872ba084602b3fc21bd3;;6227124.0;pull_r;2013-09-08T09:15:10Z;2013-09-09T14:03:10Z;193115.0;haf;This line can probably be removed.;
+49;841.0;33b74c163c7ff2045d5ba47f1b1465f0eb890299;acddafd1e7ed208cb540872ba084602b3fc21bd3;;6227124.0;pull_r;2013-09-08T09:15:10Z;2013-09-09T14:03:10Z;193115.0;haf;This line can probably be removed.;
+50;838.0;33b74c163c7ff2045d5ba47f1b1465f0eb890299;acddafd1e7ed208cb540872ba084602b3fc21bd3;;6227126.0;pull_r;2013-09-08T09:15:27Z;2013-09-09T14:03:10Z;193115.0;haf;Should be using single quotes.;
+51;841.0;33b74c163c7ff2045d5ba47f1b1465f0eb890299;acddafd1e7ed208cb540872ba084602b3fc21bd3;;6227126.0;pull_r;2013-09-08T09:15:27Z;2013-09-09T14:03:10Z;193115.0;haf;Should be using single quotes.;
+52;838.0;33b74c163c7ff2045d5ba47f1b1465f0eb890299;acddafd1e7ed208cb540872ba084602b3fc21bd3;;6227127.0;pull_r;2013-09-08T09:15:53Z;2013-09-09T14:03:10Z;193115.0;haf;Can use `%w[lib]` syntax.;
+53;841.0;33b74c163c7ff2045d5ba47f1b1465f0eb890299;acddafd1e7ed208cb540872ba084602b3fc21bd3;;6227127.0;pull_r;2013-09-08T09:15:53Z;2013-09-09T14:03:10Z;193115.0;haf;Can use `%w[lib]` syntax.;
+54;838.0;33b74c163c7ff2045d5ba47f1b1465f0eb890299;acddafd1e7ed208cb540872ba084602b3fc21bd3;;6227139.0;pull_r;2013-09-08T09:17:33Z;2013-09-09T14:03:10Z;193115.0;haf;Let's bump this to 1.0 then, like you said Anthony, and release 1.0.0-rc1 from this pull request, without much further ado?;
+55;841.0;33b74c163c7ff2045d5ba47f1b1465f0eb890299;acddafd1e7ed208cb540872ba084602b3fc21bd3;;6227139.0;pull_r;2013-09-08T09:17:33Z;2013-09-09T14:03:10Z;193115.0;haf;Let's bump this to 1.0 then, like you said Anthony, and release 1.0.0-rc1 from this pull request, without much further ado?;
+56;838.0;33b74c163c7ff2045d5ba47f1b1465f0eb890299;acddafd1e7ed208cb540872ba084602b3fc21bd3;;6237480.0;pull_r;2013-09-09T13:27:19Z;2013-09-09T14:03:10Z;217842.0;AnthonyMastrean;"When creating a new gemspec/gemfile skeleton with Bundler (my preferred way of creating those files), it drops these two lines in your gemspec
+
+```ruby
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+```
+
+Maybe I'll just update our gemspec to match the Bundler created gemspec. They must be good conventions, right?";
+57;841.0;33b74c163c7ff2045d5ba47f1b1465f0eb890299;acddafd1e7ed208cb540872ba084602b3fc21bd3;;6237480.0;pull_r;2013-09-09T13:27:19Z;2013-09-09T14:03:10Z;217842.0;AnthonyMastrean;"When creating a new gemspec/gemfile skeleton with Bundler (my preferred way of creating those files), it drops these two lines in your gemspec
+
+```ruby
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+```
+
+Maybe I'll just update our gemspec to match the Bundler created gemspec. They must be good conventions, right?";
+58;838.0;33b74c163c7ff2045d5ba47f1b1465f0eb890299;acddafd1e7ed208cb540872ba084602b3fc21bd3;;6237806.0;pull_r;2013-09-09T13:38:41Z;2013-09-09T14:03:10Z;217842.0;AnthonyMastrean;That works for me, folks can get their rubyzip dependency fix and all the latest at once. I can do this today if there are no further objections? (that is, if you're ok with the responses to your other comments);
+59;841.0;33b74c163c7ff2045d5ba47f1b1465f0eb890299;acddafd1e7ed208cb540872ba084602b3fc21bd3;;6237806.0;pull_r;2013-09-09T13:38:41Z;2013-09-09T14:03:10Z;217842.0;AnthonyMastrean;That works for me, folks can get their rubyzip dependency fix and all the latest at once. I can do this today if there are no further objections? (that is, if you're ok with the responses to your other comments);
+60;838.0;33b74c163c7ff2045d5ba47f1b1465f0eb890299;acddafd1e7ed208cb540872ba084602b3fc21bd3;;6238103.0;pull_r;2013-09-09T13:49:08Z;2013-09-09T14:03:10Z;217842.0;AnthonyMastrean;"Rubygems doesn't support the actual [semver spec][1] for prerelease versions, that is, with the hyphen `1.0.0-rc.1`. It will accept a dotted version, `1.0.0.rc.1`. Which reads a little odd to me, but [should work inside Rubygems][2].
+
+ [1]: http://semver.org/spec/v2.0.0.html
+ [2]: http://guides.rubygems.org/patterns/#prerelease_gems";
+61;841.0;33b74c163c7ff2045d5ba47f1b1465f0eb890299;acddafd1e7ed208cb540872ba084602b3fc21bd3;;6238103.0;pull_r;2013-09-09T13:49:08Z;2013-09-09T14:03:10Z;217842.0;AnthonyMastrean;"Rubygems doesn't support the actual [semver spec][1] for prerelease versions, that is, with the hyphen `1.0.0-rc.1`. It will accept a dotted version, `1.0.0.rc.1`. Which reads a little odd to me, but [should work inside Rubygems][2].
+
+ [1]: http://semver.org/spec/v2.0.0.html
+ [2]: http://guides.rubygems.org/patterns/#prerelease_gems";
+62;1350.0;cabb6f323c87e10e1708813e4f436f596bb001b8;dbe82c1d9336f0d763345a05c30bdb213ea258a9;146.0;20933359.0;pull_r;2014-11-26T13:05:38Z;2014-11-26T13:05:38Z;193115.0;haf;We have `Albacore.windows?` for easy-of-use now.;
+63;1350.0;cabb6f323c87e10e1708813e4f436f596bb001b8;dbe82c1d9336f0d763345a05c30bdb213ea258a9;146.0;20933511.0;pull_r;2014-11-26T13:10:20Z;2014-11-26T13:10:20Z;193115.0;haf;Documented that https://github.com/Albacore/albacore/wiki/Albacore-Module-API;
+64;1163.0;2d9d04bd0c63b09386b6c233547af2cc23dd3e77;;10.0;8355786.0;issue;2012-09-07T04:31:42Z;2012-09-07T04:31:42Z;217842.0;AnthonyMastrean;Thanks! I'm going to look it over with @haf, I had a [similar pull request](https://github.com/derickbailey/Albacore/pull/200) on Derick's repo that took a hash of _any_ other switches. Obviously, the most used switches/properties should be first-class, but some, like `fileloggerparameters` get no love!;
+65;1163.0;2d9d04bd0c63b09386b6c233547af2cc23dd3e77;;10.0;8364388.0;issue;2012-09-07T12:55:40Z;2012-09-07T12:55:40Z;193115.0;haf;"It looks good, so does yours Anthony -- but I think we can make the ruby a bit nicer for all of these switches, by doing a Hash.merge and then if we use Array.collect rather than a loop.
+
+I'm not at all against merging this directly though.
+
+I also think our next focus should be making MSBuild work transparently with both xbuild and MSBuild so that we can enable the unit tests on travis for that task. What do you think?";
+66;1163.0;2d9d04bd0c63b09386b6c233547af2cc23dd3e77;;10.0;8375333.0;issue;2012-09-07T19:03:43Z;2012-09-07T19:07:50Z;217842.0;AnthonyMastrean;"Let's merge this just to get it in! What's our release cadence? We could merge all the way to master and release a patch version (0.3.1)? Or release every passing dev branch commit as a pre-release (let's have a conversation on the google group or over email)?
+
+I'll play with my pull request next week or so and see how it works together. You can show me how/where you'd use hash merge and array collect.
+
+I think that your ""milestone"" of making msbuild work transparently is great for the community _and_ the build.";
+67;1163.0;2d9d04bd0c63b09386b6c233547af2cc23dd3e77;;10.0;8375618.0;issue;2012-09-07T19:13:39Z;2012-09-07T19:13:39Z;193115.0;haf;Sure, go ahead :);
+68;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12050841.0;issue;2013-01-09T16:01:34Z;2013-01-09T16:01:34Z;527013.0;grumpydev;Renamed it;
+69;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12050841.0;issue;2013-01-09T16:01:34Z;2013-01-09T16:01:34Z;527013.0;grumpydev;Renamed it;
+70;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12051417.0;issue;2013-01-09T16:11:14Z;2013-01-09T16:11:14Z;217842.0;AnthonyMastrean;"How about adding some tests in the [same][1] [places][2] that we have `file_version` assertions? There's this [test data object][3] to fill out and provide in the [spec setup][4].
+
+ [1]: https://github.com/Albacore/albacore/blob/dev/spec/assemblyinfo_spec.rb#L275
+ [2]: https://github.com/Albacore/albacore/blob/dev/spec/assemblyinfo_spec.rb#L322
+ [3]: https://github.com/Albacore/albacore/blob/dev/spec/support/assemblyinfotester.rb
+ [4]: https://github.com/Albacore/albacore/blob/dev/spec/assemblyinfo_spec.rb#L215";
+71;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12051417.0;issue;2013-01-09T16:11:14Z;2013-01-09T16:11:14Z;217842.0;AnthonyMastrean;"How about adding some tests in the [same][1] [places][2] that we have `file_version` assertions? There's this [test data object][3] to fill out and provide in the [spec setup][4].
+
+ [1]: https://github.com/Albacore/albacore/blob/dev/spec/assemblyinfo_spec.rb#L275
+ [2]: https://github.com/Albacore/albacore/blob/dev/spec/assemblyinfo_spec.rb#L322
+ [3]: https://github.com/Albacore/albacore/blob/dev/spec/support/assemblyinfotester.rb
+ [4]: https://github.com/Albacore/albacore/blob/dev/spec/assemblyinfo_spec.rb#L215";
+72;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12053622.0;issue;2013-01-09T16:49:21Z;2013-01-09T16:49:21Z;527013.0;grumpydev;@AnthonyMastrean I did want to add tests, but couldn't see any for the file_version one - I'll have a look, thanks.;
+73;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12053622.0;issue;2013-01-09T16:49:21Z;2013-01-09T16:49:21Z;527013.0;grumpydev;@AnthonyMastrean I did want to add tests, but couldn't see any for the file_version one - I'll have a look, thanks.;
+74;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12089838.0;issue;2013-01-10T10:59:02Z;2013-01-10T10:59:02Z;527013.0;grumpydev;Done - made sure they failed first by adding a typo to the AssemblyInformationalVersion attribute it added.;
+75;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12089838.0;issue;2013-01-10T10:59:02Z;2013-01-10T10:59:02Z;527013.0;grumpydev;Done - made sure they failed first by adding a typo to the AssemblyInformationalVersion attribute it added.;
+76;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12089929.0;issue;2013-01-10T11:01:12Z;2013-01-10T11:01:12Z;527013.0;grumpydev;Incidentally, I only ran the spec I changed because running them all (or running except_ncover) ended up crashing csc.exe halfway through the test run.;
+77;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12089929.0;issue;2013-01-10T11:01:12Z;2013-01-10T11:01:12Z;527013.0;grumpydev;Incidentally, I only ran the spec I changed because running them all (or running except_ncover) ended up crashing csc.exe halfway through the test run.;
+78;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12099303.0;issue;2013-01-10T14:40:57Z;2013-01-10T14:40:57Z;217842.0;AnthonyMastrean;The test suite is notoriously hard to get running (and passing). I don't expect that anything else would have failed from this change, but do you have a crash dump or anything from `csc.exe`?;
+79;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12099303.0;issue;2013-01-10T14:40:57Z;2013-01-10T14:40:57Z;217842.0;AnthonyMastrean;The test suite is notoriously hard to get running (and passing). I don't expect that anything else would have failed from this change, but do you have a crash dump or anything from `csc.exe`?;
+80;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12100676.0;issue;2013-01-10T15:09:07Z;2013-01-10T15:09:07Z;527013.0;grumpydev;"Haven't got a dump, but this is what causes it:
+
+csc_spec.rb
+
+CSC when targeting a library and an output file should produce the .dll file in the correct location
+
+Executing CSC: ""C:/Windows/Microsoft.NET/Framework/v4.0.30319/csc.exe"" ""File1.cs"" ""File2.cs""
+
+I've got .Net 4.5 installed so could be that causing problems.
+";
+81;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12100676.0;issue;2013-01-10T15:09:07Z;2013-01-10T15:09:07Z;527013.0;grumpydev;"Haven't got a dump, but this is what causes it:
+
+csc_spec.rb
+
+CSC when targeting a library and an output file should produce the .dll file in the correct location
+
+Executing CSC: ""C:/Windows/Microsoft.NET/Framework/v4.0.30319/csc.exe"" ""File1.cs"" ""File2.cs""
+
+I've got .Net 4.5 installed so could be that causing problems.
+";
+82;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12185523.0;issue;2013-01-12T22:14:43Z;2013-01-12T22:14:43Z;217842.0;AnthonyMastrean;"Yeah, looks like we [only support up to 4.0][1] right now. Want to open a bug and work on extending that? Should just be a couple of helper methods... :)
+
+ [1]: https://github.com/Albacore/albacore/wiki/CSC-Task";
+83;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12185523.0;issue;2013-01-12T22:14:43Z;2013-01-12T22:14:43Z;217842.0;AnthonyMastrean;"Yeah, looks like we [only support up to 4.0][1] right now. Want to open a bug and work on extending that? Should just be a couple of helper methods... :)
+
+ [1]: https://github.com/Albacore/albacore/wiki/CSC-Task";
+84;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12257991.0;issue;2013-01-15T08:44:23Z;2013-01-15T08:44:23Z;527013.0;grumpydev;"I'd love to, but I think that's somewhat beyond my skills :)
+
+Any idea when this will be released? Currently have a local version of AssemblyInfo in our build to work around it.";
+85;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12257991.0;issue;2013-01-15T08:44:23Z;2013-01-15T08:44:23Z;527013.0;grumpydev;"I'd love to, but I think that's somewhat beyond my skills :)
+
+Any idea when this will be released? Currently have a local version of AssemblyInfo in our build to work around it.";
+86;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12427948.0;issue;2013-01-18T15:54:17Z;2013-01-18T16:12:01Z;217842.0;AnthonyMastrean;I'm going to ask @haf if we should release an update with JRuby failing... I've really let it go to long. And we should look into your CSC issue on the side, because it seems like it should work (issue #33).;
+87;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12427948.0;issue;2013-01-18T15:54:17Z;2013-01-18T16:12:01Z;217842.0;AnthonyMastrean;I'm going to ask @haf if we should release an update with JRuby failing... I've really let it go to long. And we should look into your CSC issue on the side, because it seems like it should work (issue #33).;
+88;1346.0;d9548c2c20d4bd84f0d790cdf0967dcfef3c3355;;35.0;12456606.0;issue;2013-01-19T16:02:25Z;2013-01-19T16:02:25Z;193115.0;haf;Please don't include Anthony's commits in pull requests. Rebase on `dev` and re-send the pull request to get rid of the intermingled history. You can also use interactive rebase.;
+89;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12456612.0;issue;2013-01-19T16:02:48Z;2013-01-19T16:02:48Z;193115.0;haf;I've fixed JRuby failing.;
+90;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12456612.0;issue;2013-01-19T16:02:48Z;2013-01-19T16:02:48Z;193115.0;haf;I've fixed JRuby failing.;
+91;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12456621.0;issue;2013-01-19T16:03:23Z;2013-01-19T16:03:23Z;193115.0;haf;"BTW; we *absolutely* need to include more tests in the travis build - could you look into that @AnthonyMastrean ?";
+92;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12456621.0;issue;2013-01-19T16:03:23Z;2013-01-19T16:03:23Z;193115.0;haf;"BTW; we *absolutely* need to include more tests in the travis build - could you look into that @AnthonyMastrean ?";
+93;1346.0;d9548c2c20d4bd84f0d790cdf0967dcfef3c3355;;35.0;12466280.0;issue;2013-01-20T05:29:34Z;2013-01-20T05:29:34Z;360645.0;Maxim-Filimonov;"Did interactive rebase but looks like lost your question on commit after pushed with force. ( Not sure how to avoid this never switched pull request to different branch before )
+
+To answer your question I used `'subdir/.'` because I want to test that this code 
+```ruby
+@o.to ""#{OutputTestData.to}/subdir/""
+````
+creates a directory not relies on directory created by dir method. `'/.'` is used to reference contents of the folder not the folder itself. 
+Example ( copying lib folder from albacore gem )
+```shell
+➜  mkdir bla
+➜  cp -r lib bla
+➜  ls bla
+lib
+➜  rm -rf bla
+➜  cp -r lib/. bla
+➜  ls bla
+albacore    albacore.rb version.rb
+```
+";
+94;1364.0;792c22235f2cdc44ceef8c5190e33f7270ffa56f;;34.0;12497843.0;issue;2013-01-21T13:32:22Z;2013-01-21T13:32:22Z;193115.0;haf;This cannot be automatically merged anymore. Could you see if you could rebase on dev and preferrably make the diff for the spec file look like not ALL of it has changed?;
+95;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12498767.0;issue;2013-01-21T13:59:19Z;2013-01-21T13:59:19Z;217842.0;AnthonyMastrean;Yes! But a ton of them run against actual Windows executables. I can't see how to run travis locally, to experiment. We could branch for playing with travis?;
+96;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12498767.0;issue;2013-01-21T13:59:19Z;2013-01-21T13:59:19Z;217842.0;AnthonyMastrean;Yes! But a ton of them run against actual Windows executables. I can't see how to run travis locally, to experiment. We could branch for playing with travis?;
+97;1364.0;792c22235f2cdc44ceef8c5190e33f7270ffa56f;;34.0;12522718.0;issue;2013-01-21T23:11:31Z;2013-01-21T23:11:31Z;360645.0;Maxim-Filimonov;Done. Rebased and removed whitespace difference.;
+98;1364.0;792c22235f2cdc44ceef8c5190e33f7270ffa56f;;34.0;12528115.0;issue;2013-01-22T02:40:30Z;2013-01-22T02:40:30Z;217842.0;AnthonyMastrean;"I'm not a fan of the boolean property setter like this. It [can be confusing][3] to interpret what kind of value to assign, boolean (`false`) or symbol (`:false`), or if it's a method call. I like the method syntax. For example,
+* xunit task, [`skip_test_failures`][1]
+* msbuild task, [`nologo`][2]
+
+The name `remove_dir_to` isn't as friendly as it could be. It's not totally consistent with the `from` and `to` properties. It's true by default, internally. So, should this property only be set when intended to be false?
+
+What about a method for just the file-preserving behavior, named very specifically? I could support
+
+* `keep_to`
+* `preserve_to`
+* `dont_clean`
+* `no_overwrite`
+* `no_clean`
+
+I feel like there's a better name I haven't thought of yet, thoughts?
+
+----
+FYI, it feels like it would be easier to name if we switched the default behavior to _never_ clean and had a method _to clean_... then we could just say `out.clean`. But, that's not in the cards.
+
+
+ [1]: https://github.com/Albacore/albacore/blob/dev/lib/albacore/xunittestrunner.rb#L18
+ [2]: https://github.com/Albacore/albacore/blob/dev/lib/albacore/msbuild.rb#L22
+ [3]: http://stackoverflow.com/questions/8701295";
+99;1364.0;792c22235f2cdc44ceef8c5190e33f7270ffa56f;;34.0;12531003.0;issue;2013-01-22T05:15:53Z;2013-01-22T05:15:53Z;360645.0;Maxim-Filimonov;Ah right didn't get this albacore convention. I have changed it to `keep_to` sounds like the most appropriate to me.;
+100;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12538117.0;issue;2013-01-22T10:17:56Z;2013-01-22T10:17:56Z;193115.0;haf;"You're right; but the `clean_slate` branch will invoke mono if needed. Perhaps we can start porting tests and then tasks there? Are you available on Skype btw?";
+101;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12538117.0;issue;2013-01-22T10:17:56Z;2013-01-22T10:17:56Z;193115.0;haf;"You're right; but the `clean_slate` branch will invoke mono if needed. Perhaps we can start porting tests and then tasks there? Are you available on Skype btw?";
+102;1364.0;792c22235f2cdc44ceef8c5190e33f7270ffa56f;;34.0;12672724.0;issue;2013-01-24T20:52:03Z;2013-01-24T20:52:03Z;217842.0;AnthonyMastrean;@haf, are you ok with this one now?;
+103;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12672949.0;issue;2013-01-24T20:56:47Z;2013-01-24T20:56:47Z;217842.0;AnthonyMastrean;I'm not yet, but I can make it so... ;
+104;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12672949.0;issue;2013-01-24T20:56:47Z;2013-01-24T20:56:47Z;217842.0;AnthonyMastrean;I'm not yet, but I can make it so... ;
+105;1334.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12690610.0;issue;2013-01-25T07:23:20Z;2013-01-25T07:23:20Z;193115.0;haf;Some place where we can talk, is what I'm after. :);
+106;1335.0;0225d28db8e32598a3b0725a512f6c2a774ba1a7;;30.0;12690610.0;issue;2013-01-25T07:23:20Z;2013-01-25T07:23:20Z;193115.0;haf;Some place where we can talk, is what I'm after. :);
+107;1364.0;792c22235f2cdc44ceef8c5190e33f7270ffa56f;;34.0;12699629.0;issue;2013-01-25T12:54:26Z;2013-01-25T12:54:26Z;360645.0;Maxim-Filimonov;"Initialised keep_to to false. 
+During playing with it discovered that there is a test missing for case when keep_to is not set. ";
+108;1364.0;792c22235f2cdc44ceef8c5190e33f7270ffa56f;;34.0;12705705.0;issue;2013-01-25T15:38:45Z;2013-01-25T15:38:45Z;193115.0;haf;Ok, great!;
+109;1422.0;b87ac65f29fb66bf674f3a2e13bdabb8f98d0ca4;;36.0;13149853.0;issue;2013-02-05T20:24:27Z;2013-02-05T20:24:27Z;2117460.0;elberon5;Argument for the command line is --tag not --tags;
+110;1423.0;b87ac65f29fb66bf674f3a2e13bdabb8f98d0ca4;;36.0;13149853.0;issue;2013-02-05T20:24:27Z;2013-02-05T20:24:27Z;2117460.0;elberon5;Argument for the command line is --tag not --tags;
+111;1455.0;422e2ac1590cc7e3b404eebf88649f750a4734d2;;40.0;13855054.0;issue;2013-02-20T20:39:10Z;2013-02-20T20:39:10Z;217842.0;AnthonyMastrean;"This looks great. But, we prefer to use methods that indicate the non-default behavior (see Issue #21 for another example). In this case, simply calling `force` 
+
+    unzip do |unzip|
+      unzip.destination = File.dirname(__FILE__)
+      unzip.file = ""Archive.zip""
+      unzip.force
+    end
+
+should set the internal state `@force = true`.
+
+    attr_reader :force
+
+    def force
+      @force = true
+    end
+
+Does that seem reasonable?";
+112;1458.0;422e2ac1590cc7e3b404eebf88649f750a4734d2;;40.0;13855054.0;issue;2013-02-20T20:39:10Z;2013-02-20T20:39:10Z;217842.0;AnthonyMastrean;"This looks great. But, we prefer to use methods that indicate the non-default behavior (see Issue #21 for another example). In this case, simply calling `force` 
+
+    unzip do |unzip|
+      unzip.destination = File.dirname(__FILE__)
+      unzip.file = ""Archive.zip""
+      unzip.force
+    end
+
+should set the internal state `@force = true`.
+
+    attr_reader :force
+
+    def force
+      @force = true
+    end
+
+Does that seem reasonable?";
+113;1455.0;422e2ac1590cc7e3b404eebf88649f750a4734d2;;40.0;13856026.0;issue;2013-02-20T20:58:12Z;2013-02-20T20:58:12Z;76611.0;mhoyer;Fair enough. Sounds reasonable. I'll add this to the pull request.;
+114;1458.0;422e2ac1590cc7e3b404eebf88649f750a4734d2;;40.0;13856026.0;issue;2013-02-20T20:58:12Z;2013-02-20T20:58:12Z;76611.0;mhoyer;Fair enough. Sounds reasonable. I'll add this to the pull request.;
+115;1463.0;19dfa63caf6e3773a26e34c6ccdcbee5cefdf23d;;43.0;14253483.0;issue;2013-02-28T19:50:41Z;2013-02-28T19:50:58Z;217842.0;AnthonyMastrean;"I appreciate the discovery and the fix! But, the extra assignment is unnecessary. Especially if you leave the post-fix guard clause in. I always think of postfix operators as ""do this or nothing at all"". So, I would try one of the two styles of ternary statements.
+
+This fake way depends on a statement always returning it's last value. So, if `@flatten_zip` is `false`, the statement is `nil`.
+
+    file_path = (file_path.split('/').last if @flatten_zip) || file_path
+
+Or, use the actual ternary operator
+
+    file_path = @flatten_zip ? file_path.split('/').last : file_path
+
+What do you think?";
+116;1464.0;19dfa63caf6e3773a26e34c6ccdcbee5cefdf23d;;43.0;14253483.0;issue;2013-02-28T19:50:41Z;2013-02-28T19:50:58Z;217842.0;AnthonyMastrean;"I appreciate the discovery and the fix! But, the extra assignment is unnecessary. Especially if you leave the post-fix guard clause in. I always think of postfix operators as ""do this or nothing at all"". So, I would try one of the two styles of ternary statements.
+
+This fake way depends on a statement always returning it's last value. So, if `@flatten_zip` is `false`, the statement is `nil`.
+
+    file_path = (file_path.split('/').last if @flatten_zip) || file_path
+
+Or, use the actual ternary operator
+
+    file_path = @flatten_zip ? file_path.split('/').last : file_path
+
+What do you think?";
+117;1467.0;c3f3cc05d7573ba3e723705907c2c9389c7a25b1;;43.0;14253483.0;issue;2013-02-28T19:50:41Z;2013-02-28T19:50:58Z;217842.0;AnthonyMastrean;"I appreciate the discovery and the fix! But, the extra assignment is unnecessary. Especially if you leave the post-fix guard clause in. I always think of postfix operators as ""do this or nothing at all"". So, I would try one of the two styles of ternary statements.
+
+This fake way depends on a statement always returning it's last value. So, if `@flatten_zip` is `false`, the statement is `nil`.
+
+    file_path = (file_path.split('/').last if @flatten_zip) || file_path
+
+Or, use the actual ternary operator
+
+    file_path = @flatten_zip ? file_path.split('/').last : file_path
+
+What do you think?";
+118;1469.0;c3f3cc05d7573ba3e723705907c2c9389c7a25b1;;43.0;14253483.0;issue;2013-02-28T19:50:41Z;2013-02-28T19:50:58Z;217842.0;AnthonyMastrean;"I appreciate the discovery and the fix! But, the extra assignment is unnecessary. Especially if you leave the post-fix guard clause in. I always think of postfix operators as ""do this or nothing at all"". So, I would try one of the two styles of ternary statements.
+
+This fake way depends on a statement always returning it's last value. So, if `@flatten_zip` is `false`, the statement is `nil`.
+
+    file_path = (file_path.split('/').last if @flatten_zip) || file_path
+
+Or, use the actual ternary operator
+
+    file_path = @flatten_zip ? file_path.split('/').last : file_path
+
+What do you think?";
+119;1463.0;19dfa63caf6e3773a26e34c6ccdcbee5cefdf23d;;43.0;14279149.0;issue;2013-03-01T09:16:46Z;2013-03-01T09:16:46Z;3593671.0;jamlen;"Ah yes that makes sense, I just copied the method for zip_directory, but I agree and I probably prefer the || operator.
+
+```ruby
+  def zip_directory(zipfile)
+    return if @directories_to_zip.nil?
+    @directories_to_zip.each do |d|
+      Dir[""#{d}/**/**""].reject{|f| reject_file(f)}.each do |file_path|
+        file_name = file_path
+        file_name = file_path.sub(d + '/','') if @flatten_zip
+        zipfile.add(file_name, file_path)
+      end
+    end
+  end
+```
+
+Do you want me to change that and resubmit a pull? (this was my first pull request and actually my first contribution to any project!)";
+120;1464.0;19dfa63caf6e3773a26e34c6ccdcbee5cefdf23d;;43.0;14279149.0;issue;2013-03-01T09:16:46Z;2013-03-01T09:16:46Z;3593671.0;jamlen;"Ah yes that makes sense, I just copied the method for zip_directory, but I agree and I probably prefer the || operator.
+
+```ruby
+  def zip_directory(zipfile)
+    return if @directories_to_zip.nil?
+    @directories_to_zip.each do |d|
+      Dir[""#{d}/**/**""].reject{|f| reject_file(f)}.each do |file_path|
+        file_name = file_path
+        file_name = file_path.sub(d + '/','') if @flatten_zip
+        zipfile.add(file_name, file_path)
+      end
+    end
+  end
+```
+
+Do you want me to change that and resubmit a pull? (this was my first pull request and actually my first contribution to any project!)";
+121;1467.0;c3f3cc05d7573ba3e723705907c2c9389c7a25b1;;43.0;14279149.0;issue;2013-03-01T09:16:46Z;2013-03-01T09:16:46Z;3593671.0;jamlen;"Ah yes that makes sense, I just copied the method for zip_directory, but I agree and I probably prefer the || operator.
+
+```ruby
+  def zip_directory(zipfile)
+    return if @directories_to_zip.nil?
+    @directories_to_zip.each do |d|
+      Dir[""#{d}/**/**""].reject{|f| reject_file(f)}.each do |file_path|
+        file_name = file_path
+        file_name = file_path.sub(d + '/','') if @flatten_zip
+        zipfile.add(file_name, file_path)
+      end
+    end
+  end
+```
+
+Do you want me to change that and resubmit a pull? (this was my first pull request and actually my first contribution to any project!)";
+122;1469.0;c3f3cc05d7573ba3e723705907c2c9389c7a25b1;;43.0;14279149.0;issue;2013-03-01T09:16:46Z;2013-03-01T09:16:46Z;3593671.0;jamlen;"Ah yes that makes sense, I just copied the method for zip_directory, but I agree and I probably prefer the || operator.
+
+```ruby
+  def zip_directory(zipfile)
+    return if @directories_to_zip.nil?
+    @directories_to_zip.each do |d|
+      Dir[""#{d}/**/**""].reject{|f| reject_file(f)}.each do |file_path|
+        file_name = file_path
+        file_name = file_path.sub(d + '/','') if @flatten_zip
+        zipfile.add(file_name, file_path)
+      end
+    end
+  end
+```
+
+Do you want me to change that and resubmit a pull? (this was my first pull request and actually my first contribution to any project!)";
+123;1463.0;19dfa63caf6e3773a26e34c6ccdcbee5cefdf23d;;43.0;14288959.0;issue;2013-03-01T13:23:09Z;2013-03-01T13:23:09Z;3593671.0;jamlen;"I've added a test for the flatten_zip behaviour and changed the code to use the ternary as I didn't like the extra braces needed for the ||.
+
+One curious thing: when I was writing the test, if I used the existing ZipTestData for the folder to zip (which uses File.expand) then I would get the following message:
+
+
+    1) ZipDirectory with flatten_zip set to false should add additional file
+     Failure/Error: zip.execute
+     Zip::ZipEntryNameError:
+       Illegal ZipEntry name '/home/jallen/dev/projects/albacore/spec/support/zip/files', name must not start with /
+
+Which is why I had to specify the folders.";
+124;1464.0;19dfa63caf6e3773a26e34c6ccdcbee5cefdf23d;;43.0;14288959.0;issue;2013-03-01T13:23:09Z;2013-03-01T13:23:09Z;3593671.0;jamlen;"I've added a test for the flatten_zip behaviour and changed the code to use the ternary as I didn't like the extra braces needed for the ||.
+
+One curious thing: when I was writing the test, if I used the existing ZipTestData for the folder to zip (which uses File.expand) then I would get the following message:
+
+
+    1) ZipDirectory with flatten_zip set to false should add additional file
+     Failure/Error: zip.execute
+     Zip::ZipEntryNameError:
+       Illegal ZipEntry name '/home/jallen/dev/projects/albacore/spec/support/zip/files', name must not start with /
+
+Which is why I had to specify the folders.";
+125;1467.0;c3f3cc05d7573ba3e723705907c2c9389c7a25b1;;43.0;14288959.0;issue;2013-03-01T13:23:09Z;2013-03-01T13:23:09Z;3593671.0;jamlen;"I've added a test for the flatten_zip behaviour and changed the code to use the ternary as I didn't like the extra braces needed for the ||.
+
+One curious thing: when I was writing the test, if I used the existing ZipTestData for the folder to zip (which uses File.expand) then I would get the following message:
+
+
+    1) ZipDirectory with flatten_zip set to false should add additional file
+     Failure/Error: zip.execute
+     Zip::ZipEntryNameError:
+       Illegal ZipEntry name '/home/jallen/dev/projects/albacore/spec/support/zip/files', name must not start with /
+
+Which is why I had to specify the folders.";
+126;1469.0;c3f3cc05d7573ba3e723705907c2c9389c7a25b1;;43.0;14288959.0;issue;2013-03-01T13:23:09Z;2013-03-01T13:23:09Z;3593671.0;jamlen;"I've added a test for the flatten_zip behaviour and changed the code to use the ternary as I didn't like the extra braces needed for the ||.
+
+One curious thing: when I was writing the test, if I used the existing ZipTestData for the folder to zip (which uses File.expand) then I would get the following message:
+
+
+    1) ZipDirectory with flatten_zip set to false should add additional file
+     Failure/Error: zip.execute
+     Zip::ZipEntryNameError:
+       Illegal ZipEntry name '/home/jallen/dev/projects/albacore/spec/support/zip/files', name must not start with /
+
+Which is why I had to specify the folders.";
+127;1463.0;19dfa63caf6e3773a26e34c6ccdcbee5cefdf23d;;43.0;14355266.0;issue;2013-03-03T21:01:49Z;2013-03-03T21:01:55Z;217842.0;AnthonyMastrean;This looks good, thanks for updating! I'll take a look at the ZipTestData error this week. And, as soon as I can test it out, I'll pull.;
+128;1464.0;19dfa63caf6e3773a26e34c6ccdcbee5cefdf23d;;43.0;14355266.0;issue;2013-03-03T21:01:49Z;2013-03-03T21:01:55Z;217842.0;AnthonyMastrean;This looks good, thanks for updating! I'll take a look at the ZipTestData error this week. And, as soon as I can test it out, I'll pull.;
+129;1467.0;c3f3cc05d7573ba3e723705907c2c9389c7a25b1;;43.0;14355266.0;issue;2013-03-03T21:01:49Z;2013-03-03T21:01:55Z;217842.0;AnthonyMastrean;This looks good, thanks for updating! I'll take a look at the ZipTestData error this week. And, as soon as I can test it out, I'll pull.;
+130;1469.0;c3f3cc05d7573ba3e723705907c2c9389c7a25b1;;43.0;14355266.0;issue;2013-03-03T21:01:49Z;2013-03-03T21:01:55Z;217842.0;AnthonyMastrean;This looks good, thanks for updating! I'll take a look at the ZipTestData error this week. And, as soon as I can test it out, I'll pull.;
+131;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14373694.0;issue;2013-03-04T10:23:06Z;2013-03-04T10:23:06Z;193115.0;haf;"I just pushed a fix for the failing test. Sorry, I didn't fully understand jruby process exit codes when I wrote it.
+
+It should recompile and test automatically?";
+132;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14373694.0;issue;2013-03-04T10:23:06Z;2013-03-04T10:23:06Z;193115.0;haf;"I just pushed a fix for the failing test. Sorry, I didn't fully understand jruby process exit codes when I wrote it.
+
+It should recompile and test automatically?";
+133;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14373694.0;issue;2013-03-04T10:23:06Z;2013-03-04T10:23:06Z;193115.0;haf;"I just pushed a fix for the failing test. Sorry, I didn't fully understand jruby process exit codes when I wrote it.
+
+It should recompile and test automatically?";
+134;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14373694.0;issue;2013-03-04T10:23:06Z;2013-03-04T10:23:06Z;193115.0;haf;"I just pushed a fix for the failing test. Sorry, I didn't fully understand jruby process exit codes when I wrote it.
+
+It should recompile and test automatically?";
+135;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14374464.0;issue;2013-03-04T10:42:14Z;2013-03-04T10:42:14Z;193115.0;haf;If you push a miniscule change, it will recompile.;
+136;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14374464.0;issue;2013-03-04T10:42:14Z;2013-03-04T10:42:14Z;193115.0;haf;If you push a miniscule change, it will recompile.;
+137;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14374464.0;issue;2013-03-04T10:42:14Z;2013-03-04T10:42:14Z;193115.0;haf;If you push a miniscule change, it will recompile.;
+138;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14374464.0;issue;2013-03-04T10:42:14Z;2013-03-04T10:42:14Z;193115.0;haf;If you push a miniscule change, it will recompile.;
+139;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14378809.0;issue;2013-03-04T12:38:10Z;2013-03-04T12:38:10Z;193115.0;haf;Is this the full extent of what you'd like to add?;
+140;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14378809.0;issue;2013-03-04T12:38:10Z;2013-03-04T12:38:10Z;193115.0;haf;Is this the full extent of what you'd like to add?;
+141;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14378809.0;issue;2013-03-04T12:38:10Z;2013-03-04T12:38:10Z;193115.0;haf;Is this the full extent of what you'd like to add?;
+142;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14378809.0;issue;2013-03-04T12:38:10Z;2013-03-04T12:38:10Z;193115.0;haf;Is this the full extent of what you'd like to add?;
+143;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14379970.0;issue;2013-03-04T13:11:28Z;2013-03-04T13:11:28Z;88096.0;wallymathieu;I was mostly trying to make a small change that matches the style. But, no, this is just the core of what I'm trying to add.;
+144;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14379970.0;issue;2013-03-04T13:11:28Z;2013-03-04T13:11:28Z;88096.0;wallymathieu;I was mostly trying to make a small change that matches the style. But, no, this is just the core of what I'm trying to add.;
+145;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14379970.0;issue;2013-03-04T13:11:28Z;2013-03-04T13:11:28Z;88096.0;wallymathieu;I was mostly trying to make a small change that matches the style. But, no, this is just the core of what I'm trying to add.;
+146;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14379970.0;issue;2013-03-04T13:11:28Z;2013-03-04T13:11:28Z;88096.0;wallymathieu;I was mostly trying to make a small change that matches the style. But, no, this is just the core of what I'm trying to add.;
+147;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14380510.0;issue;2013-03-04T13:27:10Z;2013-03-04T13:27:10Z;193115.0;haf;Alright I'll await the rest :);
+148;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14380510.0;issue;2013-03-04T13:27:10Z;2013-03-04T13:27:10Z;193115.0;haf;Alright I'll await the rest :);
+149;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14380510.0;issue;2013-03-04T13:27:10Z;2013-03-04T13:27:10Z;193115.0;haf;Alright I'll await the rest :);
+150;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14380510.0;issue;2013-03-04T13:27:10Z;2013-03-04T13:27:10Z;193115.0;haf;Alright I'll await the rest :);
+151;1476.0;8e6f9b3ea4cf12558336fac76a29993f6654e792;;45.0;14412633.0;issue;2013-03-04T23:06:10Z;2013-03-04T23:06:10Z;217842.0;AnthonyMastrean;The `glob` eventually requires the same files... is JRuby misbehaving or something? I prefer the explicit requires, but I'd like to get to a root cause :);
+152;1478.0;8e6f9b3ea4cf12558336fac76a29993f6654e792;;45.0;14412633.0;issue;2013-03-04T23:06:10Z;2013-03-04T23:06:10Z;217842.0;AnthonyMastrean;The `glob` eventually requires the same files... is JRuby misbehaving or something? I prefer the explicit requires, but I'd like to get to a root cause :);
+153;1476.0;8e6f9b3ea4cf12558336fac76a29993f6654e792;;45.0;14413297.0;issue;2013-03-04T23:20:05Z;2013-03-04T23:20:05Z;572.0;jarib;I've been struggling enough with our build today that I didn't attempt digging to the root cause, but the view of the file system inside the jar is probably a bit skewed, examples of this are [here](https://jira.codehaus.org/browse/JRUBY-6970) and [here](https://jira.codehaus.org/browse/JRUBY-5739). ;
+154;1478.0;8e6f9b3ea4cf12558336fac76a29993f6654e792;;45.0;14413297.0;issue;2013-03-04T23:20:05Z;2013-03-04T23:20:05Z;572.0;jarib;I've been struggling enough with our build today that I didn't attempt digging to the root cause, but the view of the file system inside the jar is probably a bit skewed, examples of this are [here](https://jira.codehaus.org/browse/JRUBY-6970) and [here](https://jira.codehaus.org/browse/JRUBY-5739). ;
+155;1476.0;8e6f9b3ea4cf12558336fac76a29993f6654e792;;45.0;14416210.0;issue;2013-03-05T00:25:51Z;2013-03-05T00:25:51Z;217842.0;AnthonyMastrean;Yikes, that's bad. I like the change, in general. Do you know if you can remove the load path modifications at the top of `albacore.rb`? I know that @haf has removed a lot (all?) of that in the `clean_slate` branch.;
+156;1478.0;8e6f9b3ea4cf12558336fac76a29993f6654e792;;45.0;14416210.0;issue;2013-03-05T00:25:51Z;2013-03-05T00:25:51Z;217842.0;AnthonyMastrean;Yikes, that's bad. I like the change, in general. Do you know if you can remove the load path modifications at the top of `albacore.rb`? I know that @haf has removed a lot (all?) of that in the `clean_slate` branch.;
+157;1476.0;8e6f9b3ea4cf12558336fac76a29993f6654e792;;45.0;14416458.0;issue;2013-03-05T00:33:09Z;2013-03-05T00:33:09Z;572.0;jarib;Load path mangling [shouldn't be necessary](http://guides.rubygems.org/patterns/#mangling_the_load_path), but I didn't touch it since I wasn't sure if your tests depend on it being set up that way. I don't have a Windows machine to actually try the build on. ;
+158;1478.0;8e6f9b3ea4cf12558336fac76a29993f6654e792;;45.0;14416458.0;issue;2013-03-05T00:33:09Z;2013-03-05T00:33:09Z;572.0;jarib;Load path mangling [shouldn't be necessary](http://guides.rubygems.org/patterns/#mangling_the_load_path), but I didn't touch it since I wasn't sure if your tests depend on it being set up that way. I don't have a Windows machine to actually try the build on. ;
+159;1476.0;8e6f9b3ea4cf12558336fac76a29993f6654e792;;45.0;14416637.0;issue;2013-03-05T00:38:44Z;2013-03-05T00:38:44Z;217842.0;AnthonyMastrean;No problem, I have a lot of pull requests to test soon I'll try it out :);
+160;1478.0;8e6f9b3ea4cf12558336fac76a29993f6654e792;;45.0;14416637.0;issue;2013-03-05T00:38:44Z;2013-03-05T00:38:44Z;217842.0;AnthonyMastrean;No problem, I have a lot of pull requests to test soon I'll try it out :);
+161;1476.0;8e6f9b3ea4cf12558336fac76a29993f6654e792;;45.0;14445471.0;issue;2013-03-05T15:28:10Z;2013-03-05T15:28:10Z;193115.0;haf;This is fixed by not doing load path funny stuff in clean_slate as @AnthonyMastrean says.;
+162;1478.0;8e6f9b3ea4cf12558336fac76a29993f6654e792;;45.0;14445471.0;issue;2013-03-05T15:28:10Z;2013-03-05T15:28:10Z;193115.0;haf;This is fixed by not doing load path funny stuff in clean_slate as @AnthonyMastrean says.;
+163;1426.0;40b525df28d2f681a564255dd5eef87b5e6cf2e7;;37.0;14464584.0;issue;2013-03-05T20:54:12Z;2013-03-05T20:54:12Z;217842.0;AnthonyMastrean;Looks like you're just exposing the `/tag` command line parameter? Looks good except for my comments. If you can address those, I'll merge. Thanks!;
+164;1429.0;40b525df28d2f681a564255dd5eef87b5e6cf2e7;;37.0;14464584.0;issue;2013-03-05T20:54:12Z;2013-03-05T20:54:12Z;217842.0;AnthonyMastrean;Looks like you're just exposing the `/tag` command line parameter? Looks good except for my comments. If you can address those, I'll merge. Thanks!;
+165;1480.0;40132c992219f81b6d57468a7cb5300efb4792d9;;37.0;14464584.0;issue;2013-03-05T20:54:12Z;2013-03-05T20:54:12Z;217842.0;AnthonyMastrean;Looks like you're just exposing the `/tag` command line parameter? Looks good except for my comments. If you can address those, I'll merge. Thanks!;
+166;1481.0;40132c992219f81b6d57468a7cb5300efb4792d9;;37.0;14464584.0;issue;2013-03-05T20:54:12Z;2013-03-05T20:54:12Z;217842.0;AnthonyMastrean;Looks like you're just exposing the `/tag` command line parameter? Looks good except for my comments. If you can address those, I'll merge. Thanks!;
+167;1488.0;a6d5e2b8a70df77bf75365e66b571f51f6c20597;;37.0;14464584.0;issue;2013-03-05T20:54:12Z;2013-03-05T20:54:12Z;217842.0;AnthonyMastrean;Looks like you're just exposing the `/tag` command line parameter? Looks good except for my comments. If you can address those, I'll merge. Thanks!;
+168;1489.0;a6d5e2b8a70df77bf75365e66b571f51f6c20597;;37.0;14464584.0;issue;2013-03-05T20:54:12Z;2013-03-05T20:54:12Z;217842.0;AnthonyMastrean;Looks like you're just exposing the `/tag` command line parameter? Looks good except for my comments. If you can address those, I'll merge. Thanks!;
+169;1426.0;40b525df28d2f681a564255dd5eef87b5e6cf2e7;;37.0;14523736.0;issue;2013-03-06T20:21:45Z;2013-03-06T20:21:45Z;2117460.0;elberon5;This is ready to go. Has the requested changes. ;
+170;1429.0;40b525df28d2f681a564255dd5eef87b5e6cf2e7;;37.0;14523736.0;issue;2013-03-06T20:21:45Z;2013-03-06T20:21:45Z;2117460.0;elberon5;This is ready to go. Has the requested changes. ;
+171;1480.0;40132c992219f81b6d57468a7cb5300efb4792d9;;37.0;14523736.0;issue;2013-03-06T20:21:45Z;2013-03-06T20:21:45Z;2117460.0;elberon5;This is ready to go. Has the requested changes. ;
+172;1481.0;40132c992219f81b6d57468a7cb5300efb4792d9;;37.0;14523736.0;issue;2013-03-06T20:21:45Z;2013-03-06T20:21:45Z;2117460.0;elberon5;This is ready to go. Has the requested changes. ;
+173;1488.0;a6d5e2b8a70df77bf75365e66b571f51f6c20597;;37.0;14523736.0;issue;2013-03-06T20:21:45Z;2013-03-06T20:21:45Z;2117460.0;elberon5;This is ready to go. Has the requested changes. ;
+174;1489.0;a6d5e2b8a70df77bf75365e66b571f51f6c20597;;37.0;14523736.0;issue;2013-03-06T20:21:45Z;2013-03-06T20:21:45Z;2117460.0;elberon5;This is ready to go. Has the requested changes. ;
+175;1426.0;40b525df28d2f681a564255dd5eef87b5e6cf2e7;;37.0;14527053.0;issue;2013-03-06T21:24:47Z;2013-03-06T21:24:47Z;2117460.0;elberon5;All set, You were clear, I just missed it.;
+176;1429.0;40b525df28d2f681a564255dd5eef87b5e6cf2e7;;37.0;14527053.0;issue;2013-03-06T21:24:47Z;2013-03-06T21:24:47Z;2117460.0;elberon5;All set, You were clear, I just missed it.;
+177;1480.0;40132c992219f81b6d57468a7cb5300efb4792d9;;37.0;14527053.0;issue;2013-03-06T21:24:47Z;2013-03-06T21:24:47Z;2117460.0;elberon5;All set, You were clear, I just missed it.;
+178;1481.0;40132c992219f81b6d57468a7cb5300efb4792d9;;37.0;14527053.0;issue;2013-03-06T21:24:47Z;2013-03-06T21:24:47Z;2117460.0;elberon5;All set, You were clear, I just missed it.;
+179;1488.0;a6d5e2b8a70df77bf75365e66b571f51f6c20597;;37.0;14527053.0;issue;2013-03-06T21:24:47Z;2013-03-06T21:24:47Z;2117460.0;elberon5;All set, You were clear, I just missed it.;
+180;1489.0;a6d5e2b8a70df77bf75365e66b571f51f6c20597;;37.0;14527053.0;issue;2013-03-06T21:24:47Z;2013-03-06T21:24:47Z;2117460.0;elberon5;All set, You were clear, I just missed it.;
+181;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14659624.0;issue;2013-03-09T07:46:48Z;2013-03-09T07:46:48Z;88096.0;wallymathieu;"I tried to do a rebase in to fix up history. It looks like the merge request includes the old commits.
+I did however rewrite the specifications a bit to match what you did on clean_slate. ";
+182;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14659624.0;issue;2013-03-09T07:46:48Z;2013-03-09T07:46:48Z;88096.0;wallymathieu;"I tried to do a rebase in to fix up history. It looks like the merge request includes the old commits.
+I did however rewrite the specifications a bit to match what you did on clean_slate. ";
+183;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14659624.0;issue;2013-03-09T07:46:48Z;2013-03-09T07:46:48Z;88096.0;wallymathieu;"I tried to do a rebase in to fix up history. It looks like the merge request includes the old commits.
+I did however rewrite the specifications a bit to match what you did on clean_slate. ";
+184;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14659624.0;issue;2013-03-09T07:46:48Z;2013-03-09T07:46:48Z;88096.0;wallymathieu;"I tried to do a rebase in to fix up history. It looks like the merge request includes the old commits.
+I did however rewrite the specifications a bit to match what you did on clean_slate. ";
+185;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14702780.0;issue;2013-03-11T09:06:24Z;2013-03-11T09:06:24Z;193115.0;haf;Known test failure?;
+186;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14702780.0;issue;2013-03-11T09:06:24Z;2013-03-11T09:06:24Z;193115.0;haf;Known test failure?;
+187;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14702780.0;issue;2013-03-11T09:06:24Z;2013-03-11T09:06:24Z;193115.0;haf;Known test failure?;
+188;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14702780.0;issue;2013-03-11T09:06:24Z;2013-03-11T09:06:24Z;193115.0;haf;Known test failure?;
+189;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14703453.0;issue;2013-03-11T09:27:12Z;2013-03-11T09:27:12Z;88096.0;wallymathieu;It looks lika a problem with bundler on travis. The previous failure was due to a gem that travis could not install for jruby. I'll try to get an environment closer to travis to run the tests.;
+190;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14703453.0;issue;2013-03-11T09:27:12Z;2013-03-11T09:27:12Z;88096.0;wallymathieu;It looks lika a problem with bundler on travis. The previous failure was due to a gem that travis could not install for jruby. I'll try to get an environment closer to travis to run the tests.;
+191;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14703453.0;issue;2013-03-11T09:27:12Z;2013-03-11T09:27:12Z;88096.0;wallymathieu;It looks lika a problem with bundler on travis. The previous failure was due to a gem that travis could not install for jruby. I'll try to get an environment closer to travis to run the tests.;
+192;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14703453.0;issue;2013-03-11T09:27:12Z;2013-03-11T09:27:12Z;88096.0;wallymathieu;It looks lika a problem with bundler on travis. The previous failure was due to a gem that travis could not install for jruby. I'll try to get an environment closer to travis to run the tests.;
+193;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14914790.0;issue;2013-03-14T17:00:13Z;2013-03-14T17:00:13Z;88096.0;wallymathieu;It looks like there is something wrong with the travis jruby build environment.;
+194;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14914790.0;issue;2013-03-14T17:00:13Z;2013-03-14T17:00:13Z;88096.0;wallymathieu;It looks like there is something wrong with the travis jruby build environment.;
+195;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14914790.0;issue;2013-03-14T17:00:13Z;2013-03-14T17:00:13Z;88096.0;wallymathieu;It looks like there is something wrong with the travis jruby build environment.;
+196;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14914790.0;issue;2013-03-14T17:00:13Z;2013-03-14T17:00:13Z;88096.0;wallymathieu;It looks like there is something wrong with the travis jruby build environment.;
+197;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14914979.0;issue;2013-03-14T17:03:20Z;2013-03-14T17:03:20Z;88096.0;wallymathieu;"$ bundle exec rake spec
+rake aborted!
+no such file to load -- rubygems/builder";
+198;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;14914979.0;issue;2013-03-14T17:03:20Z;2013-03-14T17:03:20Z;88096.0;wallymathieu;"$ bundle exec rake spec
+rake aborted!
+no such file to load -- rubygems/builder";
+199;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14914979.0;issue;2013-03-14T17:03:20Z;2013-03-14T17:03:20Z;88096.0;wallymathieu;"$ bundle exec rake spec
+rake aborted!
+no such file to load -- rubygems/builder";
+200;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;14914979.0;issue;2013-03-14T17:03:20Z;2013-03-14T17:03:20Z;88096.0;wallymathieu;"$ bundle exec rake spec
+rake aborted!
+no such file to load -- rubygems/builder";
+201;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;15459059.0;issue;2013-03-26T13:50:36Z;2013-03-26T13:50:36Z;88096.0;wallymathieu;This is going nowhere. How about that we close the pull request and that I create a library perhaps dependant on albacore?;
+202;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;15459059.0;issue;2013-03-26T13:50:36Z;2013-03-26T13:50:36Z;88096.0;wallymathieu;This is going nowhere. How about that we close the pull request and that I create a library perhaps dependant on albacore?;
+203;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;15459059.0;issue;2013-03-26T13:50:36Z;2013-03-26T13:50:36Z;88096.0;wallymathieu;This is going nowhere. How about that we close the pull request and that I create a library perhaps dependant on albacore?;
+204;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;15459059.0;issue;2013-03-26T13:50:36Z;2013-03-26T13:50:36Z;88096.0;wallymathieu;This is going nowhere. How about that we close the pull request and that I create a library perhaps dependant on albacore?;
+205;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;15463812.0;issue;2013-03-26T15:08:43Z;2013-03-26T15:08:43Z;193115.0;haf;It is going somewhere I think, let's just wait a bit more? I have to slot working on albacore in with building rake scripts for my everyday work. I haven't investigated the error enough, but since it happens on the clean_slate branch even without your pull request, of course I will fix it. Is this fine with you?;
+206;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;15463812.0;issue;2013-03-26T15:08:43Z;2013-03-26T15:08:43Z;193115.0;haf;It is going somewhere I think, let's just wait a bit more? I have to slot working on albacore in with building rake scripts for my everyday work. I haven't investigated the error enough, but since it happens on the clean_slate branch even without your pull request, of course I will fix it. Is this fine with you?;
+207;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;15463812.0;issue;2013-03-26T15:08:43Z;2013-03-26T15:08:43Z;193115.0;haf;It is going somewhere I think, let's just wait a bit more? I have to slot working on albacore in with building rake scripts for my everyday work. I haven't investigated the error enough, but since it happens on the clean_slate branch even without your pull request, of course I will fix it. Is this fine with you?;
+208;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;15463812.0;issue;2013-03-26T15:08:43Z;2013-03-26T15:08:43Z;193115.0;haf;It is going somewhere I think, let's just wait a bit more? I have to slot working on albacore in with building rake scripts for my everyday work. I haven't investigated the error enough, but since it happens on the clean_slate branch even without your pull request, of course I will fix it. Is this fine with you?;
+209;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;15650446.0;issue;2013-03-29T17:11:09Z;2013-03-29T17:11:09Z;88096.0;wallymathieu;It's fine with me. I just got a bit impatient. It looks kind of odd how it starts failing.;
+210;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;15650446.0;issue;2013-03-29T17:11:09Z;2013-03-29T17:11:09Z;88096.0;wallymathieu;It's fine with me. I just got a bit impatient. It looks kind of odd how it starts failing.;
+211;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;15650446.0;issue;2013-03-29T17:11:09Z;2013-03-29T17:11:09Z;88096.0;wallymathieu;It's fine with me. I just got a bit impatient. It looks kind of odd how it starts failing.;
+212;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;15650446.0;issue;2013-03-29T17:11:09Z;2013-03-29T17:11:09Z;88096.0;wallymathieu;It's fine with me. I just got a bit impatient. It looks kind of odd how it starts failing.;
+213;1463.0;19dfa63caf6e3773a26e34c6ccdcbee5cefdf23d;;43.0;19393852.0;issue;2013-06-13T14:06:30Z;2013-06-13T14:06:30Z;3593671.0;jamlen;Any idea when this might get packaged into 0.3.6 gem?;
+214;1464.0;19dfa63caf6e3773a26e34c6ccdcbee5cefdf23d;;43.0;19393852.0;issue;2013-06-13T14:06:30Z;2013-06-13T14:06:30Z;3593671.0;jamlen;Any idea when this might get packaged into 0.3.6 gem?;
+215;1467.0;c3f3cc05d7573ba3e723705907c2c9389c7a25b1;;43.0;19393852.0;issue;2013-06-13T14:06:30Z;2013-06-13T14:06:30Z;3593671.0;jamlen;Any idea when this might get packaged into 0.3.6 gem?;
+216;1469.0;c3f3cc05d7573ba3e723705907c2c9389c7a25b1;;43.0;19393852.0;issue;2013-06-13T14:06:30Z;2013-06-13T14:06:30Z;3593671.0;jamlen;Any idea when this might get packaged into 0.3.6 gem?;
+217;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;20277434.0;issue;2013-07-01T12:01:04Z;2013-07-01T12:01:04Z;193115.0;haf;Thanks, I have merged it!;
+218;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;20277434.0;issue;2013-07-01T12:01:04Z;2013-07-01T12:01:04Z;193115.0;haf;Thanks, I have merged it!;
+219;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;20277434.0;issue;2013-07-01T12:01:04Z;2013-07-01T12:01:04Z;193115.0;haf;Thanks, I have merged it!;
+220;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;20277434.0;issue;2013-07-01T12:01:04Z;2013-07-01T12:01:04Z;193115.0;haf;Thanks, I have merged it!;
+221;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;20277528.0;issue;2013-07-01T12:03:53Z;2013-07-01T12:03:53Z;193115.0;haf;Build passes: https://travis-ci.org/Albacore/albacore/jobs/8618446;
+222;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;20277528.0;issue;2013-07-01T12:03:53Z;2013-07-01T12:03:53Z;193115.0;haf;Build passes: https://travis-ci.org/Albacore/albacore/jobs/8618446;
+223;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;20277528.0;issue;2013-07-01T12:03:53Z;2013-07-01T12:03:53Z;193115.0;haf;Build passes: https://travis-ci.org/Albacore/albacore/jobs/8618446;
+224;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;20277528.0;issue;2013-07-01T12:03:53Z;2013-07-01T12:03:53Z;193115.0;haf;Build passes: https://travis-ci.org/Albacore/albacore/jobs/8618446;
+225;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;20277578.0;issue;2013-07-01T12:05:11Z;2013-07-01T12:05:11Z;193115.0;haf;I have a final request: could you write some docs on how to use the task in the README? I will move all docs from there once this replaces the mainline.;
+226;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;20277578.0;issue;2013-07-01T12:05:11Z;2013-07-01T12:05:11Z;193115.0;haf;I have a final request: could you write some docs on how to use the task in the README? I will move all docs from there once this replaces the mainline.;
+227;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;20277578.0;issue;2013-07-01T12:05:11Z;2013-07-01T12:05:11Z;193115.0;haf;I have a final request: could you write some docs on how to use the task in the README? I will move all docs from there once this replaces the mainline.;
+228;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;20277578.0;issue;2013-07-01T12:05:11Z;2013-07-01T12:05:11Z;193115.0;haf;I have a final request: could you write some docs on how to use the task in the README? I will move all docs from there once this replaces the mainline.;
+229;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;20486573.0;issue;2013-07-04T17:07:38Z;2013-07-04T17:07:38Z;88096.0;wallymathieu;Sure;
+230;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;20486573.0;issue;2013-07-04T17:07:38Z;2013-07-04T17:07:38Z;88096.0;wallymathieu;Sure;
+231;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;20486573.0;issue;2013-07-04T17:07:38Z;2013-07-04T17:07:38Z;88096.0;wallymathieu;Sure;
+232;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;20486573.0;issue;2013-07-04T17:07:38Z;2013-07-04T17:07:38Z;88096.0;wallymathieu;Sure;
+233;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;20487552.0;issue;2013-07-04T17:39:27Z;2013-07-04T17:39:27Z;88096.0;wallymathieu;Do you want it in a new pull request?;
+234;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;20487552.0;issue;2013-07-04T17:39:27Z;2013-07-04T17:39:27Z;88096.0;wallymathieu;Do you want it in a new pull request?;
+235;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;20487552.0;issue;2013-07-04T17:39:27Z;2013-07-04T17:39:27Z;88096.0;wallymathieu;Do you want it in a new pull request?;
+236;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;20487552.0;issue;2013-07-04T17:39:27Z;2013-07-04T17:39:27Z;88096.0;wallymathieu;Do you want it in a new pull request?;
+237;1472.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;20493226.0;issue;2013-07-04T20:53:34Z;2013-07-04T20:53:34Z;193115.0;haf;Sure =);
+238;1473.0;bbb414f9525a62ec091a2c68d2084349dc6e207b;;44.0;20493226.0;issue;2013-07-04T20:53:34Z;2013-07-04T20:53:34Z;193115.0;haf;Sure =);
+239;1496.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;20493226.0;issue;2013-07-04T20:53:34Z;2013-07-04T20:53:34Z;193115.0;haf;Sure =);
+240;1497.0;130b7e766d49e7045d6e323d0a25c1bb36762afa;;44.0;20493226.0;issue;2013-07-04T20:53:34Z;2013-07-04T20:53:34Z;193115.0;haf;Sure =);
+241;1492.0;ef7a9b2ba182355348cb9eb63adc8698124c3c1e;;47.0;20560755.0;issue;2013-07-06T20:47:28Z;2013-07-06T20:47:28Z;193115.0;haf;Smooth. Would you like to port ILMerge to `clean_slate` btw? I'm mostly coding on that branch nowadays but we're not switching to it unless it's pretty similar in features as the main dev/master branches, and ILMerge is such a core tasktype that should be in the DSL.;
+242;1495.0;ef7a9b2ba182355348cb9eb63adc8698124c3c1e;;47.0;20560755.0;issue;2013-07-06T20:47:28Z;2013-07-06T20:47:28Z;193115.0;haf;Smooth. Would you like to port ILMerge to `clean_slate` btw? I'm mostly coding on that branch nowadays but we're not switching to it unless it's pretty similar in features as the main dev/master branches, and ILMerge is such a core tasktype that should be in the DSL.;
+243;1426.0;40b525df28d2f681a564255dd5eef87b5e6cf2e7;;37.0;20560777.0;issue;2013-07-06T20:48:49Z;2013-07-06T20:48:49Z;193115.0;haf;Smooth!;
+244;1429.0;40b525df28d2f681a564255dd5eef87b5e6cf2e7;;37.0;20560777.0;issue;2013-07-06T20:48:49Z;2013-07-06T20:48:49Z;193115.0;haf;Smooth!;
+245;1480.0;40132c992219f81b6d57468a7cb5300efb4792d9;;37.0;20560777.0;issue;2013-07-06T20:48:49Z;2013-07-06T20:48:49Z;193115.0;haf;Smooth!;
+246;1481.0;40132c992219f81b6d57468a7cb5300efb4792d9;;37.0;20560777.0;issue;2013-07-06T20:48:49Z;2013-07-06T20:48:49Z;193115.0;haf;Smooth!;
+247;1488.0;a6d5e2b8a70df77bf75365e66b571f51f6c20597;;37.0;20560777.0;issue;2013-07-06T20:48:49Z;2013-07-06T20:48:49Z;193115.0;haf;Smooth!;
+248;1489.0;a6d5e2b8a70df77bf75365e66b571f51f6c20597;;37.0;20560777.0;issue;2013-07-06T20:48:49Z;2013-07-06T20:48:49Z;193115.0;haf;Smooth!;
+249;1476.0;8e6f9b3ea4cf12558336fac76a29993f6654e792;;45.0;20560789.0;issue;2013-07-06T20:50:11Z;2013-07-06T20:50:11Z;193115.0;haf;So what's up with this PR? I think it'll be fine to merge this into dev while coding up asmver and ILMerge in clean_slate -- the last big pieces left.;
+250;1478.0;8e6f9b3ea4cf12558336fac76a29993f6654e792;;45.0;20560789.0;issue;2013-07-06T20:50:11Z;2013-07-06T20:50:11Z;193115.0;haf;So what's up with this PR? I think it'll be fine to merge this into dev while coding up asmver and ILMerge in clean_slate -- the last big pieces left.;
+251;1459.0;70036d114a2a30e391fc829fef91d9317f94b595;;41.0;20560837.0;issue;2013-07-06T20:53:30Z;2013-07-06T20:53:30Z;193115.0;haf;Looks good to me.;
+252;1460.0;70036d114a2a30e391fc829fef91d9317f94b595;;41.0;20560837.0;issue;2013-07-06T20:53:30Z;2013-07-06T20:53:30Z;193115.0;haf;Looks good to me.;
+253;1694.0;192e70c2932282f17ff85a53b8746ee1216bb5a2;;60.0;20826667.0;issue;2013-07-11T17:04:58Z;2013-07-11T17:04:58Z;217842.0;AnthonyMastrean;"What is it about Windows x64 that doesn't make tests pass? Just so we can look into that issue ;)";
+254;1695.0;192e70c2932282f17ff85a53b8746ee1216bb5a2;;60.0;20826667.0;issue;2013-07-11T17:04:58Z;2013-07-11T17:04:58Z;217842.0;AnthonyMastrean;"What is it about Windows x64 that doesn't make tests pass? Just so we can look into that issue ;)";
+255;1694.0;192e70c2932282f17ff85a53b8746ee1216bb5a2;;60.0;20826812.0;issue;2013-07-11T17:08:10Z;2013-07-11T17:08:10Z;4389943.0;nelittle;"nokogiri doesn't support ruby x64 yet, see the thread here:
+
+https://github.com/sparklemotion/nokogiri/issues/864
+";
+256;1695.0;192e70c2932282f17ff85a53b8746ee1216bb5a2;;60.0;20826812.0;issue;2013-07-11T17:08:10Z;2013-07-11T17:08:10Z;4389943.0;nelittle;"nokogiri doesn't support ruby x64 yet, see the thread here:
+
+https://github.com/sparklemotion/nokogiri/issues/864
+";
+257;1694.0;192e70c2932282f17ff85a53b8746ee1216bb5a2;;60.0;20826869.0;issue;2013-07-11T17:09:10Z;2013-07-11T17:09:10Z;4389943.0;nelittle;i'm very new to ruby (as in I learned it to make this fix) so i guess i could install side by side versions and run a 32 bit version?;
+258;1695.0;192e70c2932282f17ff85a53b8746ee1216bb5a2;;60.0;20826869.0;issue;2013-07-11T17:09:10Z;2013-07-11T17:09:10Z;4389943.0;nelittle;i'm very new to ruby (as in I learned it to make this fix) so i guess i could install side by side versions and run a 32 bit version?;
+259;1694.0;192e70c2932282f17ff85a53b8746ee1216bb5a2;;60.0;20827092.0;issue;2013-07-11T17:14:12Z;2013-07-11T17:14:12Z;217842.0;AnthonyMastrean;"Oh, I see that Ruby 2.0 has a 64-bit installer. That's new to me! You can run Ruby from a directory (pick up the 32-bit ""portable"" install), install gems to that ""local"" Ruby, and execute rspec from it instead of your globally available Ruby.";
+260;1695.0;192e70c2932282f17ff85a53b8746ee1216bb5a2;;60.0;20827092.0;issue;2013-07-11T17:14:12Z;2013-07-11T17:14:12Z;217842.0;AnthonyMastrean;"Oh, I see that Ruby 2.0 has a 64-bit installer. That's new to me! You can run Ruby from a directory (pick up the 32-bit ""portable"" install), install gems to that ""local"" Ruby, and execute rspec from it instead of your globally available Ruby.";
+261;1694.0;192e70c2932282f17ff85a53b8746ee1216bb5a2;;60.0;22054477.0;issue;2013-08-03T12:51:44Z;2013-08-03T12:51:51Z;217842.0;AnthonyMastrean;Test run fine on my machine. Thanks for your contribution!;
+262;1695.0;192e70c2932282f17ff85a53b8746ee1216bb5a2;;60.0;22054477.0;issue;2013-08-03T12:51:44Z;2013-08-03T12:51:51Z;217842.0;AnthonyMastrean;Test run fine on my machine. Thanks for your contribution!;
+263;828.0;9a11d87bb4426f3346b4af270b0c9e8ac1a9fed8;;69.0;23469646.0;issue;2013-08-29T06:27:42Z;2013-08-29T06:27:42Z;193115.0;haf;Thank you for your contribution! =);
+264;1262.0;3f2a0aa3d08835b8dacea310249279be254ab555;;122.0;53190446.0;issue;2014-08-24T12:13:45Z;2014-08-24T12:13:45Z;193115.0;haf;Work in progress, extracted from working code;
+265;1263.0;0d3007065e639251123400c20424c381ee34de31;;122.0;53190446.0;issue;2014-08-24T12:13:45Z;2014-08-24T12:13:45Z;193115.0;haf;Work in progress, extracted from working code;
+266;1312.0;e4ff83f7c2cb651854502a827c783d049a038b1c;;122.0;53190446.0;issue;2014-08-24T12:13:45Z;2014-08-24T12:13:45Z;193115.0;haf;Work in progress, extracted from working code;
+267;1313.0;41d861fc07b5d547a17c350dfa17d941c046b8d8;;122.0;53190446.0;issue;2014-08-24T12:13:45Z;2014-08-24T12:13:45Z;193115.0;haf;Work in progress, extracted from working code;
+268;1314.0;acdef2bd99a1e0f92c6e649fd45a97faf41094af;;122.0;53190446.0;issue;2014-08-24T12:13:45Z;2014-08-24T12:13:45Z;193115.0;haf;Work in progress, extracted from working code;
+269;1315.0;7d5f2aab49df9bebbc40889d61392001f5f0c478;;122.0;53190446.0;issue;2014-08-24T12:13:45Z;2014-08-24T12:13:45Z;193115.0;haf;Work in progress, extracted from working code;
+270;1316.0;8977cab99ea7ef4bbad6e94a220cc71b9da8c327;;122.0;53190446.0;issue;2014-08-24T12:13:45Z;2014-08-24T12:13:45Z;193115.0;haf;Work in progress, extracted from working code;
+271;1317.0;754016a738bf3c6b8bff82997742c7a81e659443;;122.0;53190446.0;issue;2014-08-24T12:13:45Z;2014-08-24T12:13:45Z;193115.0;haf;Work in progress, extracted from working code;
+272;1285.0;2bdd1b7cc8e7f6b7ada24b86c01788f23ea9074f;;132.0;56262472.0;issue;2014-09-20T09:35:54Z;2014-09-20T09:35:54Z;193115.0;haf;@karaaie thank you!;
+273;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;58622308.0;issue;2014-10-10T07:40:12Z;2014-10-10T07:41:25Z;7137845.0;devployment;"What I'm not 100% sure is about access rights for reading the registry. But for what I saw every user should at least have read access to the keys.
+
+As my Ruby'isch is a bit rusty and I'm unfortunately not the most experienced test writer I have no idea how to test this change. But as far as I can judge the msbuild.exe discovery isn't tested at all atm.
+
+Maybe it is something that could help for msbuild discovery. ";
+274;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;58641118.0;issue;2014-10-10T11:01:18Z;2014-10-10T11:01:18Z;7137845.0;devployment;Thanks for the feedback. Will check.;
+275;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;58675956.0;issue;2014-10-10T15:57:54Z;2014-10-10T15:57:54Z;217842.0;AnthonyMastrean;@haf Are we going back to being in charge of all possible install paths? I stripped all path searching out of 1.0 because it was getting crazy.;
+276;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;58676345.0;issue;2014-10-10T16:00:44Z;2014-10-10T16:00:44Z;193115.0;haf;"I think the msbuild is a such a frequently used path that it should be searched for actually...
+
+For all the other tools, no, I don't think we should hard-code them. But in fact, I as a the author of most of the code in this repo for this version, don't know the path of msbuild on the top of my head.
+
+If the user doesn't find msbuild through the 'hard-coded' paths, then they might as well set the msbuild binary on the user/system path like is the custom when using console applications, so I'm not *that* concerned about changes to this particular code.";
+277;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;58985824.0;issue;2014-10-14T03:30:06Z;2014-10-14T03:30:06Z;217842.0;AnthonyMastrean;@haf I can back that up :);
+278;1339.0;afa780a15b3813e9dc8c8b433b63475dfc391738;;142.0;64601368.0;issue;2014-11-26T13:06:39Z;2014-11-26T13:06:39Z;193115.0;haf;"Sweet! Thank you for your improvement!
+
+I'll merge what you have and if you want to use the comment I gave, another PR. =)";
+279;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;64601519.0;issue;2014-11-26T13:08:09Z;2014-11-26T13:08:09Z;193115.0;haf;@devployment Have you tested this enough to warrant a merge? I'm open to merging this, unless you have any reason not to?;
+280;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;64820017.0;issue;2014-11-27T18:23:27Z;2014-11-27T18:23:27Z;7137845.0;devployment;@haf I made a few changes related to the comments. But to be honest haven't test it that much. Currently changing company so that I haven't been involved in the build things the last weeks too much. Will check over the weekend and push the changes I made. I think they are currently running on the build server(s) without issues. Ok for you?;
+281;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;64820477.0;issue;2014-11-27T18:30:38Z;2014-11-27T18:30:38Z;193115.0;haf;"We're only running integration tests on unix though, so the build server doesn't apply to your PR.
+
+If you try it out during the weekend and tell me it's good, then I'll merge :)";
+282;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;64820591.0;issue;2014-11-27T18:32:17Z;2014-11-27T18:32:17Z;7137845.0;devployment;I meant our build server(s) where my changes are currently running for a few weeks. Not the Travis CI build in here. :) I'll check and get in touch again.;
+283;1350.0;cabb6f323c87e10e1708813e4f436f596bb001b8;;146.0;65054785.0;issue;2014-12-01T11:55:33Z;2014-12-01T11:55:33Z;193115.0;haf;Thanks!;
+284;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;68520856.0;issue;2015-01-02T11:29:43Z;2015-01-02T11:29:43Z;193115.0;haf;Ping and happy new year! Long running PR coming to an end? =);
+285;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;68639752.0;issue;2015-01-04T16:56:44Z;2015-01-04T16:57:01Z;7137845.0;devployment;"Oh darn. That's indeed long running. :) But happy new year as well.
+Just committed the minor changes I made. It's checking against the proposed MSBuildToolsPath key.
+Checked it now on several machines including my new DEV machine. Found no installation that caused issues. Happy to merge if you are. :)";
+286;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;68645424.0;issue;2015-01-04T19:31:37Z;2015-01-04T19:31:37Z;193115.0;haf;"Excellent ;)";
+287;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;69239138.0;issue;2015-01-08T19:59:01Z;2015-01-08T19:59:01Z;40084.0;briandonahue;"@haf Was this merged after 2.3.14 was pushed?  Don't see it there and am itching to get this fix.  Is there a way to easily pull the latest source in for stuff like this.  I am not a gems expert :)
+
+Thanks!";
+288;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;69239617.0;issue;2015-01-08T20:01:54Z;2015-01-08T20:01:54Z;193115.0;haf;Released v2.3.15;
+289;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;69239873.0;issue;2015-01-08T20:03:34Z;2015-01-08T20:03:34Z;193115.0;haf;"Here's what you specify in your gemfile to fetch directly from this repository:
+
+``` bash
+gem 'albacore', :git => 'https://github.com/Albacore/albacore.git'
+```
+
+
+http://bundler.io/git.html";
+290;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;69239913.0;issue;2015-01-08T20:03:49Z;2015-01-08T20:03:49Z;40084.0;briandonahue;"Thanks!  I think maybe I spoke too soon anyway.  I think it may be an x64 issue or something, as t doesn't seem to hit the changed logic.  Running form Git Bash shell.
+";
+291;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;69239977.0;issue;2015-01-08T20:04:12Z;2015-01-08T20:04:12Z;40084.0;briandonahue;oh, awesome - great to know about retrieving from source!;
+292;1301.0;676d3415785187f97a6e870f7affce731ff40b2d;;140.0;69240101.0;issue;2015-01-08T20:04:57Z;2015-01-08T20:04:57Z;193115.0;haf;cheers;
