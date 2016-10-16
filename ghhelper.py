@@ -35,11 +35,6 @@ class GithubClient:
 		auth=(self.credentials["username"], self.credentials["oauth_token"])
 		response = requests.get(resource_uri, auth=auth, headers=headers)
 
-		# TODO : Support page navigation
-		# https://developer.github.com/guides/traversing-with-pagination/
-		if "Link" in response.headers:
-			ipdb.set_trace()
-
 		if response.status_code == 404:
 			response = None
 		elif response.status_code != 200:
