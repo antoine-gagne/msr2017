@@ -84,7 +84,6 @@ class GithubClient:
 		return response
 
 	def check_rate_limit(self):
-		headers={'User-Agent': self.user_agent}
 		query = "%s/rate_limit?"%(self.api_base)
-		response = self.make_request(query, headers)
+		response = self.make_request(query)
 		return response
