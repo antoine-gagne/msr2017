@@ -10,6 +10,8 @@ import json
 import pandas
 import sys
 import os
+import datetime
+import time
 from pprint import pprint
 
 #initial files
@@ -133,6 +135,7 @@ if __name__ == "__main__":
 	#======
 	currentPrj =""
 	completed=False
+	startTime = time.time()
 	try:
 	  	print "Fetching comments..."
 	  	index=0
@@ -216,6 +219,7 @@ if __name__ == "__main__":
 
 
 		print "Fetching completed!"
+		print "Duration : %s"%(str(datetime.timedelta(seconds=time.time()-startTime)))
 		completed = True
 
 		outData.to_csv(outputfile, sep=';', encoding='utf-8', escapechar='\\')
@@ -228,6 +232,8 @@ if __name__ == "__main__":
 			outData = outData[outData["gh_project_name"] != currentPrj]
 			with open(partialOutputfile, 'a') as f:
 				outData.to_csv(f, header=False, sep=';', encoding='utf-8', escapechar='\\')
+				print "An error occured. Partial data dumped in %s"%(partialOutputfile)
+				print "Relauching this scrpit will retrieve it and try to finish the process."
 	
 
 
