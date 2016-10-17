@@ -1,6 +1,8 @@
 import requests
 from time import sleep
 import ipdb
+import time
+import sys
 
 # TODO Move this to some utils file
 
@@ -15,7 +17,14 @@ class GithubClient:
 	api_base = "https://api.github.com"
 	default_headers = {'User-Agent': "LOG6307-team-project", 'Accept': 'application/vnd.github.v3.raw+json'}
 	verbose = False # For debugging
+	
+	# GitHub requests limits info
 	nbRequestsMade = 0;
+	limit=0
+	remaining=0
+	resetTime=0
+
+	init = True
 
 	def __init__(self, credentials=None, verbose=False, ignoring_errors=False):
 		if not credentials:
@@ -23,6 +32,12 @@ class GithubClient:
 		self.credentials = credentials
 		self.verbose = verbose
 		self.ignoring_errors = ignoring_errors
+
+		# We first get the api requests limit
+		self.get_rate_limit_info()
+		self.init = False
+		print "GitHub api request limit info:\nlimit : %s\nremaining : %s\nreset : %s\n"%(self.limit, self.remaining, self.resetTime)
+
 
 	def make_request(self, resource_uri, headers=''):
 
@@ -33,6 +48,11 @@ class GithubClient:
 		if self.verbose:
 			print "Fetching %s" % resource_uri
 		auth=(self.credentials["username"], self.credentials["oauth_token"])
+
+		if self.nbRequestsMade >= self.limit and not self.init:
+			print "GitHub api request limit reached."
+			self.wait_for_limit_reset()
+
 		response = requests.get(resource_uri, auth=auth, headers=headers)
 
 		if response.status_code == 404:
@@ -87,3 +107,20 @@ class GithubClient:
 		query = "%s/rate_limit?"%(self.api_base)
 		response = self.make_request(query)
 		return response
+
+	def get_rate_limit_info(self):
+		response = self.check_rate_limit()
+		if response != None and response.status_code == 200:
+			self.limit = response.json()["rate"]["limit"]
+			self.remaining = response.json()["rate"]["remaining"]
+			self.resetTime = response.json()["rate"]["reset"]
+
+	def wait_for_limit_reset(self):
+		# We wait the specified amount of time if the api request limit is reached
+		waitTime = self.resetTime - time.time() + 10
+		print "The limit will be reset in %s seconds"%(waitTime)
+		while waitTime > 0:
+			print "%s seconds remaining..."%(waitTime)
+			sleep(min(10*60, waitTime))
+			waitTime = waitTime - 10*60
+		self.get_rate_limit_info()

@@ -14,10 +14,10 @@ from pprint import pprint
 
 #initial files
 configFile = "./keysconfig.txt"
-#travisData = "travistorrent_30_9_2016.csv"
+travisData = "travistorrent_30_9_2016.csv"
 
 #DEBUG
-travisData = "albacore.csv"
+#travisData = "albacore.csv"
 
 # Output
 outputfile = "./data/comments.csv"
@@ -75,8 +75,8 @@ def build_comment_data(cData, job, commitId, cType, reactions=""):
 		cType,
 		cData["created_at"],
 		cData["updated_at"],
-		cData["user"]["id"],
-		cData["user"]["login"],
+		cData["user"]["id"] if cData["user"] else None,
+		cData["user"]["login"] if cData["user"] else None,
 		cData["body"],
 		reactions]
 	return data;
@@ -129,12 +129,9 @@ if __name__ == "__main__":
 
   	#DEBUG
   	#======
-  	albacore = td[td["gh_project_name"] == "Albacore/albacore"]
-	#albacore.to_csv("albacore.csv")
-	#ipdb.set_trace()
-  	projectNames = albacore["gh_project_name"]
-  	projectNames = projectNames.drop_duplicates()
-  	#ipdb.set_trace()
+  	# albacore = td[td["gh_project_name"] == "Albacore/albacore"]
+  	# projectNames = albacore["gh_project_name"]
+  	# projectNames = projectNames.drop_duplicates()
 	#======
 
   	print "Fetching comments..."
