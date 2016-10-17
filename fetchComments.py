@@ -12,6 +12,7 @@ import sys
 import os
 import datetime
 import time
+import signal
 from pprint import pprint
 
 #initial files
@@ -85,8 +86,13 @@ def build_comment_data(cData, job, commitId, cType, reactions=""):
 		reactions]
 	return data;
 
+def signal_handler(signum, frame):
+    raise KeyboardInterrupt, "Signal handler"
 
 if __name__ == "__main__":
+
+	# handle Ctrl+C
+	signal.signal(signal.SIGINT, signal_handler)
 
 	# Init github client
 	creds = get_from_config("gh_client",["username","oauth_token"])
@@ -123,10 +129,11 @@ if __name__ == "__main__":
 	outData	= None
 	fromPartialFile = os.path.isfile(partialOutputfile)
 	if fromPartialFile:
-		outData = pandas.read_csv(partialOutputfile)
+		outData = pandas.read_csv(partialOutputfile, sep=';', encoding='utf-8', escapechar='\\', index_col=0)
 	else:
  		outData = pandas.DataFrame(columns=dfColumns)
 
+	#ipdb.set_trace()
   	#DEBUG
   	#======
   	# albacore = td[td["gh_project_name"] == "Albacore/albacore"]
@@ -146,12 +153,13 @@ if __name__ == "__main__":
 	  			# We already fetched this project's comments during a previous run.
 				print "Progress : %s/%s : Skipping %s. Data already fetched."%(index,len(projectNames),prj)	  			
 				index = index+1
-
+				continue
+			#if index==2:raise Exception('test')
 
 	  		print "Progress : %s/%s : fetching comments for %s"%(index,len(projectNames),prj)
 	  		currentPrj = prj	
 	  		prjData = td[td.gh_project_name == prj]
-	  		
+
 	  		# We first get all repo comments
 	  		nbMatched=0
 			repoComments = util.fetch_comments(util.repoStr, prj)
@@ -225,15 +233,16 @@ if __name__ == "__main__":
 		outData.to_csv(outputfile, sep=';', encoding='utf-8', escapechar='\\')
 		os.remove(partialOutputfile)
 
-	except:
+	except(KeyboardInterrupt, Exception):
 		# If an error occured, we dump the recovered data so we don't have to fetch it again
 		if not completed and currentPrj:
 			# But first, we remove the data concerning the project that didn't complete
-			outData = outData[outData["gh_project_name"] != currentPrj]
-			with open(partialOutputfile, 'a') as f:
-				outData.to_csv(f, header=False, sep=';', encoding='utf-8', escapechar='\\')
-				print "An error occured. Partial data dumped in %s"%(partialOutputfile)
-				print "Relauching this scrpit will retrieve it and try to finish the process."
+			dump = outData[outData["gh_project_name"] != currentPrj]
+			dump.to_csv(partialOutputfile, sep=';', encoding='utf-8', escapechar='\\')
+			print "An error occured. Partial data dumped in %s"%(partialOutputfile)
+			print "Relauching this scrpit will retrieve it and try to finish the process."
+			#ipdb.set_trace()
+		raise # To keep the stack trace
 	
 
 
