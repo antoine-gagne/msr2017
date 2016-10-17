@@ -2,6 +2,7 @@ import requests
 from time import sleep
 import ipdb
 import time
+import datetime
 import sys
 
 # TODO Move this to some utils file
@@ -36,7 +37,8 @@ class GithubClient:
 		# We first get the api requests limit
 		self.get_rate_limit_info()
 		self.init = False
-		print "GitHub api request limit info:\nlimit : %s\nremaining : %s\nreset : %s\n"%(self.limit, self.remaining, self.resetTime)
+		resetTime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.resetTime))
+		print "GitHub api request limit info:\nlimit : %s\nremaining : %s\nreset : %s\n"%(self.limit, self.remaining, resetTime)
 
 
 	def make_request(self, resource_uri, headers=''):
@@ -117,10 +119,12 @@ class GithubClient:
 
 	def wait_for_limit_reset(self):
 		# We wait the specified amount of time if the api request limit is reached
+		resetTime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.resetTime))
+		print "The limit will be reset at : %s"%(resetTime)
 		waitTime = self.resetTime - time.time() + 10
-		print "The limit will be reset in %s seconds"%(waitTime)
 		while waitTime > 0:
-			print "%s seconds remaining..."%(waitTime)
+			remaining = datetime.timedelta(seconds=waitTime)
+			print "Remaining : %s"%(str(remaining))
 			sleep(min(10*60, waitTime))
 			waitTime = waitTime - 10*60
 		self.get_rate_limit_info()

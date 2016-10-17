@@ -8,7 +8,6 @@ import ghhelper
 import util
 import json
 import pandas
-import time
 import sys
 from pprint import pprint
 
@@ -116,17 +115,6 @@ if __name__ == "__main__":
 
  	outData = pandas.DataFrame(columns=dfColumns)
 
-	# We first get the api requests limit
-	response = ghc.check_rate_limit()
-	limit=0
-	remaining=0
-	resetTime=0
-	if response != None and response.status_code == 200:
-		limit = response.json()["rate"]["limit"]
-		remaining = response.json()["rate"]["remaining"]
-		resetTime = response.json()["rate"]["reset"]
-		print "GitHub api request limit info:\nlimit : %s\nremaining : %s\nreset : %s\n"%(limit, remaining, resetTime)
-
   	#DEBUG
   	#======
   	# albacore = td[td["gh_project_name"] == "Albacore/albacore"]
@@ -203,14 +191,6 @@ if __name__ == "__main__":
 			print "\t%s matched"%(nbMatched),
 		print ""
 
-		# We wait the specified amount of time if the api request limit is reached
-		if ghc.nbRequestsMade >= limit:
-			waitTime = resetTime - time.time() + 10
-			print "GitHub api request limit reached. The limit will be reset in %s seconds"%(waitTime)
-			while waitTime > 0:
-				print "%s seconds remaining..."%(waitTime)
-				sleep(min(10*60, waitTime))
-				waitTime = waitTime - 10*60
 		index=index+1
 
 
