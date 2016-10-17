@@ -48,7 +48,7 @@ class Util:
 
 		response = self.ghc.get_pull_request_commits(prj, prNum)
 		if response != None and response.status_code == 200:
-			commits = self.append_next_items(commits, response.json())
+			commits = self.fetch_and_append_next_items(commits, response.json())
 		
 		return [c["sha"] for c in commits]
 
@@ -65,7 +65,7 @@ class Util:
 		return next_link
 
 
-	def append_next_items(self, items, response):
+	def fetch_and_append_next_items(self, items, response):
 		# There is a max of 100 items that can be returned by GitHub's API
 		# The link for the next results are in the response's header
 		next = self.get_next_link(response)
@@ -90,6 +90,6 @@ class Util:
 			response = self.ghc.get_issue_comments(prj)
 
 		if response != None and response.status_code == 200:
-			comments = response.json()
+			comments = self.fetch_and_append_next_items(response.json(), response)
 
-		return self.append_next_items(comments, response)
+		return comments
