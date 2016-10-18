@@ -51,8 +51,9 @@ class GithubClient:
 			print "Fetching %s" % resource_uri
 		auth=(self.credentials["username"], self.credentials["oauth_token"])
 
-		if self.nbRequestsMade >= self.limit and not self.init:
+		if self.nbRequestsMade >= self.remaining and not self.init:
 			print "GitHub api request limit reached."
+			#ipdb.set_trace()
 			self.wait_for_limit_reset()
 			self.get_rate_limit_info()
 
