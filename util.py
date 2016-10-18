@@ -13,6 +13,12 @@ class Util:
 	prStr='pull_r'
 	issueStr='issue'
 
+	configFile = "./keysconfig.txt"
+	travisData = "travistorrent_30_9_2016.csv"
+	filteredTravisData = "./data/filteredTravisData.csv"
+	commentsDir = "./data/comments/"
+	partialOutputfile = "./data/comments_partial.csv"
+
 	ghc = None
 
 	def __init__(self, github_client):

@@ -15,13 +15,7 @@ import time
 import signal
 from pprint import pprint
 
-#initial files
-configFile = "./keysconfig.txt"
-travisData = "travistorrent_30_9_2016.csv"
-filteredTravisData = "./data/filteredTravisData.csv"
-
-# Output
-#commentsDir = "./data/comments/"
+#commentsDir = util.commentsDir
 commentsDir = "./data/comments-test/"
 
 partialOutputfile = "./data/comments_partial.csv"
@@ -55,12 +49,12 @@ if __name__ == "__main__":
 	signal.signal(signal.SIGINT, signal_handler)
 
 	# Init github client
-	creds = get_from_config(configFile, "gh_client",["username","oauth_token"])
+	creds = get_from_config(util.configFile, "gh_client",["username","oauth_token"])
 	ghc = ghhelper.GithubClient(credentials=creds, ignoring_errors=True)
 	util = util.Util(ghc)
 
 	print "Loading Travis data..."
-	td = util.load_travis_data(filteredTravisData)
+	td = util.load_travis_data(util.filteredTravisData)
 
 	projectNames = td["gh_project_name"]
 	projectNames = projectNames.drop_duplicates()
