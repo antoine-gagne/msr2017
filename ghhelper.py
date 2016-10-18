@@ -48,11 +48,8 @@ class GithubClient:
 		auth=(self.credentials["username"], self.credentials["oauth_token"])
 
 		if self.remaining <= 0:
-			# We check if the limit has been reset
-			self.get_rate_limit_info()
-			if self.remaining <= 0:
-				print "GitHub api request limit reached."
-				self.wait_for_limit_reset()
+			print "GitHub api request limit reached."
+			self.wait_for_limit_reset()
 
 		response = requests.get(resource_uri, auth=auth, headers=headers)
 
@@ -122,7 +119,7 @@ class GithubClient:
 		# We wait the specified amount of time if the api request limit is reached
 		resetTime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.resetTime))
 		print "The limit will be reset at : %s"%(resetTime)
-		waitTime = self.resetTime - time.time() + 10
+		waitTime = self.resetTime - time.time()
 		while waitTime > 0:
 			remaining = datetime.timedelta(seconds=waitTime)
 			print "Remaining : %s"%(str(remaining))
