@@ -164,11 +164,17 @@ if __name__ == "__main__":
 			print "\t%s repo comments found"%(len(repoComments)),
 			if repoComments:
 				outData[prj][util.repoStr] = {}
+				alreadySearched = {}
 				for repoComment in repoComments:
 					commitId = repoComment["commit_id"]
 
 					# We try to find an associated commit id in the Travis dataset
-					jobs = util.find_build_jobs_by_commit(prjData, commitId)
+					if commitId in alreadySearched:
+						jobs = alreadySearched[commitId]
+					else:
+						jobs = util.find_build_jobs_by_commit(prjData, commitId)
+
+					alreadySearched[commitId] = jobs
 					if not jobs.empty:
 						repoC = outData[prj][util.repoStr]
 						for label, job in jobs.iterrows():
@@ -187,6 +193,7 @@ if __name__ == "__main__":
 			print "\t%s pull request comments found"%(len(pullRequestComments)),
 			if pullRequestComments:
 				outData[prj][util.prStr] = {}
+				alreadySearched = {}
 				for prComment in pullRequestComments:
 
 					#There are two fields associated with commit 
@@ -194,9 +201,16 @@ if __name__ == "__main__":
 					originalCommitId = prComment["original_commit_id"]
 
 					# We try to find an associated commit id in the Travis dataset for both
-					jobs = util.find_build_jobs_by_commit(prjData, commitId)
-					if jobs.empty:
-						jobs = util.find_build_jobs_by_commit(prjData, originalCommitId)
+					if commitId in alreadySearched:
+						jobs = alreadySearched[commitId]
+					elif originalCommitId in alreadySearched:
+						jobs = alreadySearched[originalCommitId]
+					else:
+						jobs = util.find_build_jobs_by_commit(prjData, commitId)
+						alreadySearched[commitId] = jobs
+						if jobs.empty:
+							jobs = util.find_build_jobs_by_commit(prjData, originalCommitId)
+							alreadySearched[originalCommitId] = jobs
 
 					if not jobs.empty:
 						pull_rC = outData[prj][util.prStr]
@@ -218,20 +232,26 @@ if __name__ == "__main__":
 			print "\t%s issue comments found"%(len(issueComments)),
 			if issueComments:
 				outData[prj][util.issueStr] = {}
+				alreadySearched = {}
 				for issueComment in issueComments:
 
 					# We can find the pull request number in the url...
 					urlParts = issueComment["issue_url"].split("/")
 					prNum = int(urlParts[len(urlParts)-1])
 
-					jobs = prjData[prjData.gh_pull_req_num == prNum]
+					if prNum in alreadySearched:
+						jobs = alreadySearched[prNum]
+					else:
+						jobs = prjData[prjData.gh_pull_req_num == prNum]
+
+					alreadySearched[prNum] = jobs
 					if not jobs.empty:
 						issueC = outData[prj][util.issueStr]
 						for label, job in jobs.iterrows():
 							travis_data_row = int(job.row)
 							if travis_data_row not in issueC:
 								issueC[travis_data_row] = []
-							issueC[travis_data_row].append(build_comment_data(issueComment, commitId));
+							issueC[travis_data_row].append(build_comment_data(issueComment, job.git_commit));
 
 						nbMatched=nbMatched+1
 							
