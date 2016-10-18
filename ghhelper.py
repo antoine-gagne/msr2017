@@ -102,7 +102,6 @@ class GithubClient:
 		return response
 
 	def check_rate_limit(self):
-		# Checking the rate limit does not count as making a request according to the GitHub API
 		query = "%s/rate_limit?"%(self.api_base)
 		auth=(self.credentials["username"], self.credentials["oauth_token"])
 		response = requests.get(query, auth=auth, headers=self.default_headers)
