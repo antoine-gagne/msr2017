@@ -13,7 +13,6 @@ class Util:
 	prStr='pull_r'
 	issueStr='issue'
 
-	configFile = "./keysconfig.txt"
 	travisData = "travistorrent_30_9_2016.csv"
 	filteredTravisData = "./data/filteredTravisData.csv"
 	commentsDir = "./data/comments/"
@@ -32,25 +31,9 @@ class Util:
 
 		if jobs.empty:
 			# If not found, it may be in the "git_commits" (with an 's') column
-			jobs = pandas.DataFrame(columns=list(data.columns.values))
-		 	sub = data.git_commits
-		 	for label, commitStr in sub.iteritems():
-				commits = commitStr.split('#')
-				for c in commits:
-					if c==commitId:
-						jobs.loc[len(jobs)] = data.loc[label]
-		
+		 	jobs = data[[ commitId in commits for commits in data.git_commits ]]
+		 			
 		return jobs
-
-	def get_from_config(config_file, section, config_tags):
-		# Reads the configFile file and returns the config tags located in specified section.
-		config = ConfigParser.ConfigParser()
-		config.read(config_file)
-		if isinstance(config_tags,list):
-			config_data = {k: config.get(section, k) for k in config_tags}
-		else:
-			config_data = {config_tags: config.get(section, config_tags)}
-		return config_data
 
 	def load_travis_data(self, travis_data_file):
 		# Loads and filter the travis dataset.
@@ -79,10 +62,7 @@ class Util:
 				"gh_by_core_team_member",
 				"gh_is_pr", 
 				"gh_pull_req_num", 
-				"gh_description_complexity",
-				"gh_num_commit_comments", 
-				"gh_num_pr_comments", 
-				"gh_num_issue_comments"
+				"gh_description_complexity"
 				]
 
 		df = pandas.read_csv(travis_data_file)
