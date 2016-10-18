@@ -18,6 +18,7 @@ from pprint import pprint
 #initial files
 configFile = "./keysconfig.txt"
 travisData = "travistorrent_30_9_2016.csv"
+filteredTravisData = "./data/filteredTravisData.csv"
 
 #DEBUG
 #travisData = "albacore.csv"
@@ -42,8 +43,14 @@ def load_travis_data():
 	# This could indicates that they did not parsed their data correctly
 	travisFields = 	[
 			"row",
+			"tr_build_id",
 			"tr_build_number", 
-			"tr_status", 
+			"tr_num_jobs",
+			"tr_jobs",
+			"tr_job_id",
+			"tr_status",
+			"tr_duration",
+			"tr_started_at", 
 			"tr_tests_ran",
 			"tr_tests_failed", 
 			"gh_project_name", 
@@ -63,9 +70,21 @@ def load_travis_data():
 			"gh_num_issue_comments"
 			]
 
-	df = pandas.read_csv(travisData)
+	df = pandas.read_csv(filteredTravisData)
 	data = df[travisFields]
-	travisFields.remove('row')
+	#travisFields.remove('row')
+
+	#DEBUG
+	#==================
+	# Creating subset of travis data where : 
+	# Team size >= 10 and nb line of codes >= 10000
+	# == 135 projects
+	#sub = data[ (data["gh_team_size"] >= 10) & (data["gh_sloc"] >= 10000) ]
+	#sub.to_csv("./data/filteredTravisData.csv", encoding='utf-8', index=False)
+	ipdb.set_trace()
+	#==================
+
+
 	return data.drop_duplicates(subset=travisFields)
 
 def build_comment_data(cData, job, commitId, cType, reactions=""):
@@ -139,6 +158,7 @@ if __name__ == "__main__":
   	# albacore = td[td["gh_project_name"] == "Albacore/albacore"]
   	# projectNames = albacore["gh_project_name"]
   	# projectNames = projectNames.drop_duplicates()
+
 	#======
 	currentPrj =""
 	completed=False
