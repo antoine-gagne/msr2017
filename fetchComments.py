@@ -24,8 +24,8 @@ filteredTravisData = "./data/filteredTravisData.csv"
 #travisData = "albacore.csv"
 
 # Output
-outputfile = "./data/comments.csv"
-partialOutputfile = "./data/comments_partial.csv"
+outputfile = "./data/comments.json"
+partialOutputfile = "./data/comments_partial.json"
 
 def get_from_config(section, config_tags):
 	# Reads the configFile file and returns the config tags located in specified section.
@@ -81,28 +81,24 @@ def load_travis_data():
 	# == 135 projects
 	#sub = data[ (data["gh_team_size"] >= 10) & (data["gh_sloc"] >= 10000) ]
 	#sub.to_csv("./data/filteredTravisData.csv", encoding='utf-8', index=False)
-	ipdb.set_trace()
+	#ipdb.set_trace()
 	#==================
-
-
 	return data.drop_duplicates(subset=travisFields)
 
-def build_comment_data(cData, job, commitId, cType, reactions=""):
+
+
+def build_comment_data(cData, commitId, reactions=""):
 	#ipdb.set_trace()
-	data = [
-		job.row,
-		job.gh_project_name,
-		job.git_commit,
-		commitId,
-		job.gh_pull_req_num,
-		cData["id"],
-		cType,
-		cData["created_at"],
-		cData["updated_at"],
-		cData["user"]["id"] if cData["user"] else None,
-		cData["user"]["login"] if cData["user"] else None,
-		cData["body"],
-		reactions]
+	data = {
+		"commit_found" : commitId,
+		"gh_comment_id" : cData["id"],
+		"gh_user_id" : cData["user"]["id"] if cData["user"] else None,
+		"gh_user_login" : cData["user"]["login"] if cData["user"] else None,
+		"gh_created_at" : cData["created_at"],
+		"gh_updated_at" : cData["updated_at"],
+		"gh_body" : cData["body"],
+		"gh_reactions" : reactions
+		}
 	return data;
 
 def signal_handler(signum, frame):
@@ -125,32 +121,13 @@ if __name__ == "__main__":
 	projectNames = projectNames.drop_duplicates()
 	projectNames = projectNames.sort_values()
 
-	#dfColumns = list(td.columns.values)
-	dfColumns = list()
-	headers = [
-		"row",
-		"gh_project_name",
-		"job_commit",
-		"comment_commit",
-		"gh_pull_req_num",
-		"gh_comment_id",
-		"gh_comment_type",
-		"gh_created_at",
-		"gh_updated_at",
-		"gh_user_id",
-		"gh_user_login",
-		"gh_body",
-		"gh_reactions"
-	]
-	dfColumns.extend(headers)
-
 	# We check if there is already a file partially created from a previous run
-	outData	= None
+	outData	= {}
 	fromPartialFile = os.path.isfile(partialOutputfile)
 	if fromPartialFile:
-		outData = pandas.read_csv(partialOutputfile, sep=';', encoding='utf-8', escapechar='\\', index_col=0)
-	else:
- 		outData = pandas.DataFrame(columns=dfColumns)
+		print "Partial file from a previous job found. Loading it..."
+		with open(partialOutputfile) as jsonFile:    
+    			outData = json.load(jsonFile)
 
 	#ipdb.set_trace()
   	#DEBUG
@@ -168,13 +145,14 @@ if __name__ == "__main__":
 	  	index=0
 	  	for label, prj in projectNames.iteritems():
 
-	  		o = outData[outData["gh_project_name"] == prj]
-	  		if not o.empty:
+	  		if prj in outData:
 	  			# We already fetched this project's comments during a previous run.
 				print "Progress : %s/%s : Skipping %s. Data already fetched."%(index,len(projectNames),prj)	  			
 				index = index+1
 				continue
 			#if index==2:raise Exception('test')
+
+			outData[prj] = {}
 
 	  		print "Progress : %s/%s : fetching comments for %s"%(index,len(projectNames),prj)
 	  		currentPrj = prj	
@@ -185,14 +163,20 @@ if __name__ == "__main__":
 			repoComments = util.fetch_comments(util.repoStr, prj)
 			print "\t%s repo comments found"%(len(repoComments)),
 			if repoComments:
+				outData[prj][util.repoStr] = {}
 				for repoComment in repoComments:
 					commitId = repoComment["commit_id"]
 
 					# We try to find an associated commit id in the Travis dataset
 					jobs = util.find_build_jobs_by_commit(prjData, commitId)
 					if not jobs.empty:
+						repoC = outData[prj][util.repoStr]
 						for label, job in jobs.iterrows():
-							outData.loc[len(outData)] = build_comment_data(repoComment, job, commitId,util.repoStr);
+							travis_data_row = int(job.row)
+							if travis_data_row not in repoC:
+								repoC[travis_data_row] = []
+							repoC[travis_data_row].append(build_comment_data(repoComment, commitId));
+
 						nbMatched=nbMatched+1
 				print "\t%s matched"%(nbMatched),
 			print ""
@@ -202,6 +186,7 @@ if __name__ == "__main__":
 			pullRequestComments = util.fetch_comments(util.prStr, prj)
 			print "\t%s pull request comments found"%(len(pullRequestComments)),
 			if pullRequestComments:
+				outData[prj][util.prStr] = {}
 				for prComment in pullRequestComments:
 
 					#There are two fields associated with commit 
@@ -214,8 +199,13 @@ if __name__ == "__main__":
 						jobs = util.find_build_jobs_by_commit(prjData, originalCommitId)
 
 					if not jobs.empty:
+						pull_rC = outData[prj][util.prStr]
 						for label, job in jobs.iterrows():
-							outData.loc[len(outData)] = build_comment_data(prComment, job, commitId, util.prStr);				
+							travis_data_row = int(job.row)
+							if travis_data_row not in pull_rC:
+								pull_rC[travis_data_row] = []
+							pull_rC[travis_data_row].append(build_comment_data(prComment, commitId));
+
 						nbMatched=nbMatched+1
 				print "\t%s matched"%(nbMatched),
 			print ""	
@@ -227,6 +217,7 @@ if __name__ == "__main__":
 			issueComments = util.fetch_comments(util.issueStr, prj)
 			print "\t%s issue comments found"%(len(issueComments)),
 			if issueComments:
+				outData[prj][util.issueStr] = {}
 				for issueComment in issueComments:
 
 					# We can find the pull request number in the url...
@@ -235,8 +226,13 @@ if __name__ == "__main__":
 
 					jobs = prjData[prjData.gh_pull_req_num == prNum]
 					if not jobs.empty:
+						issueC = outData[prj][util.issueStr]
 						for label, job in jobs.iterrows():
-							outData.loc[len(outData)] = build_comment_data(issueComment, job, "", util.issueStr);
+							travis_data_row = int(job.row)
+							if travis_data_row not in issueC:
+								issueC[travis_data_row] = []
+							issueC[travis_data_row].append(build_comment_data(issueComment, commitId));
+
 						nbMatched=nbMatched+1
 							
 				print "\t%s matched"%(nbMatched),
@@ -257,8 +253,9 @@ if __name__ == "__main__":
 		# If an error occured, we dump the recovered data so we don't have to fetch it again
 		if not completed and currentPrj:
 			# But first, we remove the data concerning the project that didn't complete
-			dump = outData[outData["gh_project_name"] != currentPrj]
-			dump.to_csv(partialOutputfile, sep=';', encoding='utf-8', escapechar='\\')
+			outData.pop(currentPrj, None)
+			with open(partialOutputfile, 'w') as outfile:
+    				json.dump(outData, outfile)
 			print "An error occured. Partial data dumped in %s"%(partialOutputfile)
 			print "Relauching this scrpit will retrieve it and try to finish the process."
 			#ipdb.set_trace()
