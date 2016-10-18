@@ -54,6 +54,7 @@ class GithubClient:
 		if self.nbRequestsMade >= self.limit and not self.init:
 			print "GitHub api request limit reached."
 			self.wait_for_limit_reset()
+			self.get_rate_limit_info()
 
 		response = requests.get(resource_uri, auth=auth, headers=headers)
 
@@ -127,4 +128,3 @@ class GithubClient:
 			print "Remaining : %s"%(str(remaining))
 			sleep(min(10*60, waitTime))
 			waitTime = waitTime - 10*60
-		self.get_rate_limit_info()
