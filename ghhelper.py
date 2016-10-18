@@ -65,7 +65,7 @@ class GithubClient:
 				ipdb.set_trace()
 			else:
 				print "Status code : %s\tContent : %s"%(response.status_code, response.text)
-		sleep(0.1)
+		#sleep(0.1)
 		self.nbRequestsMade = self.nbRequestsMade+1
 		return response
 
