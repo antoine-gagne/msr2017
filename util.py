@@ -73,6 +73,8 @@ class Util:
 			response = self.ghc.make_request(next)		
 			if response != None and response.status_code == 200:
 				items = items + response.json()
+				print "\t%s"%(len(items)),
+				print "%s"%('\r'),
 			next = self.get_next_link(response)
 		return items
 
