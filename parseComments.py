@@ -58,8 +58,7 @@ def append_comments_to_output(outputData, matched, commentsColumn, commentsNbCol
 
 		sortedComments = sorted(comment_data, key=lambda k: k['gh_comment_id'])
 
-		stripped = "".join(c["gh_body"].split())
-		comments = "\n".join(map(lambda c: "%s : %s"%(c["gh_user_login"], stripped ), sortedComments))
+		comments = "".join(map(lambda c: "<COMMENT>%s : %s"%(c["gh_user_login"], " ".join(c["gh_body"].splitlines()) ), sortedComments))
 		
 		# We remove the csv separator char
 		comments = comments.replace(";", "<semicolon>")
@@ -103,13 +102,6 @@ if __name__ == "__main__":
 	td = td.set_index('row')
 	outData = outData.set_index('row')
 
-	# fromPartialFile = os.path.isfile(partialOutputfile)
-	# if fromPartialFile:
-	# 	print "Partial file from a previous job found. Loading it..."
-	# 	with open(partialOutputfile) as jsonFile:    
- #    			outData = json.load(jsonFile)
-	#======
-
 	completed=False
 	startTime = time.time()
   	print "Parsing comments..."
@@ -119,7 +111,7 @@ if __name__ == "__main__":
   		print "Progress : %s/%s : parsing comments for %s"%(index,len(projectNames),prj)
   		prjData = td[td.gh_project_name == prj]
 
-  		if index == 5: break
+  		#if index == 5: break
 
   		# We first get all repo comments
   		nbMatched=0
@@ -210,4 +202,4 @@ if __name__ == "__main__":
 	print "Parsing completed!"
 	print "Duration : %s"%(str(datetime.timedelta(seconds=time.time()-startTime)))
 
-	outData.to_csv("./data/mergedData.csv", sep=';', encoding='utf-8', escapechar='\\')
+	outData.to_csv("./data/mergedData.csv", sep=';', encoding='utf-8')
