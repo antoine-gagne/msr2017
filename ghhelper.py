@@ -20,12 +20,9 @@ class GithubClient:
 	verbose = False # For debugging
 	
 	# GitHub requests limits info
-	nbRequestsMade = 0;
 	limit=0
 	remaining=0
 	resetTime=0
-
-	init = True
 
 	def __init__(self, credentials=None, verbose=False, ignoring_errors=False):
 		if not credentials:
@@ -36,7 +33,6 @@ class GithubClient:
 
 		# We first get the api requests limit
 		self.get_rate_limit_info()
-		self.init = False
 		resetTime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.resetTime))
 		print "GitHub api request limit info:\nlimit : %s\nremaining : %s\nreset : %s\n"%(self.limit, self.remaining, resetTime)
 
@@ -51,11 +47,12 @@ class GithubClient:
 			print "Fetching %s" % resource_uri
 		auth=(self.credentials["username"], self.credentials["oauth_token"])
 
-		if self.nbRequestsMade >= self.remaining and not self.init:
-			print "GitHub api request limit reached."
-			#ipdb.set_trace()
-			self.wait_for_limit_reset()
+		if self.remaining <= 0:
+			# We check if the limit has been reset
 			self.get_rate_limit_info()
+			if self.remaining <= 0:
+				print "GitHub api request limit reached."
+				self.wait_for_limit_reset()
 
 		response = requests.get(resource_uri, auth=auth, headers=headers)
 
@@ -68,7 +65,7 @@ class GithubClient:
 			else:
 				print "Status code : %s\tContent : %s"%(response.status_code, response.text)
 		#sleep(0.1)
-		self.nbRequestsMade = self.nbRequestsMade+1
+		self.remaining = self.remaining - 1
 		return response
 
 	# Specific resources begin here
@@ -108,8 +105,10 @@ class GithubClient:
 		return response
 
 	def check_rate_limit(self):
+		# Checking the rate limit does not count as making a request according to the GitHub API
 		query = "%s/rate_limit?"%(self.api_base)
-		response = self.make_request(query)
+		auth=(self.credentials["username"], self.credentials["oauth_token"])
+		response = requests.get(query, auth=auth, headers=self.default_headers)
 		return response
 
 	def get_rate_limit_info(self):
@@ -129,3 +128,4 @@ class GithubClient:
 			print "Remaining : %s"%(str(remaining))
 			sleep(min(10*60, waitTime))
 			waitTime = waitTime - 10*60
+		self.get_rate_limit_info()
