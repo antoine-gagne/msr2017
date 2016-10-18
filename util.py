@@ -64,18 +64,30 @@ class Util:
 					break;
 		return next_link
 
+	def get_last_page(self, response):
+		last_page=0
+		if "Link" in response.headers:
+			links = response.headers["Link"].split(',')
+			for l in links:
+				link_rel = l.split(';')		
+				if "last" in link_rel[1]:
+					parts = link_rel[0].split('=')
+					last_page = parts[len(parts)-1].replace('>', '')
+					break;
+		return last_page		
 
 	def fetch_and_append_next_items(self, items, response):
 		# There is a max of 100 items that can be returned by GitHub's API
 		# The link for the next results are in the response's header
 		next = self.get_next_link(response)
+		last_page = self.get_last_page(response)
 		while next:
 			response = self.ghc.make_request(next)		
 			if response != None and response.status_code == 200:
 				items = items + response.json()
-				print "\t%s"%(len(items)),
+				print "\t%s/%s"%(len(items), int(last_page)*100),
 				print "%s"%('\r'),
-			next = self.get_next_link(response)
+				next = self.get_next_link(response)
 		return items
 
 
