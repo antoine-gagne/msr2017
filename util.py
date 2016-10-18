@@ -36,6 +36,62 @@ class Util:
 		
 		return jobs
 
+	def get_from_config(config_file, section, config_tags):
+		# Reads the configFile file and returns the config tags located in specified section.
+		config = ConfigParser.ConfigParser()
+		config.read(config_file)
+		if isinstance(config_tags,list):
+			config_data = {k: config.get(section, k) for k in config_tags}
+		else:
+			config_data = {config_tags: config.get(section, config_tags)}
+		return config_data
+
+	def load_travis_data(self, travis_data_file):
+		# Loads and filter the travis dataset.
+		# TODO : Investigate why there are duplicates... 
+		# This could indicates that they did not parsed their data correctly
+		travisFields = 	[
+				"row",
+				"tr_build_id",
+				"tr_build_number", 
+				"tr_num_jobs",
+				"tr_jobs",
+				"tr_job_id",
+				"tr_status",
+				"tr_duration",
+				"tr_started_at", 
+				"tr_tests_ran",
+				"tr_tests_failed", 
+				"gh_project_name", 
+				"gh_lang",
+				"gh_team_size",
+				"git_num_committers",
+				"gh_sloc",
+				"git_commit", 
+				"git_num_commits",
+				"git_commits",
+				"gh_by_core_team_member",
+				"gh_is_pr", 
+				"gh_pull_req_num", 
+				"gh_description_complexity",
+				"gh_num_commit_comments", 
+				"gh_num_pr_comments", 
+				"gh_num_issue_comments"
+				]
+
+		df = pandas.read_csv(travis_data_file)
+		data = df[travisFields]
+		#DEBUG
+		#==================
+		# Creating subset of travis data where : 
+		# Team size >= 10 and nb line of codes >= 10000
+		# == 135 projects
+		#sub = data[ (data["gh_team_size"] >= 10) & (data["gh_sloc"] >= 10000) ]
+		#sub.to_csv("./data/filteredTravisData.csv", encoding='utf-8', index=False)
+		#ipdb.set_trace()
+		#==================
+		return data.drop_duplicates(subset=travisFields)
+
 	def fetch_pull_request(self, prj, prNum):
 		pullRequest = []
 		response = self.ghc.get_pull_requests(prj, prNum)
@@ -85,7 +141,7 @@ class Util:
 			response = self.ghc.make_request(next)		
 			if response != None and response.status_code == 200:
 				items = items + response.json()
-				print "\t%s of ~%s"%(len(items), int(last_page)*100),
+				print "\t%s of approximately %s"%(len(items), int(last_page)*100),
 				print "%s"%('\r'),
 				next = self.get_next_link(response)
 		return items

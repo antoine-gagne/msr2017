@@ -25,57 +25,6 @@ filteredTravisData = "./data/filteredTravisData.csv"
 outputDir = "./data/comments-test/"
 partialOutputfile = "./data/comments_partial.csv"
 
-def get_from_config(section, config_tags):
-	# Reads the configFile file and returns the config tags located in specified section.
-	config = ConfigParser.ConfigParser()
-	config.read(configFile)
-	if isinstance(config_tags,list):
-		config_data = {k: config.get(section, k) for k in config_tags}
-	else:
-		config_data = {config_tags: config.get(section, config_tags)}
-	return config_data
-
-def load_travis_data():
-	# Loads and filter the travis dataset.
-	# TODO : Investigate why there are duplicates... 
-	# This could indicates that they did not parsed their data correctly
-	travisFields = 	[
-			"row",
-			"tr_build_id",
-			"tr_build_number", 
-			"tr_num_jobs",
-			"tr_jobs",
-			"tr_job_id",
-			"tr_status",
-			"tr_duration",
-			"tr_started_at", 
-			"tr_tests_ran",
-			"tr_tests_failed", 
-			"gh_project_name", 
-			"gh_lang",
-			"gh_team_size",
-			"git_num_committers",
-			"gh_sloc",
-			"git_commit", 
-			"git_num_commits",
-			"git_commits",
-			"gh_by_core_team_member",
-			"gh_is_pr", 
-			"gh_pull_req_num", 
-			"gh_description_complexity",
-			"gh_num_commit_comments", 
-			"gh_num_pr_comments", 
-			"gh_num_issue_comments"
-			]
-
-	df = pandas.read_csv(filteredTravisData)
-	data = df[travisFields]
-	#travisFields.remove('row')
-
-	return data.drop_duplicates(subset=travisFields)
-
-
-
 def build_comment_data(cData, commitId, reactions=""):
 	#ipdb.set_trace()
 	data = {
@@ -99,7 +48,7 @@ if __name__ == "__main__":
 	signal.signal(signal.SIGINT, signal_handler)
 
 	# Init github client
-	creds = get_from_config("gh_client",["username","oauth_token"])
+	creds = get_from_config(configFile, "gh_client",["username","oauth_token"])
 	ghc = ghhelper.GithubClient(credentials=creds, ignoring_errors=True)
 	util = util.Util(ghc)
 
