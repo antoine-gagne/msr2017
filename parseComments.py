@@ -16,7 +16,6 @@ import time
 import signal
 from pprint import pprint
 
-partialOutputfile = "./data/comments_partial.csv"
 configFile = "./keysconfig.txt"
 def get_from_config(config_file, section, config_tags):
 		# Reads the configFile file and returns the config tags located in specified section.
@@ -53,18 +52,24 @@ def load_comments(dir, commentsType, project):
 		print "Cannot load file : %s"%(path)
 	return comments
 
-def append_comments_to_output(outputData, matched, columnName):
+def append_comments_to_output(outputData, matched, commentsColumn, commentsNbColumn):
 
 	for travis_data_row, comment_data in matched.iteritems():
 
 		sortedComments = sorted(comment_data, key=lambda k: k['gh_comment_id'])
-		comments = "\n".join(map(lambda c: "%s : %s"%(c["gh_user_login"], c["gh_body"]), sortedComments))
+
+		stripped = "".join(c["gh_body"].split())
+		comments = "\n".join(map(lambda c: "%s : %s"%(c["gh_user_login"], stripped ), sortedComments))
 		
+		# We remove the csv separator char
+		comments = comments.replace(";", "<semicolon>")
+
 		if travis_data_row not in outData.index:
 			outData.loc[travis_data_row] = td.loc[travis_data_row]
 		
-		assert numpy.isnan(outData.loc[travis_data_row, columnName])
-		outData.loc[travis_data_row, columnName] = comments
+		assert numpy.isnan(outData.loc[travis_data_row, commentsColumn])
+		outData.loc[travis_data_row, commentsNbColumn] = len(sortedComments)
+		outData.loc[travis_data_row, commentsColumn] = comments
 
 
 
@@ -74,8 +79,7 @@ if __name__ == "__main__":
 	creds = get_from_config(configFile, "gh_client",["username","oauth_token"])
 	util = util.Util(None)
 
-	#commentsDir = util.commentsDir
-	commentsDir = "./data/comments-test/"
+	commentsDir = util.commentsDir
 
 	print "Loading Travis data..."
 	td = util.load_travis_data(util.filteredTravisData)
@@ -85,7 +89,14 @@ if __name__ == "__main__":
 	projectNames = projectNames.sort_values()
 
 	# We check if there is already a file partially created from a previous run
-	outDataColumns = list(td.columns.values) + ["gh_repo_comments", "gh_pr_comments", "gh_issue_comments"]
+	outDataColumns = list(td.columns.values) + [
+			"gh_repo_comments", 
+			"gh_repo_comments_num",
+			"gh_pr_comments", 
+			"gh_pr_comments_num",
+			"gh_issue_comments",
+			"gh_issue_comments_num"
+	]
 	outData	= pandas.DataFrame(columns=outDataColumns)
 
 	# We set a matching index for convenience
@@ -108,6 +119,8 @@ if __name__ == "__main__":
   		print "Progress : %s/%s : parsing comments for %s"%(index,len(projectNames),prj)
   		prjData = td[td.gh_project_name == prj]
 
+  		if index == 5: break
+
   		# We first get all repo comments
   		nbMatched=0
 		repoComments = load_comments(commentsDir, util.repoStr, prj)
@@ -127,7 +140,7 @@ if __name__ == "__main__":
 						matched[travis_data_row].append(build_comment_data(repoComment, commitId));
 					nbMatched=nbMatched+1
 
-			append_comments_to_output(outData, matched, "gh_repo_comments")
+			append_comments_to_output(outData, matched, "gh_repo_comments", "gh_repo_comments_num")
 
 			print "\t%s matched"%(nbMatched),
 		print ""
@@ -156,7 +169,7 @@ if __name__ == "__main__":
 						matched[travis_data_row].append(build_comment_data(prComment, commitId));
 					nbMatched=nbMatched+1
 
-			append_comments_to_output(outData, matched, "gh_pr_comments")
+			append_comments_to_output(outData, matched, "gh_pr_comments", "gh_pr_comments_num")
 
 			print "\t%s matched"%(nbMatched),
 		print ""	
@@ -183,7 +196,7 @@ if __name__ == "__main__":
 						matched[travis_data_row].append(build_comment_data(issueComment, commitId));
 					nbMatched=nbMatched+1
 
-			append_comments_to_output(outData, matched, "gh_issue_comments")
+			append_comments_to_output(outData, matched, "gh_issue_comments", "gh_issue_comments_num")
 
 			print "\t%s matched"%(nbMatched),
 		print ""
@@ -197,4 +210,4 @@ if __name__ == "__main__":
 	print "Parsing completed!"
 	print "Duration : %s"%(str(datetime.timedelta(seconds=time.time()-startTime)))
 
-	outData.to_csv(outputfile, sep=';', encoding='utf-8', escapechar='\\')
+	outData.to_csv("./data/mergedData.csv", sep=';', encoding='utf-8', escapechar='\\')

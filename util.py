@@ -16,7 +16,6 @@ class Util:
 	travisData = "travistorrent_30_9_2016.csv"
 	filteredTravisData = "./data/filteredTravisData.csv"
 	commentsDir = "./data/comments/"
-	partialOutputfile = "./data/comments_partial.csv"
 
 	ghc = None
 
