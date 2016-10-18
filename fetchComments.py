@@ -15,15 +15,25 @@ import time
 import signal
 from pprint import pprint
 
-# Output
-outputDir = util.commentsDir
+configFile = "./keysconfig.txt"
+def get_from_config(config_file, section, config_tags):
+		# Reads the configFile file and returns the config tags located in specified section.
+		config = ConfigParser.ConfigParser()
+		config.read(config_file)
+		if isinstance(config_tags,list):
+			config_data = {k: config.get(section, k) for k in config_tags}
+		else:
+			config_data = {config_tags: config.get(section, config_tags)}
+		return config_data
 
 if __name__ == "__main__":
 
 	# Init github client
-	creds = get_from_config(util.configFile, "gh_client",["username","oauth_token"])
+	creds = get_from_config(configFile, "gh_client",["username","oauth_token"])
 	ghc = ghhelper.GithubClient(credentials=creds, ignoring_errors=True)
 	util = util.Util(ghc)
+
+	outputDir = util.commentsDir
 
 	print "Loading Travis data..."
 	td = util.load_travis_data(util.filteredTravisData)
@@ -49,7 +59,7 @@ if __name__ == "__main__":
 			print "\tSkipping repo comments. Already fetched."
 		else:
 			repoComments = util.fetch_comments(util.repoStr, prj)
-			print "\t%s repo comments found"%(len(repoComments))
+			print "\t%s repo comments found  "%(len(repoComments))
 			if repoComments:			
 				with open(commentFile, 'w') as outfile:
     					json.dump(repoComments, outfile)
