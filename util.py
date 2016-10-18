@@ -85,7 +85,7 @@ class Util:
 			response = self.ghc.make_request(next)		
 			if response != None and response.status_code == 200:
 				items = items + response.json()
-				print "\t%s/%s"%(len(items), int(last_page)*100),
+				print "\t%s of ~%s"%(len(items), int(last_page)*100),
 				print "%s"%('\r'),
 				next = self.get_next_link(response)
 		return items
