@@ -56,14 +56,12 @@ def load_comments(dir, commentsType, project):
 
 def append_comments_to_output(outputData, matched, commentsColumn, commentsNbColumn):
 
-	nbIncluded = 0
 	for travis_data_row, comment_data in matched.iteritems():
 
 		# Let's only keep the data where there is at least 10 comments
 		if len(comment_data) < 10:
 			continue
 
-		nbIncluded = nbIncluded + len(comment_data)
 		sortedComments = sorted(comment_data, key=lambda k: k['gh_comment_id'])
 
 		comments = "".join(map(lambda c: "<COMMENT>%s : %s"%(c["gh_user_login"], " ".join(c["gh_body"].splitlines()) ), sortedComments))
@@ -78,7 +76,6 @@ def append_comments_to_output(outputData, matched, commentsColumn, commentsNbCol
 		outData.loc[travis_data_row, commentsNbColumn] = len(sortedComments)
 		outData.loc[travis_data_row, commentsColumn] = comments
 
-	return nbIncluded
 
 def signal_handler(signum, frame):
     raise KeyboardInterrupt, "Signal handler"
@@ -162,8 +159,7 @@ if __name__ == "__main__":
 						nbMatched=nbMatched+1
 
 				print "\t%s matched"%(nbMatched),
-				nbIncluded = append_comments_to_output(outData, matched, "gh_repo_comments", "gh_repo_comments_num")
-				print "\t%s included"%(nbIncluded),
+				append_comments_to_output(outData, matched, "gh_repo_comments", "gh_repo_comments_num")
 
 			print ""
 
@@ -192,8 +188,7 @@ if __name__ == "__main__":
 						nbMatched=nbMatched+1
 
 				print "\t%s matched"%(nbMatched),
-				nbIncluded = append_comments_to_output(outData, matched, "gh_pr_comments", "gh_pr_comments_num")
-				print "\t%s included"%(nbIncluded),
+				append_comments_to_output(outData, matched, "gh_pr_comments", "gh_pr_comments_num")
 
 			print ""	
 
@@ -220,8 +215,7 @@ if __name__ == "__main__":
 						nbMatched=nbMatched+1
 
 				print "\t%s matched"%(nbMatched),
-				nbIncluded = append_comments_to_output(outData, matched, "gh_issue_comments", "gh_issue_comments_num")
-				print "\t%s included"%(nbIncluded),
+				append_comments_to_output(outData, matched, "gh_issue_comments", "gh_issue_comments_num")
 
 			print ""
 
