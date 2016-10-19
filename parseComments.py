@@ -98,7 +98,6 @@ if __name__ == "__main__":
 	projectNames = projectNames.drop_duplicates()
 	projectNames = projectNames.sort_values()
 
-	# We check if there is already a file partially created from a previous run
 	outDataColumns = list(td.columns.values) + [
 			"gh_repo_comments", 
 			"gh_repo_comments_num",
@@ -108,6 +107,8 @@ if __name__ == "__main__":
 			"gh_issue_comments_num"
 	]
 	outData	= pandas.DataFrame(columns=outDataColumns)
+
+	# We check if there is already a file partially created from a previous run
 	fromPartialFile = os.path.isfile(partialOutputfile)
 	if fromPartialFile:
 		print "Partial file from a previous job found. Loading it..."
