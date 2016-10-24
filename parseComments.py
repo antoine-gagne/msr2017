@@ -1,6 +1,5 @@
-# This script is used to fetch comments on several projects from Github.
-# It gets all 3 types of comments (commits, issues and pull requests) and writes 
-# the raw JSOn data to a file
+# This script is used to parse already fetched comments from GitHub
+# It gets all comments and tries to match them with a travis build row
 
 import ipdb
 import ConfigParser
@@ -59,15 +58,16 @@ def append_comments_to_output(outputData, matched, commentsColumn, commentsNbCol
 	for travis_data_row, comment_data in matched.iteritems():
 
 		# Let's only keep the data where there is at least 10 comments
-		if len(comment_data) < 10:
-			continue
+		# if len(comment_data) < 10:
+		# 	continue
 
 		sortedComments = sorted(comment_data, key=lambda k: k['gh_comment_id'])
 
-		comments = "".join(map(lambda c: "<COMMENT>%s : %s"%(c["gh_user_login"], " ".join(c["gh_body"].splitlines()) ), sortedComments))
+		# comments = "".join(map(lambda c: "<COMMENT>%s : %s"%(c["gh_user_login"], " ".join(c["gh_body"].splitlines()) ), sortedComments))
+		comments = "".join(map(lambda c: "<COMMENT>%s : %s"%(c["gh_user_login"], c["gh_body"]), sortedComments))
 		
-		# We remove the csv separator char
-		comments = comments.replace(";", "<semicolon>")
+		# We remove the csv separator char and new lines
+		comments = comments.replace(";", "<semicolon>").replace("\n", " ").replace("\r", "")
 
 		if travis_data_row not in outData.index:
 			outData.loc[travis_data_row] = td.loc[travis_data_row]
