@@ -1,5 +1,6 @@
-from sklearn import linear_model
+from sklearn.linear_model import LinearRegression
 import pandas
+import statsmodels.formula.api as sm
 import ipdb
 import matplotlib.pyplot as plt
 #regression_analysis.py
@@ -14,11 +15,15 @@ file_in = "data/aggregateBluemixTravisDataset.csv"
 
 data = pandas.read_csv(file_in)
 
+data[data["tr_status"]=="passed"] = 1 
+data[data["tr_status"]=="errored"] = 0 
+data[data["tr_status"]=="failed"] = 0 
 
-dfailed = data[data["tr_status"]=="failed"]
-derror = data[data["tr_status"]=="error"]
-dfailed = pandas.concat([dfailed,derror])
-dpassed = data[data["tr_status"]=="passed"]
+# dfailed = data[data["tr_status"]=="failed"]
+# derror = data[data["tr_status"]=="error"]
+# dfailed = pandas.concat([dfailed,derror])
+# dpassed = data[data["tr_status"]=="passed"]
+
 """
 u'Unnamed: 0', u'row', u'tr_build_id', u'tr_build_number',
 u'tr_num_jobs', u'tr_jobs', u'tr_job_id', u'tr_status', u'tr_duration',
@@ -37,11 +42,8 @@ u'agreableness', u'emotionalrange'],
 # plt.boxplot(subset_data(dfailed,dpassed,"joy"),labels = ['failed',"passed"])
 # plt.show()
 
-X = [u'anger', u'disgust', u'fear', u'joy', u'sadness', u'analytical', u'confident', u'tentative', u'openness', u'conscientiousness', u'extraversion', u'agreableness', u'emotionalrange']
-Y = [u'tr_status']
-ipdb.set_trace()
+X = data[[u'anger', u'disgust', u'fear', u'joy', u'sadness', u'analytical', u'confident', u'tentative', u'openness', u'conscientiousness', u'extraversion', u'agreableness', u'emotionalrange']]
+Y = data[[u'tr_status']]
 
-clf = linear_model.LinearRegression()
-clf.fit([[getattr(data, x) for i in X] for t in texts],
-        [t.y for t in texts])
-
+result = sm.OLS( Y.astype(bool), X.astype(float) ).fit()
+print result.summary()
