@@ -23,19 +23,8 @@ To protect keys, they are not commited in keysconfig.txt. You should get you own
 Github : from https://github.com/settings/tokens, generate a new token and use that in keysconfig.
 Bluemix : from your account, find service credentials, and use the username and password provided.
 
-
-## Current process
-1/ Read the TravisTorrentdata
-2/ Filter to keep pull requests with more than 5 comments (in addition to the original pull request comment)
-3/ Call Github API to fetch the initial comment and follow up comments. If comments cannot be found (some projects were deleted since the project was released), store empty string. Save that to intermediate CSV file (pullreqdata.csv, use `pandas.read_csv("pullreqdata.csv")` to open).
-4/ TODO Plug in the comments in the Bluemix API to get their tone analysis
-5/ TODO Analyse that
-
-
-Proposals:
-
-1. Downloader les comments sur les pull requests (accès via API GH), Utiliser Bluemix Alchemy API pour analyser le contenu des comment threads.
-
-2. Dead-end branches, time invested vs time lost vs time wasted. Nécessite d'aller voir si les pull requests ont été acceptés ou non (ca semble pas être disponible dans le travistorrent)
-
-3. A voir.
+## Process
+1/ Run fetchComments (gets the repo, issue and commit comments from github)
+2/ Run parseComments (format the comments from the previous step in a single file)
+3/ Run filterMergedData (filter the data some more and gets the Bluemix analysis for each issue comment)
+4/ Run parseBlueMixData (transforms the raw JSON files from Bluemix into a dataframe for python)
