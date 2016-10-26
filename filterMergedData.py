@@ -22,10 +22,7 @@ def get_from_config(section, config_tags):
 	return config_data
 
 
-def filter_merged_data():
-
-	df = pandas.read_csv(filename, sep = ";")
-
+def filter_merged_data(df):
 
 	# First, only take pull requests. Because.
 	sub = df[df["gh_is_pr"] == True]
@@ -50,7 +47,9 @@ def unique_filtered_data(data_in):
 	###
 
 if __name__ == "__main__":
-	data = filter_merged_data()
+
+	df = pandas.read_csv(filename, sep = ";")
+	data = filter_merged_data(df)
 	data2 = unique_filtered_data(data)
 	
 	creds = get_from_config("bluemix_client",["username","password"])
