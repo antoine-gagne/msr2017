@@ -1,0 +1,84 @@
+Annexe A
+===================================================================================================
+
+Exemple de fil de commentaire
+
+<COMMENT>geemus : @displague looks great, could you supply some testing around these as well? It slipped my mind to mention that when you asked before, but I just want to make sure it is at least a little harder to introduce regressions if possible. Thanks!<COMMENT>displague : I've added the tests and made additional tweaks to get the tests passing leading up to the ones I added.   There are more in need of updates (stackscripts for one) but I will address those in a separate PR.<COMMENT>geemus : Thanks, sounds like a plan.   On Fri, Sep 5, 2014 at 8:28 AM, Marques Johansson <notifications@github.com> wrote:  > I've added the tests and made additional tweaks to get the tests passing > leading up to the ones I added. > > There are more in need of updates (stackscripts for one) but I will > address those in a separate PR. > > -- > Reply to this email directly or view it on GitHub > <https://github.com/fog/fog/pull/3136#issuecomment-54624464>. ><COMMENT>plribeiro3000 : @displague Is this PR ready to be merged?  @geemus Who to bug in here?<COMMENT>displague : I believe we've changed some of the returned values since I created this PR. I'll follow up.<COMMENT>geemus : @plribeiro3000 probably just me I fear.  @displague cool, thanks!<COMMENT>plribeiro3000 : @displague LMK when this is ready to be reviewed again please.<COMMENT>displague : I'm hoping to make the unmocked Linode tests pass.  They don't currently.  I'm also going to have to add https://www.linode.com/api/image/image.update which was added since this PR started.<COMMENT>plribeiro3000 : @displague Whats the status here? Do you need some help?<COMMENT>displague : I haven't been able to give this any time, and honestly I have been hinging my work on this against a Linode internal PR that is taking a while. The code here should be ready to go.  I didn't get all of the existing tests passing in non-mocked mode (no fault of this PR) but they are in a better state than they were before this PR.  The tests for the new features pass.<COMMENT>plribeiro3000 : @displague Thanks and sorry for the delay here.<COMMENT>geemus : Thanks!  On Tue, Mar 31, 2015 at 9:22 AM, Paulo Henrique Lopes Ribeiro < notifications@github.com> wrote:  > @displague <https://github.com/displague> Thanks and sorry for the delay > here. > > -- > Reply to this email directly or view it on GitHub > <https://github.com/fog/fog/pull/3136#issuecomment-88107044>. >
+
+Annexe B
+===================================================================================================
+
+Exemple de réponse de Bluemix (L'analyse phrase par phrase a été omise des résultats)
+
+{
+	'document_tone': {
+		'tone_categories': [{
+			'category_id': 'emotion_tone',
+			'tones': [{
+				'tone_name': 'Anger',
+				'score': 0.382561,
+				'tone_id': 'anger'
+			}, {
+				'tone_name': 'Disgust',
+				'score': 0.01707,
+				'tone_id': 'disgust'
+			}, {
+				'tone_name': 'Fear',
+				'score': 0.300393,
+				'tone_id': 'fear'
+			}, {
+				'tone_name': 'Joy',
+				'score': 0.208831,
+				'tone_id': 'joy'
+			}, {
+				'tone_name': 'Sadness',
+				'score': 0.189675,
+				'tone_id': 'sadness'
+			}],
+			'category_name': 'Emotion Tone'
+		}, {
+			'category_id': 'language_tone',
+			'tones': [{
+				'tone_name': 'Analytical',
+				'score': 0.001655,
+				'tone_id': 'analytical'
+			}, {
+				'tone_name': 'Confident',
+				'score': 0.0,
+				'tone_id': 'confident'
+			}, {
+				'tone_name': 'Tentative',
+				'score': 0.804064,
+				'tone_id': 'tentative'
+			}],
+			'category_name': 'Language Tone'
+		}, {
+			'category_id': 'social_tone',
+			'tones': [{
+				'tone_name': 'Openness',
+				'score': 0.381959,
+				'tone_id': 'openness_big5'
+			}, {
+				'tone_name': 'Conscientiousness',
+				'score': 0.54604,
+				'tone_id': 'conscientiousness_big5'
+			}, {
+				'tone_name': 'Extraversion',
+				'score': 0.2979,
+				'tone_id': 'extraversion_big5'
+			}, {
+				'tone_name': 'Agreeableness',
+				'score': 0.339672,
+				'tone_id': 'agreeableness_big5'
+			}, {
+				'tone_name': 'Emotional Range',
+				'score': 0.342046,
+				'tone_id': 'emotional_range_big5'
+			}],
+			'category_name': 'Social Tone'
+		}]
+	},
+
+	[analyse phrase par phrase]
+
+}
