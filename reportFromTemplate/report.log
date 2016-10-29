@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.9.22)  28 OCT 2016 23:55
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.9.22)  29 OCT 2016 11:33
 entering extended mode
 **C:/Users/Antoine/PigeonLabs/msr2017/reportFromTemplate/report.tex
 (C:/Users/Antoine/PigeonLabs/msr2017/reportFromTemplate/report.tex
@@ -751,19 +751,19 @@ Underfull \hbox (badness 1831) in paragraph at lines 78--80
 ne-
  []
 
-<wekahisto.png, id=8, 962.59625pt x 980.66376pt>
+<wekahisto.png, id=9, 962.59625pt x 980.66376pt>
 File: wekahisto.png Graphic file (type png)
  <use wekahisto.png>
 Package pdftex.def Info: wekahisto.png used on input line 90.
 (pdftex.def)             Requested size: 252.0pt x 256.71732pt.
 
-<logit.png, id=10, 715.67375pt x 432.61626pt>
+<logit.png, id=11, 715.67375pt x 432.61626pt>
 File: logit.png Graphic file (type png)
  <use logit.png>
 Package pdftex.def Info: logit.png used on input line 96.
 (pdftex.def)             Requested size: 252.0pt x 152.32892pt.
 
-<wekaresult.png, id=11, 182.48175pt x 165.61874pt>
+<wekaresult.png, id=12, 182.48175pt x 165.61874pt>
 File: wekaresult.png Graphic file (type png)
  <use wekaresult.png>
 Package pdftex.def Info: wekaresult.png used on input line 102.
@@ -774,11 +774,25 @@ Underfull \hbox (badness 2213) in paragraph at lines 109--110
  []
 
 [2]
+Underfull \hbox (badness 1558) in paragraph at lines 117--122
+\OT1/ptm/m/n/10 Deuxi[]emement, l'utilisation d'un lan-gage com-prenant de
+ []
+
+
+Underfull \hbox (badness 1803) in paragraph at lines 117--122
+\OT1/ptm/m/n/10 d'analyse de ton. De plus, de nom-breux com-men-taires
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 117--122
+
+ []
+
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 130.
+(Font)              <7> on input line 129.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 130.
- [3 <./wekahisto.png> <./logit.png> <./wekaresult.png>]
+(Font)              <5> on input line 129.
+[3 <./wekahisto.png> <./logit.png> <./wekaresult.png>]
 Underfull \hbox (badness 3148) in paragraph at lines 145--146
 []\OT1/ptm/m/n/8 Tone An-a-lyzer Ser-vice Doc-u-men-ta-tion (Oc-to-bre 2016) IB
 M, En
@@ -788,6 +802,27 @@ M, En
 Underfull \hbox (badness 2486) in paragraph at lines 145--146
 \OT1/ptm/m/n/8 ligne \OT1/ptm/m/it/8 http://tex.stackexchange.com/questions/358
 7/how-can-i-use-bibtex-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 149--150
+[]\OT1/ptm/m/n/8 GitHub De-vel-op-per (Oc-to-bre 2016) GitHub, En ligne
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 151--152
+[]\OT1/ptm/m/n/8 Overfitting in De-ci-sion Trees (Oc-to-bre
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 151--152
+\OT1/ptm/m/n/8 2016), Uni-ver-sity of Notre Dame, En ligne
+ []
+
+
+Overfull \hbox (6.32547pt too wide) in paragraph at lines 151--152
+\OT1/ptm/m/it/8 http://www3.nd.edu/ rjohns15/cse40647.sp14/www/content/lectures
+/24%20-
  []
 
 
@@ -801,25 +836,27 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[4
 
-] (report.aux) ) 
+Overfull \vbox (1.38892pt too high) has occurred while \output is active []
+
+
+[4] (report.aux) ) 
 Here is how much of TeX's memory you used:
- 7906 strings out of 493334
- 130756 string characters out of 3136666
+ 7915 strings out of 493334
+ 130822 string characters out of 3136666
  240526 words of memory out of 3000000
- 11325 multiletter control sequences out of 15000+200000
+ 11334 multiletter control sequences out of 15000+200000
  34249 words of font info for 64 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  44i,8n,42p,1581b,266s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.
-enc}<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pf
-b><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><
-C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program 
-Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files (x86
-)/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.
-9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on report.pdf (4 pages, 182364 bytes).
+{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8
+r.enc}<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.
+pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb
+><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Progra
+m Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files (x
+86)/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 
+2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on report.pdf (4 pages, 186355 bytes).
 PDF statistics:
  46 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
